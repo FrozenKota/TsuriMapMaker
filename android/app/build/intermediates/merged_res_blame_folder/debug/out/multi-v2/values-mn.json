@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/KOTA/work/TsuriMapMaker/TsuriMapMaker/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-mn/values-mn.xml",
+            "outputFile": "/Users/KOTA/work/TsuriMapMaker/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-mn/values-mn.xml",
             "map": [
                 {
                     "source": "/Users/KOTA/.gradle/caches/transforms-3/540dbfb90b248d7b59cd154497c15f99/transformed/core-1.5.0/res/values-mn/values-mn.xml",
