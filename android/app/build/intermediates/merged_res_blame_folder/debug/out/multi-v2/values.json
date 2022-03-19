@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/KOTA/work/TsuriMapMaker/TsuriMapMaker/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+            "outputFile": "/Users/KOTA/work/TsuriMapMaker/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
             "map": [
                 {
                     "source": "/Users/KOTA/.gradle/caches/transforms-3/df7b208c45426f45016d16c0c3a6a059/transformed/jetified-flipper-0.99.0/res/values/values.xml",
@@ -78,7 +78,7 @@
                     }
                 },
                 {
-                    "source": "/Users/KOTA/work/TsuriMapMaker/TsuriMapMaker/android/app/src/main/res/values/strings.xml",
+                    "source": "/Users/KOTA/work/TsuriMapMaker/android/app/src/main/res/values/strings.xml",
                     "from": {
                         "startLines": "1",
                         "startColumns": "4",
@@ -130,23 +130,6 @@
                         "endLines": "29,30,199,232,233,234,235,236,249,269,270,309,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,354,355,356,357,358,359,360,361,363,364,365,366,375,379,1470,1473,1477,1481,1699,1702,1776,1823,1832,1839,1846,1849,1852,1855,1861,2014",
                         "endColumns": "62,62,50,47,48,47,48,48,42,53,47,72,122,95,88,107,116,119,119,101,102,110,106,102,110,168,167,116,109,114,112,155,107,112,90,110,168,97,126,124,94,106,79,75,72,86,70,70,77,79,85,83,71,81,83,76,86,84,78,74,72,88,76,77,72,77,10,10,12,12,10,10,12,12,25,34,10,10,10,10,10,12,12,10",
                         "endOffsets": "2136,2199,13574,15532,15581,15629,15678,15727,16358,17414,17462,20058,20232,20328,20417,20525,20642,20762,20882,20984,21087,21198,21305,21408,21519,21688,21856,21973,22083,22198,22311,22467,22575,22688,22779,22890,23059,23157,23284,23409,23504,23611,23691,23767,23840,23927,23998,24069,24147,24227,24313,24397,24469,24551,24688,24765,24852,24937,25016,25091,25164,25253,25401,25479,25552,25630,26320,26568,97168,97359,97561,97767,113548,113737,120663,123717,124255,124673,125051,125228,125407,125590,125955,137080"
-                    }
-                },
-                {
-                    "source": "/Users/KOTA/work/TsuriMapMaker/TsuriMapMaker/android/app/build/generated/res/resValues/debug/values/gradleResValues.xml",
-                    "from": {
-                        "startLines": "6,8",
-                        "startColumns": "4,4",
-                        "startOffsets": "156,262",
-                        "endColumns": "63,68",
-                        "endOffsets": "215,326"
-                    },
-                    "to": {
-                        "startLines": "279,280",
-                        "startColumns": "4,4",
-                        "startOffsets": "17921,17985",
-                        "endColumns": "63,68",
-                        "endOffsets": "17980,18049"
                     }
                 },
                 {
@@ -203,24 +186,24 @@
                     }
                 },
                 {
-                    "source": "/Users/KOTA/.gradle/caches/transforms-3/42fc10495a8bc8a878c7280888ad32dd/transformed/jetified-savedstate-1.1.0/res/values/values.xml",
+                    "source": "/Users/KOTA/work/TsuriMapMaker/android/app/build/generated/res/resValues/debug/values/gradleResValues.xml",
                     "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "53",
-                        "endOffsets": "104"
+                        "startLines": "6,8",
+                        "startColumns": "4,4",
+                        "startOffsets": "156,262",
+                        "endColumns": "63,68",
+                        "endOffsets": "215,326"
                     },
                     "to": {
-                        "startLines": "272",
-                        "startColumns": "4",
-                        "startOffsets": "17510",
-                        "endColumns": "53",
-                        "endOffsets": "17559"
+                        "startLines": "279,280",
+                        "startColumns": "4,4",
+                        "startOffsets": "17921,17985",
+                        "endColumns": "63,68",
+                        "endOffsets": "17980,18049"
                     }
                 },
                 {
-                    "source": "/Users/KOTA/work/TsuriMapMaker/TsuriMapMaker/android/app/src/main/res/values/styles.xml",
+                    "source": "/Users/KOTA/work/TsuriMapMaker/android/app/src/main/res/values/styles.xml",
                     "from": {
                         "startLines": "3",
                         "startColumns": "4",
@@ -236,6 +219,23 @@
                         "endLines": "383",
                         "endColumns": "12",
                         "endOffsets": "26786"
+                    }
+                },
+                {
+                    "source": "/Users/KOTA/.gradle/caches/transforms-3/42fc10495a8bc8a878c7280888ad32dd/transformed/jetified-savedstate-1.1.0/res/values/values.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "53",
+                        "endOffsets": "104"
+                    },
+                    "to": {
+                        "startLines": "272",
+                        "startColumns": "4",
+                        "startOffsets": "17510",
+                        "endColumns": "53",
+                        "endOffsets": "17559"
                     }
                 },
                 {
