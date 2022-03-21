@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import * as React from 'react';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -27,7 +27,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode:boolean = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
       <Text
