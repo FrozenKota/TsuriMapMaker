@@ -1,8 +1,10 @@
-#Sun Mar 20 02:26:17 JST 2022
+#Thu Mar 24 00:37:19 JST 2022
+path.4=0/classes.dex
 path.3=15/classes.dex
 path.2=14/classes.dex
 path.1=0/classes.dex
 path.0=classes.dex
+base.4=/Users/KOTA/work/TsuriMapMaker/android/app/build/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
 base.3=/Users/KOTA/work/TsuriMapMaker/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/15/classes.dex
 base.2=/Users/KOTA/work/TsuriMapMaker/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/14/classes.dex
 base.1=/Users/KOTA/work/TsuriMapMaker/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
@@ -11,3 +13,4 @@ renamed.3=classes4.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
+renamed.4=classes5.dex
