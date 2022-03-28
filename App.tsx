@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 
 import MapView, {
@@ -17,97 +17,137 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-class Overlays extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+const Overlays = () => {
+  const [ mapState, setMapState ] = useState<{
+    region: {
+      latitude: number,
+      longitude: number,
+      latitudeDelta: number,
+      longitudeDelta: number,
+    },
+    circle: {
+      center: {
+        latitude: number,
+        longitude: number,
       },
-      circle: {
-        center: {
-          latitude: LATITUDE + SPACE,
-          longitude: LONGITUDE + SPACE,
-        },
-        radius: 700,
+      radius: number,
+    },
+    polygon: [
+      {
+        latitude: number,
+        longitude: number,
       },
-      polygon: [
-        {
-          latitude: LATITUDE + SPACE,
-          longitude: LONGITUDE + SPACE,
-        },
-        {
-          latitude: LATITUDE - SPACE,
-          longitude: LONGITUDE - SPACE,
-        },
-        {
-          latitude: LATITUDE - SPACE,
-          longitude: LONGITUDE + SPACE,
-        },
-      ],
-      polyline: [
-        {
-          latitude: LATITUDE + SPACE,
-          longitude: LONGITUDE - SPACE,
-        },
-        {
-          latitude: LATITUDE - 2 * SPACE,
-          longitude: LONGITUDE + 2 * SPACE,
-        },
-        {
-          latitude: LATITUDE - SPACE,
-          longitude: LONGITUDE - SPACE,
-        },
-        {
-          latitude: LATITUDE - 2 * SPACE,
-          longitude: LONGITUDE - SPACE,
-        },
-      ],
-    };
-  }
+      {
+        latitude: number,
+        longitude: number,
+      },
+      {
+        latitude: number,
+        longitude: number,
+      },
+    ],
+    polyline: [
+      {
+        latitude: number,
+        longitude: number,
+      },
+      {
+        latitude: number,
+        longitude: number,
+      },
+      {
+        latitude: number,
+        longitude: number,
+      },
+      {
+        latitude: number,
+        longitude: number,
+      },
+    ],
+  }>
+  ({
+    region: {
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    },
+    circle: {
+      center: {
+        latitude: LATITUDE + SPACE,
+        longitude: LONGITUDE + SPACE,
+      },
+      radius: 700,
+    },
+    polygon: [
+      {
+        latitude: LATITUDE + SPACE,
+        longitude: LONGITUDE + SPACE,
+      },
+      {
+        latitude: LATITUDE - SPACE,
+        longitude: LONGITUDE - SPACE,
+      },
+      {
+        latitude: LATITUDE - SPACE,
+        longitude: LONGITUDE + SPACE,
+      },
+    ],
+    polyline: [
+      {
+        latitude: LATITUDE + SPACE,
+        longitude: LONGITUDE - SPACE,
+      },
+      {
+        latitude: LATITUDE - 2 * SPACE,
+        longitude: LONGITUDE + 2 * SPACE,
+      },
+      {
+        latitude: LATITUDE - SPACE,
+        longitude: LONGITUDE - SPACE,
+      },
+      {
+        latitude: LATITUDE - 2 * SPACE,
+        longitude: LONGITUDE - SPACE,
+      }
+    ]
+  })
 
-  render() {
-    const { region, circle, polygon, polyline } = this.state;
-    return (
-      <View style={styles.container}>
-        <MapView
-          provider={this.props.provider}
-          style={styles.map}
-          initialRegion={region}
-        >
-          <Circle
-            center={circle.center}
-            radius={circle.radius}
-            fillColor="rgba(255, 255, 255, 1)"
-            strokeColor="rgba(0,0,0,0.5)"
-            zIndex={2}
-            strokeWidth={2}
-          />
-          <Polygon
-            coordinates={polygon}
-            fillColor="rgba(0, 200, 0, 0.5)"
-            strokeColor="rgba(0,0,0,0.5)"
-            strokeWidth={2}
-          />
-          <Polyline
-            coordinates={polyline}
-            strokeColor="rgba(0,0,200,0.5)"
-            strokeWidth={3}
-            lineDashPattern={[5, 2, 3, 2]}
-          />
-        </MapView>
-        <View style={styles.buttonContainer}>
-          <View style={styles.bubble}>
-            <Text>Render circles, polygons, and polylines</Text>
-          </View>
-        </View>
+  return (
+    <View style={styles.container}>
+    <MapView
+//      provider={this.props.provider}
+      style={styles.map}
+      initialRegion={mapState.region}
+    >
+      <Circle
+        center={mapState.circle.center}
+        radius={mapState.circle.radius}
+        fillColor="rgba(255, 255, 255, 1)"
+        strokeColor="rgba(0,0,0,0.5)"
+        zIndex={2}
+        strokeWidth={2}
+      />
+      <Polygon
+        coordinates={mapState.polygon}
+        fillColor="rgba(0, 200, 0, 0.5)"
+        strokeColor="rgba(0,0,0,0.5)"
+        strokeWidth={2}
+      />
+      <Polyline
+        coordinates={mapState.polyline}
+        strokeColor="rgba(0,0,200,0.5)"
+        strokeWidth={3}
+        lineDashPattern={[5, 2, 3, 2]}
+      />
+    </MapView>
+    <View style={styles.buttonContainer}>
+      <View style={styles.bubble}>
+        <Text>Render circles, polygons, and polylines</Text>
       </View>
-    );
-  }
+    </View>
+  </View>
+  )
 }
 
 Overlays.propTypes = {
