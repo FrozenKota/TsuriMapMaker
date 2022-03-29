@@ -5,7 +5,6 @@ import MapView, {
   Circle,
   Polygon,
   Polyline,
-  ProviderPropType,
 } from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
@@ -114,45 +113,64 @@ const Overlays = () => {
   })
 
   return (
-    <View style={styles.container}>
-    <MapView
-//      provider={this.props.provider}
-      style={styles.map}
-      initialRegion={mapState.region}
-    >
-      <Circle
-        center={mapState.circle.center}
-        radius={mapState.circle.radius}
-        fillColor="rgba(255, 255, 255, 1)"
-        strokeColor="rgba(0,0,0,0.5)"
-        zIndex={2}
-        strokeWidth={2}
-      />
-      <Polygon
-        coordinates={mapState.polygon}
-        fillColor="rgba(0, 200, 0, 0.5)"
-        strokeColor="rgba(0,0,0,0.5)"
-        strokeWidth={2}
-      />
-      <Polyline
-        coordinates={mapState.polyline}
-        strokeColor="rgba(0,0,200,0.5)"
-        strokeWidth={3}
-        lineDashPattern={[5, 2, 3, 2]}
-      />
-    </MapView>
-    <View style={styles.buttonContainer}>
-      <View style={styles.bubble}>
-        <Text>Render circles, polygons, and polylines</Text>
+    
+    <View style={{flex:1}} >
+      <View 
+        style={{
+          backgroundColor: "green",
+          height: '15%',
+          width: width,
+          }}>
+        <Text style={styles.menu}
+        > Menu(Cancel, Save, Exit)</Text>
+        <Text style={styles.menu}>
+          睡眠不足
+        </Text>
       </View>
+
+      <View 
+        style={{
+          height: '70%',
+          width: '100%',
+        }}>
+        <MapView
+          style={styles.map}
+          initialRegion={mapState.region}
+          
+        >
+        <Circle
+          center={mapState.circle.center}
+          radius={mapState.circle.radius}
+          fillColor="rgba(255, 255, 255, 1)"
+          strokeColor="rgba(0,0,0,0.5)"
+          zIndex={2}
+          strokeWidth={2}
+        />
+        <Polygon
+          coordinates={mapState.polygon}
+          fillColor="rgba(0, 200, 0, 0.5)"
+          strokeColor="rgba(0,0,0,0.5)"
+          strokeWidth={2}
+        />
+        <Polyline
+          coordinates={mapState.polyline}
+          strokeColor="rgba(0,0,200,0.5)"
+          strokeWidth={3}
+          lineDashPattern={[5, 2, 3, 2]}
+        />
+      </MapView>
+    </View>
+    <View style={{
+          backgroundColor: '#1FFFFF',
+          height: '15%',
+          width: '100%',
+          }}>
+        <Text style={styles.menu}> Control Buttons  {height}</Text>
     </View>
   </View>
   )
 }
 
-Overlays.propTypes = {
-  provider: ProviderPropType,
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -185,6 +203,14 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     backgroundColor: 'transparent',
   },
+  menu: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  mapcontroler: {
+    color: 'red'
+  }
 });
 
 export default Overlays;
