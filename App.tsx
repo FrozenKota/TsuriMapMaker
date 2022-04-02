@@ -113,107 +113,83 @@ const Overlays = () => {
   })
 
   return (
-    
-    <View style={{flex:1}} >
-      <View 
-        style={{
-          backgroundColor: "green",
-          height: '15%',
-          width: width,
-          }}>
-        <Text style={styles.menu}
-        > Menu(Cancel, Save, Exit)</Text>
-        <Text style={styles.menu}>
-          睡眠不足
-        </Text>
+    <View style={styles.mainContainer} >
+      <View style={styles.menuContainer}>
       </View>
-
-      <View 
-        style={{
-          height: '70%',
-          width: '100%',
-        }}>
+      <View style={styles.mapContainer}>
         <MapView
           style={styles.map}
           initialRegion={mapState.region}
-          
         >
-        <Circle
-          center={mapState.circle.center}
-          radius={mapState.circle.radius}
-          fillColor="rgba(255, 255, 255, 1)"
-          strokeColor="rgba(0,0,0,0.5)"
-          zIndex={2}
-          strokeWidth={2}
-        />
-        <Polygon
-          coordinates={mapState.polygon}
-          fillColor="rgba(0, 200, 0, 0.5)"
-          strokeColor="rgba(0,0,0,0.5)"
-          strokeWidth={2}
-        />
-        <Polyline
-          coordinates={mapState.polyline}
-          strokeColor="rgba(0,0,200,0.5)"
-          strokeWidth={3}
-          lineDashPattern={[5, 2, 3, 2]}
-        />
-      </MapView>
-    </View>
-    <View style={{
-          backgroundColor: '#1FFFFF',
-          height: '15%',
-          width: '100%',
-          }}>
-        <Text style={styles.menu}> Control Buttons  {height}</Text>
-    </View>
-  </View>
+          <Circle
+            center={mapState.circle.center}
+            radius={mapState.circle.radius}
+            fillColor="rgba(255, 255, 255, 1)"
+            strokeColor="rgba(0,0,0,0.5)"
+            zIndex={2}
+            strokeWidth={2}
+          />
+          <Polygon
+            coordinates={mapState.polygon}
+            fillColor="rgba(0, 200, 0, 0.5)"
+            strokeColor="rgba(0,0,0,0.5)"
+            strokeWidth={2}
+          />
+          <Polyline
+            coordinates={mapState.polyline}
+            strokeColor="rgba(0,0,200,0.5)"
+            strokeWidth={3}
+            lineDashPattern={[5, 2, 3, 2]}
+          />
+        </MapView>
+      </View>
+      <View style={styles.controlerContainer}>
+        <Text> Test </Text>
+      </View>
+    </View> // Container
   )
 }
 
 
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
+  // 親コンテナ
+  mainContainer: {
+    flex: 1,
   },
+  // メニュー（戻る、保存など）
   menuContainer: {
     flex: 1,
-    flexGrow: 0.2,
+    flexGrow: 0.15,
+    backgroundColor: 'green',
+  },
+  menuLayout: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  menuButtons: {
+    fontSize: 18,
+  },
+  //　GoogleMap表示エリア設定
+  mapContainer: {
+    flex: 1,
+    flexGrow: 0.7,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  bubble: {
+  // コントロールボタン配置エリア
+  controlerContainer: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.7)',
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 20,
+    flexGrow: 0.15,
+    backgroundColor: 'red',
   },
-  latlng: {
-    width: 200,
-    alignItems: 'stretch',
-  },
-  button: {
-    width: 80,
-    paddingHorizontal: 12,
-    alignItems: 'center',
-    marginHorizontal: 10,
-  },
-  buttonContainer: {
+  controlerLayout:{
     flexDirection: 'row',
-    marginVertical: 20,
-    backgroundColor: 'transparent',
+    flex: 1,
+    justifyContent: 'center',
   },
-  menu: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  mapcontroler: {
-    color: 'red'
+  controlButtons: {
+    flex: 1,
   }
 });
 export default Overlays;
