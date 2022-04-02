@@ -175,8 +175,12 @@ const Overlays = () => {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
+  },
+  menuContainer: {
+    flex: 1,
+    flexGrow: 0.2,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -212,5 +216,4 @@ const styles = StyleSheet.create({
     color: 'red'
   }
 });
-
 export default Overlays;
