@@ -17,7 +17,7 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
-const Overlays = () => {
+const App = () => {
   const [ mapState, setMapState ] = useState<{
     region: {
       latitude: number,
@@ -155,7 +155,7 @@ const Overlays = () => {
         <View style={{...styles.controlButtons, backgroundColor: 'purple'}}></View>
         <View style={{...styles.controlButtons, backgroundColor: 'yellow'}}></View>
       </View>
-      <View style={styles.overlayTest}>
+      <View style={styles.overlayMatrix}>
           <Text style={{fontSize: 20}}> オーバーレイ表示テスト. position = absolute </Text>
           <Text style={{fontSize: 30}}>開始位置が少しずれてるのはなんでなん</Text>
         </View>
@@ -198,15 +198,15 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 15,
   },
-  overlayTest: {
+  overlayMatrix: {
     position: 'absolute',
     top: height * 0.15,
-    left: (width - 200) / 2,
+    left: 0,
     height: height * 0.75,
-    width: 200,
+    width: width,
     opacity: 0.6,
     backgroundColor: 'pink',
     borderRadius: 20,
   }
 });
-export default Overlays;
+export default App;
