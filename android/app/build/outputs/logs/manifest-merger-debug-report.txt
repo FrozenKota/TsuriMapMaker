@@ -9,6 +9,7 @@ MERGED from [com.facebook.flipper:flipper:0.99.0] /Users/KOTA/.gradle/caches/tra
 MERGED from [com.facebook.flipper:flipper-network-plugin:0.99.0] /Users/KOTA/.gradle/caches/transforms-3/24c7b3b7628557c2352d51b3335f48b6/transformed/jetified-flipper-network-plugin-0.99.0/AndroidManifest.xml:8:1-15:12
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.99.0] /Users/KOTA/.gradle/caches/transforms-3/d1f78a3bfe608333c8a8682ec4347618/transformed/jetified-flipper-fresco-plugin-0.99.0/AndroidManifest.xml:8:1-15:12
 MERGED from [:react-native-maps] /Users/KOTA/work/TsuriMapMaker/node_modules/react-native-maps/lib/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-12:12
+MERGED from [:react-native-svg] /Users/KOTA/work/TsuriMapMaker/node_modules/react-native-svg/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [com.facebook.react:react-native:0.67.4] /Users/KOTA/.gradle/caches/transforms-3/221c71d43dbd5b88bd9ef5161912c98c/transformed/jetified-react-native-0.67.4/AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/KOTA/.gradle/caches/transforms-3/2440439db2f6d9d5f76a90648980e461/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [org.webkit:android-jsc:r250230] /Users/KOTA/.gradle/caches/transforms-3/b825e962adf445255b97861e91a2a884/transformed/jetified-android-jsc-r250230/AndroidManifest.xml:2:1-11:12
@@ -200,6 +201,8 @@ MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.99.0] /Users/KOTA/.gra
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.99.0] /Users/KOTA/.gradle/caches/transforms-3/d1f78a3bfe608333c8a8682ec4347618/transformed/jetified-flipper-fresco-plugin-0.99.0/AndroidManifest.xml:11:5-13:41
 MERGED from [:react-native-maps] /Users/KOTA/work/TsuriMapMaker/node_modules/react-native-maps/lib/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-maps] /Users/KOTA/work/TsuriMapMaker/node_modules/react-native-maps/lib/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-svg] /Users/KOTA/work/TsuriMapMaker/node_modules/react-native-svg/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-svg] /Users/KOTA/work/TsuriMapMaker/node_modules/react-native-svg/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.react:react-native:0.67.4] /Users/KOTA/.gradle/caches/transforms-3/221c71d43dbd5b88bd9ef5161912c98c/transformed/jetified-react-native-0.67.4/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.react:react-native:0.67.4] /Users/KOTA/.gradle/caches/transforms-3/221c71d43dbd5b88bd9ef5161912c98c/transformed/jetified-react-native-0.67.4/AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/KOTA/.gradle/caches/transforms-3/2440439db2f6d9d5f76a90648980e461/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
