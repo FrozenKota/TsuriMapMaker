@@ -8,6 +8,7 @@ import MapView, {
 } from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
+const POSITION_MAP_X = height * 0.15;
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -114,9 +115,12 @@ const Overlays = () => {
 
   return (
     <View style={styles.mainContainer} >
-      <View style={styles.menuContainer}>
+      <View style={styles.menuLayout}>
+        <View style={{...styles.menuButtons, backgroundColor: 'red'  }}></View>
+        <View style={{...styles.menuButtons, backgroundColor: 'green'}}></View>
+        <View style={{...styles.menuButtons, backgroundColor: 'blue' }}></View>
       </View>
-      <View style={styles.mapContainer}>
+      <View style={styles.mapLayout}>
         <MapView
           style={styles.map}
           initialRegion={mapState.region}
@@ -143,9 +147,18 @@ const Overlays = () => {
           />
         </MapView>
       </View>
-      <View style={styles.controlerContainer}>
-        <Text> Test </Text>
+      <View style={styles.controlerLayout}>
+        <View style={{...styles.controlButtons, backgroundColor: 'red'}}></View>
+        <View style={{...styles.controlButtons ,backgroundColor: 'green'}}></View>
+        <View style={{...styles.controlButtons, backgroundColor: 'blue'}}></View>
+        <View style={{...styles.controlButtons, backgroundColor: 'gray'}}></View>
+        <View style={{...styles.controlButtons, backgroundColor: 'purple'}}></View>
+        <View style={{...styles.controlButtons, backgroundColor: 'yellow'}}></View>
       </View>
+      <View style={styles.overlayTest}>
+          <Text style={{fontSize: 20}}> オーバーレイ表示テスト. position = absolute </Text>
+          <Text style={{fontSize: 30}}>開始位置が少しずれてるのはなんでなん</Text>
+        </View>
     </View> // Container
   )
 }
@@ -157,39 +170,43 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   // メニュー（戻る、保存など）
-  menuContainer: {
+  menuLayout: {
     flex: 1,
     flexGrow: 0.15,
-    backgroundColor: 'green',
-  },
-  menuLayout: {
-    flexDirection: 'row',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
   menuButtons: {
-    fontSize: 18,
+    flex: 1,
+    borderRadius: 18,
   },
   //　GoogleMap表示エリア設定
-  mapContainer: {
+  mapLayout: {
     flex: 1,
-    flexGrow: 0.7,
+    flexGrow: 0.75,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
   // コントロールボタン配置エリア
-  controlerContainer: {
+  controlerLayout: {
     flex: 1,
-    flexGrow: 0.15,
-    backgroundColor: 'red',
-  },
-  controlerLayout:{
+    flexGrow: 0.10,
     flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'center',
   },
   controlButtons: {
     flex: 1,
+    borderRadius: 15,
+  },
+  overlayTest: {
+    position: 'absolute',
+    top: height * 0.15,
+    left: (width - 200) / 2,
+    height: height * 0.75,
+    width: 200,
+    opacity: 0.6,
+    backgroundColor: 'pink',
+    borderRadius: 20,
   }
 });
 export default Overlays;
