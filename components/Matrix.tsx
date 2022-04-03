@@ -41,14 +41,13 @@ const Matrix = (props: any) => {
 
     for( let i = 0; i < DIV_NUM_X; i ++){
         items.push(
-            <Line x1={X1+i*DIV_X} y1={Y1} x2={X1+i*DIV_X} y2={Y2} stroke="red" strokeWidth="1" />
+            <Line key={"0"+i} x1={X1+i*DIV_X} y1={Y1} x2={X1+i*DIV_X} y2={Y2} stroke="red" strokeWidth="1" />
         )
-    }
-    for( let i = 0; i < DIV_NUM_Y; i ++){
         items.push(
-            <Line x1={X1} y1={Y1+i*DIV_Y} x2={X2} y2={Y1+i*DIV_Y} stroke="red" strokeWidth="1" />
+            <Line key={"1"+i} x1={X1} y1={Y1+i*DIV_Y} x2={X2} y2={Y1+i*DIV_Y} stroke="red" strokeWidth="1" />
         )
     }
-    return items
+
+    return items;
 }
 export default Matrix;
