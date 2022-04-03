@@ -37,17 +37,18 @@ const Matrix = (props: any) => {
     const DIV_X = WIDTH / DIV_NUM_X;
     const DIV_Y = HEIGHT / DIV_NUM_Y;
 
-    return (
-        <Rect
-        x={X1}
-        y={Y1}
-        width={X2}
-        height={Y2}
-        stroke="red"
-        strokeWidth="4"
-        fill = ""
-        /> 
-    )
-}
+    let items = [];
 
+    for( let i = 0; i < DIV_NUM_X; i ++){
+        items.push(
+            <Line x1={X1+i*DIV_X} y1={Y1} x2={X1+i*DIV_X} y2={Y2} stroke="red" strokeWidth="1" />
+        )
+    }
+    for( let i = 0; i < DIV_NUM_Y; i ++){
+        items.push(
+            <Line x1={X1} y1={Y1+i*DIV_Y} x2={X2} y2={Y1+i*DIV_Y} stroke="red" strokeWidth="1" />
+        )
+    }
+    return items
+}
 export default Matrix;

@@ -148,7 +148,7 @@ const App = () => {
       </View>
       <View style={styles.controlerLayout}>
         <View style={{...styles.controlButtons, backgroundColor: 'black'}}><Text style={{textAlign:'center',fontSize: 30, color:'white'}}> + </Text></View>
-        <View style={{...styles.controlButtons ,backgroundColor: 'blue'}}><Text style={{textAlign:'center',fontSize: 30, color:'white'}}> - </Text></View>
+        <View style={{...styles.controlButtons, backgroundColor: 'blue'}}><Text style={{textAlign:'center',fontSize: 30, color:'white'}}> - </Text></View>
         <View style={{...styles.controlButtons, backgroundColor: 'gray'}}><Text style={{textAlign:'center',fontSize: 30, color:'white'}}> ← </Text></View>
         <View style={{...styles.controlButtons, backgroundColor: 'gray'}}><Text style={{textAlign:'center',fontSize: 30, color:'white'}}> ↓ </Text></View>
         <View style={{...styles.controlButtons, backgroundColor: 'gray'}}><Text style={{textAlign:'center',fontSize: 30, color:'white'}}> ↑ </Text></View>
@@ -156,7 +156,7 @@ const App = () => {
       </View>
       <View style={styles.overlayMatrix}>
         <Svg height="100%" width="100%" viewBox={"0 0 "+width+" 426"}>
-          <Matrix x1="0" y1="0" x2={width} y2={426} divNumX="10" divNumY="10" />
+          <Matrix x1="0" y1="0" x2={width} y2={426} divNumX={40} divNumY={40} />
         </Svg>
       </View>
     </View> // Container
