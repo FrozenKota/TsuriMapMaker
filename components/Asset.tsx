@@ -3,13 +3,9 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, Image
 
 const { width, height } = Dimensions.get('window');
 
-const AssetWindow = (props: any) => {
+const AssetWindow = ({closeAssetHandler}: any) => {
     let data = [];
     const num = 20;
-
-    const closeAssetHandler = () => {
-        props.closeAseetHandler;
-    }
 
     for(let i = 0; i < num; i++){
         data.push(

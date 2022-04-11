@@ -87,8 +87,7 @@ const App = () => {
   }
 
   const closeAssetHandler = () => {
-    Alert.alert("closeAssetHandler");
-    setAssetIsOpen(false);
+        setAssetIsOpen(false);
   }
 
   return (
@@ -148,7 +147,7 @@ const App = () => {
         { assetIsOpen && (
           <AssetWindow closeAssetHandler={closeAssetHandler}/>
         )}
-        
+
 
     </View> // Container
   )
