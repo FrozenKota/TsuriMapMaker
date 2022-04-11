@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Matrix from './components/Matrix'
+import Matrix from './components/Matrix';
+import AssetWindow from './components/Asset';
 import { StyleSheet, View, Text, Button, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import Svg, {
   Circle,
@@ -38,6 +39,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
 const App = () => {
+  const [ assetIsOpen, setAssetIsOpen ] = useState(false);
   const [ mapState, setMapState ] = useState<{
     region: {
       latitude: number,
@@ -79,6 +81,15 @@ const App = () => {
   const moveDown = () => {
     setVertical( vertical + 1 )
   }
+  
+  const assetSelectHandler = () => {
+    setAssetIsOpen(true);
+  }
+
+  const closeAssetHandler = () => {
+    Alert.alert("closeAssetHandler");
+    setAssetIsOpen(false);
+  }
 
   return (
     <View style={styles.mainContainer} >
@@ -118,7 +129,7 @@ const App = () => {
         </MapView>
       </View>
 
-      <TouchableOpacity style={styles.assetButtonLayout}>
+      <TouchableOpacity style={styles.assetButtonLayout} onPress={assetSelectHandler}>
         <Text style={{fontSize: 20, textAlign: 'center'}}> Select Asset </Text>
       </TouchableOpacity>
       
@@ -131,10 +142,14 @@ const App = () => {
         <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveRight}><Text style={{fontSize: 30}}> → </Text></TouchableOpacity>
       </View>
       <View style={styles.overlayMatrix}>
-        <Svg height="100%" width="100%" viewBox={"0 0 "+width+" 490"}>
           <Matrix x1="0" y1="0" x2={width} y2={490} divNumX={count} divNumY={count} vertical={vertical} horizontal={horizontal} />
-        </Svg>
       </View>
+
+        { assetIsOpen && (
+          <AssetWindow closeAssetHandler={closeAssetHandler}/>
+        )}
+        
+
     </View> // Container
   )
 }
