@@ -1,32 +1,52 @@
 import React, { useState } from 'react';
+import Images from '../Asset/asset';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, Image, Alert } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
 const AssetWindow = ({closeAssetHandler}: any) => {
     let data = [];
-    const num = 20;
+    const num = 123;
+    const IMAGE_SIZE = 4;
 
-    for(let i = 0; i < num; i++){
+    for(let i = 0; i <= num; i+=4){
         data.push(
-            <Text> Touch Me!!! </Text>
-        );
-
-        data.push(
-            <TouchableOpacity style={{width: i*i, height:i*i}} onPress={closeAssetHandler}>
-                <Image
-                style={{width: i*i, height:i*i}}
-                resizeMode='contain'
-                source={require('../Asset/dog.png')}
-                />
-            </TouchableOpacity>
-
+            <View style={{flex:1, flexDirection: 'row'}}>
+                <TouchableOpacity style={{width: width/IMAGE_SIZE, height: width/IMAGE_SIZE}} onPress={closeAssetHandler}>
+                    <Image
+                    style={{width: width/IMAGE_SIZE, height: width/IMAGE_SIZE}}
+                    resizeMode='contain'
+                    source={Images[i]}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity style={{width: width/IMAGE_SIZE, height: width/IMAGE_SIZE}} onPress={closeAssetHandler}>
+                    <Image
+                    style={{width: width/IMAGE_SIZE, height:width/IMAGE_SIZE}}
+                    resizeMode='contain'
+                    source={Images[i+1]}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity style={{width: width/IMAGE_SIZE, height: width/IMAGE_SIZE}} onPress={closeAssetHandler}>
+                    <Image
+                    style={{width: width/IMAGE_SIZE, height:width/IMAGE_SIZE}}
+                    resizeMode='contain'
+                    source={Images[i+3]}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity style={{width: width/IMAGE_SIZE, height: width/IMAGE_SIZE}} onPress={closeAssetHandler}>
+                    <Image
+                    style={{width: width/IMAGE_SIZE, height:width/IMAGE_SIZE}}
+                    resizeMode='contain'
+                    source={Images[i+4]}
+                    />
+                </TouchableOpacity>
+            </View>
         )
     }
 
     return(
         <View style={styles.assetView}>
-            <ScrollView>
+            <ScrollView style={{}}>
                 {data}
             </ScrollView>
         </View>
@@ -40,7 +60,7 @@ const styles = StyleSheet.create({
         bottom: 98,
         height: 400,
         width: width,
-        opacity: 0.6,
+        opacity: 1,
         backgroundColor: 'black',  
     }
 })

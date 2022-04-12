@@ -147,8 +147,6 @@ const App = () => {
         { assetIsOpen && (
           <AssetWindow closeAssetHandler={closeAssetHandler}/>
         )}
-
-
     </View> // Container
   )
 }
