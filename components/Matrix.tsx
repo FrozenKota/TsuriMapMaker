@@ -1,5 +1,6 @@
 import React from 'react';
-import {Dimensions} from 'react-native';
+import {View, Dimensions, StyleSheet, Alert} from 'react-native';
+import Images from '../Asset/asset';
 import Svg, {
     Circle,
     Ellipse,
@@ -42,25 +43,52 @@ const Matrix = (props: any) => {
     const DIV_Y = HEIGHT / DIV_NUM_Y;
 
     let items = [];
+    let imageTag = props.imageTag;
 
     for( let i = 0; i <= DIV_NUM_X; i ++){
         items.push(
-            <Line x1={X1+i*DIV_X} y1={Y1} x2={X1+i*DIV_X} y2={Y2} stroke="red" strokeWidth="1" />
+            <Line x1={X1+i*DIV_X} y1={Y1} x2={X1+i*DIV_X} y2={Y2} stroke="black" strokeWidth="1" />
         )
     }
     for( let i = 0; i <= DIV_NUM_Y; i ++){
         items.push(
-            <Line x1={X1} y1={Y1+i*DIV_Y} x2={X2} y2={Y1+i*DIV_Y} stroke="red" strokeWidth="1" />
+            <Line x1={X1} y1={Y1+i*DIV_Y} x2={X2} y2={Y1+i*DIV_Y} stroke="black" strokeWidth="1" />
         )
     }
+    
+    items.push(
+        <Image
+        x={X1+props.horizontal*DIV_X}
+        y={Y1+props.vertical*DIV_Y}
+        width = {DIV_X}
+        height= {DIV_Y}
+        href={Images[props.imageTag]}
+        />
+    )
+
     items.push(
         <Rect x={X1+props.horizontal*DIV_X} y={Y1+props.vertical*DIV_Y} width={DIV_X} height={DIV_Y} stroke="yellow" strokeWidth="2" />
     )
 
     return (
-        <Svg height="100%" width="100%" viewBox={"0 0 "+width+" 490"}>
-            {items}
-        </Svg>
+        <View style={styles.overlayMatrix}>
+            <Svg height="100%" width="100%" viewBox={"0 0 "+width+" 490"}>
+                {items}
+            </Svg>
+        </View>
         );
 }
+
+const styles = StyleSheet.create({
+    overlayMatrix: {
+        position: 'absolute',
+        top: 98,
+        left: 0,
+        height: 492,
+        width: width,
+        opacity: 0.6,
+        backgroundColor: "gray"
+      }
+})
+
 export default Matrix;

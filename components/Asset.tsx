@@ -4,54 +4,55 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, Image
 
 const { width, height } = Dimensions.get('window');
 
-const AssetWindow = ({closeAssetHandler}: any) => {
+const AssetWindow = (props :any) => {
     let data = [];
     const num = 123;
-    const ROW_IMAGE_NUM= 6;
 
-    for(let i = 0; i <= num; i+=ROW_IMAGE_NUM){
+    const {closeAssetHandler, rowNum} = props;
+
+    for(let i = 0; i < num; i+=rowNum){
         data.push(
             <View style={{flex:1, flexDirection: 'row'}}>
-                <TouchableOpacity style={{width: width/ROW_IMAGE_NUM, height: width/ROW_IMAGE_NUM}} onPress={closeAssetHandler}>
+                <TouchableOpacity  style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i)}>
                     <Image
-                    style={{width: width/ROW_IMAGE_NUM, height: width/ROW_IMAGE_NUM}}
+                    style={{width: width/rowNum, height: width/rowNum}}
                     resizeMode='contain'
                     source={Images[i]}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: width/ROW_IMAGE_NUM, height: width/ROW_IMAGE_NUM}} onPress={closeAssetHandler}>
+                <TouchableOpacity style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+1)}>
                     <Image
-                    style={{width: width/ROW_IMAGE_NUM, height:width/ROW_IMAGE_NUM}}
+                    style={{width: width/rowNum, height:width/rowNum}}
                     resizeMode='contain'
                     source={Images[i+1]}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: width/ROW_IMAGE_NUM, height: width/ROW_IMAGE_NUM}} onPress={closeAssetHandler}>
+                <TouchableOpacity style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+2)}>
                     <Image
-                    style={{width: width/ROW_IMAGE_NUM, height:width/ROW_IMAGE_NUM}}
+                    style={{width: width/rowNum, height:width/rowNum}}
+                    resizeMode='contain'
+                    source={Images[i+2]}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+3)}>
+                    <Image
+                    style={{width: width/rowNum, height:width/rowNum}}
                     resizeMode='contain'
                     source={Images[i+3]}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: width/ROW_IMAGE_NUM, height: width/ROW_IMAGE_NUM}} onPress={closeAssetHandler}>
+                <TouchableOpacity style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+4)}>
                     <Image
-                    style={{width: width/ROW_IMAGE_NUM, height:width/ROW_IMAGE_NUM}}
+                    style={{width: width/rowNum, height:width/rowNum}}
                     resizeMode='contain'
                     source={Images[i+4]}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: width/ROW_IMAGE_NUM, height: width/ROW_IMAGE_NUM}} onPress={closeAssetHandler}>
+                <TouchableOpacity style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+5)}>
                     <Image
-                    style={{width: width/ROW_IMAGE_NUM, height:width/ROW_IMAGE_NUM}}
+                    style={{width: width/rowNum, height:width/rowNum}}
                     resizeMode='contain'
                     source={Images[i+5]}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity style={{width: width/ROW_IMAGE_NUM, height: width/ROW_IMAGE_NUM}} onPress={closeAssetHandler}>
-                    <Image
-                    style={{width: width/ROW_IMAGE_NUM, height:width/ROW_IMAGE_NUM}}
-                    resizeMode='contain'
-                    source={Images[i+6]}
                     />
                 </TouchableOpacity>
             </View>

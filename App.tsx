@@ -56,16 +56,17 @@ const App = () => {
       longitudeDelta: LONGITUDE_DELTA,
     },
   })
-  const [ count, setCount ] = useState(10);
+  const [ glidNumber, setGlidNumber ] = useState(10);
   const [ vertical, setVertical] = useState(1);
   const [ horizontal, setHorizontal] = useState(1);
+  const [ currentImageTag, setCurrentImageTag] = useState(-1);
 
   const countup = () => {
-    setCount(count + 1);
+    setGlidNumber(glidNumber + 1);
   }
   const countdown = () => {
-    if(count > 1) setCount(count - 1)
-    else setCount(1)
+    if(glidNumber > 1) setGlidNumber(glidNumber - 1)
+    else setGlidNumber(1)
   }
   const moveLeft = () => {
     if(horizontal >= 1) setHorizontal( horizontal - 1 )
@@ -86,9 +87,12 @@ const App = () => {
     setAssetIsOpen(true);
   }
 
-  const closeAssetHandler = () => {
+  const closeAssetHandler = (imageTag: number) => {
         setAssetIsOpen(false);
+        setCurrentImageTag(imageTag);
+  //      Alert.alert("Image「"+String(imageTag+"」is Selected"))
   }
+
 
   return (
     <View style={styles.mainContainer} >
@@ -117,7 +121,7 @@ const App = () => {
             <Text> Down</Text>
           </TouchableOpacity>
         </View>
-        <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>{count}</Text></View>
+        <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>{glidNumber}</Text></View>
         <View style={{...styles.menuButtons, backgroundColor: 'blue' }}></View>
       </View>
       <View style={styles.mapLayout}>
@@ -140,12 +144,11 @@ const App = () => {
         <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveUp}><Text style={{fontSize: 30}}> ↑ </Text></TouchableOpacity>
         <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveRight}><Text style={{fontSize: 30}}> → </Text></TouchableOpacity>
       </View>
-      <View style={styles.overlayMatrix}>
-          <Matrix x1="0" y1="0" x2={width} y2={490} divNumX={count} divNumY={count} vertical={vertical} horizontal={horizontal} />
-      </View>
+      
+      <Matrix x1="0" y1="0" x2={width} y2={490} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
 
         { assetIsOpen && (
-          <AssetWindow closeAssetHandler={closeAssetHandler}/>
+          <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
         )}
     </View> // Container
   )
