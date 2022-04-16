@@ -1,31 +1,23 @@
+/****************************************************
+  Description:
+   This component displays images based on object data which contains image meta datas.
+    
+  Input:
+    -Bias position of origin from top-left : x1, y1
+    -Opacity of each image(wrapped by <View>)
+    -Image data as Object : 
+    -Opacity of <View> :
+    -
+  
+  Output:
+  
+*****************************************************/
+
 import React from 'react';
 import {View, Dimensions, StyleSheet, Alert} from 'react-native';
 import Images from '../Asset/asset';
-import Svg, {
-    Circle,
-    Ellipse,
-    G,
-   // Text,
-    TSpan,
-    TextPath,
-    Path,
-    Polygon,
-    Polyline,
-    Line,
-    Rect,
-    Use,
-    Image,
-    Symbol,
-    Defs,
-    LinearGradient,
-    RadialGradient,
-    Stop,
-    ClipPath,
-    Pattern,
-    Mask,
-  } from 'react-native-svg';
 
-  const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 
 const Matrix = (props: any) => {
@@ -67,14 +59,11 @@ const Matrix = (props: any) => {
     )
 
     items.push(
-        <Rect x={X1+props.horizontal*DIV_X} y={Y1+props.vertical*DIV_Y} width={DIV_X} height={DIV_Y} stroke="yellow" strokeWidth="2" />
     )
 
     return (
         <View style={styles.overlayMatrix}>
-            <Svg height="100%" width="100%" viewBox={"0 0 "+width+" 490"}>
-                {items}
-            </Svg>
+
         </View>
         );
 }
@@ -86,8 +75,7 @@ const styles = StyleSheet.create({
         left: 0,
         height: 492,
         width: width,
-        opacity: 0.6,
-        backgroundColor: "gray"
+        opacity: 1.0,
       }
 })
 

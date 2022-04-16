@@ -1,30 +1,7 @@
 import React, { useState } from 'react';
-import Matrix from './components/Matrix';
+import GridLine from './components/GridLine';
 import AssetWindow from './components/Asset';
 import { StyleSheet, View, Text, Button, TouchableOpacity, Dimensions, Alert } from 'react-native';
-import Svg, {
-  Circle,
-  Ellipse,
-  G,
- // Text,
-  TSpan,
-  TextPath,
-  Path,
-  Polygon,
-  Polyline,
-  Line,
-  Rect,
-  Use,
-  Image,
-  Symbol,
-  Defs,
-  LinearGradient,
-  RadialGradient,
-  Stop,
-  ClipPath,
-  Pattern,
-  Mask,
-} from 'react-native-svg';
 import MapView from 'react-native-maps';
 import { numberTypeAnnotation } from '@babel/types';
 
@@ -145,7 +122,7 @@ const App = () => {
         <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveRight}><Text style={{fontSize: 30}}> → </Text></TouchableOpacity>
       </View>
       
-      <Matrix x1="0" y1="0" x2={width} y2={490} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
+      <GridLine x1="0" y1="0" x2={width} y2={490} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
 
         { assetIsOpen && (
           <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
