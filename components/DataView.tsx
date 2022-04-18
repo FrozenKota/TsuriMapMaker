@@ -3,50 +3,43 @@
    This component displays images based on object data which contains image meta datas.
     
   Input:
-    -Bias position of origin from top-left : x1, y1
-    -Opacity of each image(wrapped by <View>)
-    -Image data as Object : 
-    -Opacity of <View> :
-    -
+    - Bias position of origin from top-left : x1, y1
+    - Opacity : opacity
+    - Image data as Object : imgObj 
+    |-  Asset name : assetName
+    |-  Image ID : imgID
+    |-  Divide number : divX, div_Y
+    |-  Image position : imgPosX, imgPosY
   
   Output:
+    <>
+      <View style={{
+        top: y1 + imgPosY * divY,
+        left:  imgPosX * divX,
+        
+      }}>
+        <Image />
+      </View>
+    </>
   
 *****************************************************/
 
 import React from 'react';
-import {View, Dimensions, StyleSheet, Alert} from 'react-native';
+import {View, Dimensions, StyleSheet, Image} from 'react-native';
 import Images from '../Asset/asset';
 
 const { width, height } = Dimensions.get('window');
 
 
-const Matrix = (props: any) => {
-    const X1 = props.x1;
-    const X2 = props.x2;
-    const Y1 = props.y1;
-    const Y2 = props.y2;
+const ImgDataView = (props: any) => {
+    const OFFSET_TOP = props.x1;
+    const OFFSET_LEFT = props.x2;
 
     const DIV_NUM_X = props.divNumX;
     const DIV_NUM_Y = props.divNumY;
 
-    const WIDTH = X2 - X1;
-    const HEIGHT = Y2 - Y1;
-    const DIV_X = WIDTH / DIV_NUM_X;
-    const DIV_Y = HEIGHT / DIV_NUM_Y;
-
     let items = [];
-    let imageTag = props.imageTag;
-
-    for( let i = 0; i <= DIV_NUM_X; i ++){
-        items.push(
-            <Line x1={X1+i*DIV_X} y1={Y1} x2={X1+i*DIV_X} y2={Y2} stroke="black" strokeWidth="1" />
-        )
-    }
-    for( let i = 0; i <= DIV_NUM_Y; i ++){
-        items.push(
-            <Line x1={X1} y1={Y1+i*DIV_Y} x2={X2} y2={Y1+i*DIV_Y} stroke="black" strokeWidth="1" />
-        )
-    }
+    
     
     items.push(
         <Image
