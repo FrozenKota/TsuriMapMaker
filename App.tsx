@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import Images from './Asset/asset';
 import GridLine from './components/GridLine';
 import AssetWindow from './components/Asset';
+import ImageDataView from './components/DataView'
 import { StyleSheet, View, Text, Button, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import MapView from 'react-native-maps';
 import { numberTypeAnnotation } from '@babel/types';
+import { posix } from 'path';
 
 const { width, height } = Dimensions.get('window');
 const POSITION_MAP_X = height * 0.15;
@@ -37,6 +40,29 @@ const App = () => {
   const [ vertical, setVertical] = useState(1);
   const [ horizontal, setHorizontal] = useState(1);
   const [ currentImageTag, setCurrentImageTag] = useState(-1);
+  const [ imgObj, setImgObj ] = useState<{
+    divNumX: number,
+    divNumY: number,
+    imgData:[
+      {PosX: number, PosY: number, source: any},
+    ]
+  }>
+  ({
+    divNumX: 10,
+    divNumY: 10,
+    imgData:[
+      {PosX: 0, PosY: 0, source: Images[0]},
+    ]
+  })
+
+
+  // let imgObj = {
+  //   divNumX: 10,
+  //   divNumY: 10,
+  //   imgData: [
+  //     {PosX: 0, PosY: 0, source: Images[3]},
+  //   ],
+  // }
 
   const countup = () => {
     setGlidNumber(glidNumber + 1);
@@ -67,7 +93,13 @@ const App = () => {
   const closeAssetHandler = (imageTag: number) => {
         setAssetIsOpen(false);
         setCurrentImageTag(imageTag);
-  //      Alert.alert("Image「"+String(imageTag+"」is Selected"))
+  }
+
+  const addNewImgData = () => {
+    let temp_obj = imgObj;
+    temp_obj.imgData.push({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]});
+
+    setImgObj(temp_obj);
   }
 
 
@@ -114,15 +146,17 @@ const App = () => {
       </TouchableOpacity>
       
       <View style={styles.controllerLayout}>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'black'}} ><Text style={{fontSize: 50}}> + </Text></TouchableOpacity>
+        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'black'}} onPress={addNewImgData} ><Text style={{fontSize: 50}}> + </Text></TouchableOpacity>
         <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'blue'}} ><Text style={{fontSize: 50}}> - </Text></TouchableOpacity>
         <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveLeft}><Text style={{fontSize: 30}}> ← </Text></TouchableOpacity>
         <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveDown}><Text style={{fontSize: 30}}> ↓ </Text></TouchableOpacity>
         <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveUp}><Text style={{fontSize: 30}}> ↑ </Text></TouchableOpacity>
         <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveRight}><Text style={{fontSize: 30}}> → </Text></TouchableOpacity>
       </View>
+
+      <ImageDataView imgObj={imgObj}/>
       
-      <GridLine x1="0" y1="0" x2={width} y2={490} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
+      <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
 
         { assetIsOpen && (
           <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
@@ -138,8 +172,8 @@ const styles = StyleSheet.create({
   },
   // メニュー（戻る、保存など）
   menuLayout: {
-    flex: 1,
-    flexGrow: 0.15,
+    width: '100%',
+    height: '15%',
     justifyContent: 'center',
     flexDirection: 'row',
   },
@@ -151,21 +185,21 @@ const styles = StyleSheet.create({
   },
   // GoogleMap表示エリア設定
   mapLayout: {
-    flex: 1,
-    flexGrow: 0.75,
+    width: '100%',
+    height: '70%',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
   // コントロールボタン配置エリア
   controllerLayout: {
-    flex: 1,
-    flexGrow: 0.1,
+    width: '100%',
+    height: '10%',
     flexDirection: 'row',
   },
   assetButtonLayout: {
-    flex: 1,
-    flexGrow: 0.05,
+    width: '100%',
+    height: '5%',
     flexDirection: 'row',
     alignContent: 'center',
     justifyContent: 'center',
@@ -179,17 +213,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  // オーバーレイ表示テスト
-  overlayMatrix: {
-    position: 'absolute',
-    top: 97,
-    left: 0,
-    height: 493,
-    width: width,
-    opacity: 0.6,
-    backgroundColor: 'black',
-  }
 });
 
 export default App;

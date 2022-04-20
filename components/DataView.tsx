@@ -3,73 +3,77 @@
    This component displays images based on object data which contains image meta datas.
     
   Input:
-    - Bias position of origin from top-left : x1, y1
+    - Bias position of origin from top-left : biasX, biaxY
     - Opacity : opacity
     - Image data as Object : imgObj 
     |-  Asset name : assetName
     |-  Image ID : imgID
-    |-  Divide number : divX, div_Y
+    |-  Divide number : divNumX, divNumY
     |-  Image position : imgPosX, imgPosY
   
   Output:
     <>
       <View style={{
-        top: y1 + imgPosY * divY,
-        left:  imgPosX * divX,
-        
+        position: 'absolute'
+        top: biasY + imgPosY * divY,
+        left: biasX + imgPosX * divX,
+        width: gridWidth / divNumX,
+        height: gridHeight / divNumY,
       }}>
-        <Image />
+        <Image 
+          style={{
+            width: gridWidth / divNumX,
+            height: gridHeight / divNumY,
+          }}
+        />
       </View>
     </>
   
 *****************************************************/
 
 import React from 'react';
-import {View, Dimensions, StyleSheet, Image} from 'react-native';
+import {View, Dimensions, StyleSheet, Image, Alert} from 'react-native';
 import Images from '../Asset/asset';
+
 
 const { width, height } = Dimensions.get('window');
 
-
 const ImgDataView = (props: any) => {
-    const OFFSET_TOP = props.x1;
-    const OFFSET_LEFT = props.x2;
 
-    const DIV_NUM_X = props.divNumX;
-    const DIV_NUM_Y = props.divNumY;
+    const {imgObj} = props; 
+    let biasX = 0;
+    let biasY = height * 0.15;
+    let gridWidth = width;
+    let gridHeight = height * 0.7;
 
-    let items = [];
-    
-    
-    items.push(
-        <Image
-        x={X1+props.horizontal*DIV_X}
-        y={Y1+props.vertical*DIV_Y}
-        width = {DIV_X}
-        height= {DIV_Y}
-        href={Images[props.imageTag]}
+    let divX = gridWidth  / imgObj.divNumX;
+    let divY = gridHeight / imgObj.divNumY;
+
+    const items = imgObj.imgData.map((value, index)=>
+      <View style={{
+        position: 'absolute',
+        top: biasY + imgObj.imgData[index].PosY * divX,
+        left: biasX + imgObj.imgData[index].PosX * divX,
+        width: width / imgObj.divNumX, 
+        height: (height*0.7) / imgObj.divNumY,
+        opacity: 1.0,
+      }}>
+        <Image 
+          style={{
+            resizeMode: 'stretch',
+            width: width / imgObj.divNumX,
+            height: width / imgObj.divNumX,
+          }}
+          source={imgObj.imgData[index].source}
         />
-    )
-
-    items.push(
-    )
+      </View>
+    );
 
     return (
-        <View style={styles.overlayMatrix}>
-
-        </View>
-        );
+      <>
+        {items}
+      </>
+    );
 }
 
-const styles = StyleSheet.create({
-    overlayMatrix: {
-        position: 'absolute',
-        top: 98,
-        left: 0,
-        height: 492,
-        width: width,
-        opacity: 1.0,
-      }
-})
-
-export default Matrix;
+export default ImgDataView;

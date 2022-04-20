@@ -40,19 +40,19 @@ const GridLine = (props: any) => {
     const WIDTH = X2 - X1;
     const HEIGHT = Y2 - Y1;
     const DIV_X = WIDTH / DIV_NUM_X;
-    const DIV_Y = HEIGHT / DIV_NUM_Y;
+    const DIV_Y = DIV_X;
 
     let items = [];
     let imageTag = props.imageTag;
 
     for( let i = 0; i <= DIV_NUM_X; i ++){
         items.push(
-            <Line x1={X1+i*DIV_X} y1={Y1} x2={X1+i*DIV_X} y2={Y2} stroke="black" strokeWidth="1" />
+            <Line key={"0"+i} x1={X1+i*DIV_X} y1={Y1} x2={X1+i*DIV_X} y2={Math.floor(HEIGHT / DIV_X)*DIV_X} stroke="black" strokeWidth="1" />
         )
     }
-    for( let i = 0; i <= DIV_NUM_Y; i ++){
+    for( let i = 0; i <= Math.floor(HEIGHT / DIV_X); i ++){
         items.push(
-            <Line x1={X1} y1={Y1+i*DIV_Y} x2={X2} y2={Y1+i*DIV_Y} stroke="black" strokeWidth="1" />
+            <Line key={"1"+i} x1={X1} y1={Y1+i*DIV_Y} x2={X2} y2={Y1+i*DIV_Y} stroke="black" strokeWidth="1" />
         )
     }
     
@@ -72,7 +72,7 @@ const GridLine = (props: any) => {
 
     return (
         <View style={styles.overlayMatrix}>
-            <Svg height="100%" width="100%" viewBox={"0 0 "+width+" 490"}>
+            <Svg height="100%" width="100%" viewBox={"0 0 "+width+" "+height*0.7}>
                 {items}
             </Svg>
         </View>
@@ -82,9 +82,9 @@ const GridLine = (props: any) => {
 const styles = StyleSheet.create({
     overlayMatrix: {
         position: 'absolute',
-        top: 98,
+        top: height * 0.15,
         left: 0,
-        height: 492,
+        height: height * 0.7,
         width: width,
         opacity: 1.0,
       }
