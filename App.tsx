@@ -3,7 +3,7 @@ import Images from './Asset/asset';
 import GridLine from './components/GridLine';
 import AssetWindow from './components/Asset';
 import ImageDataView from './components/DataView'
-import { StyleSheet, View, Text, Button, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import { StyleSheet, View, Text, Button, TouchableOpacity, Dimensions, Alert, Image} from 'react-native';
 import MapView from 'react-native-maps';
 import { numberTypeAnnotation } from '@babel/types';
 import { posix } from 'path';
@@ -19,7 +19,6 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
 const App = () => {
-  const [ assetIsOpen, setAssetIsOpen ] = useState(false);
   const [ mapState, setMapState ] = useState<{
     region: {
       latitude: number,
@@ -54,6 +53,12 @@ const App = () => {
       {PosX: 0, PosY: 0, source: Images[0]},
     ]
   })
+  // Components display statment
+  const [ mapIsOpen, setMapIsOpen ] = useState(true);
+  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(true);
+  const [ dataViewIsOpen, setDataViewIsOpen ] = useState(true);
+  const [ assetIsOpen, setAssetIsOpen ] = useState(false);
+
 
 
   // let imgObj = {
@@ -134,11 +139,13 @@ const App = () => {
         <View style={{...styles.menuButtons, backgroundColor: 'blue' }}></View>
       </View>
       <View style={styles.mapLayout}>
-        <MapView
-          style={styles.map}
-          initialRegion={mapState.region}
-        >
-        </MapView>
+        { mapIsOpen && (
+          <MapView
+            style={styles.map}
+            initialRegion={mapState.region}
+          >
+          </MapView>
+        )}
       </View>
 
       <TouchableOpacity style={styles.assetButtonLayout} onPress={assetSelectHandler}>
@@ -146,21 +153,37 @@ const App = () => {
       </TouchableOpacity>
       
       <View style={styles.controllerLayout}>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'black'}} onPress={addNewImgData} ><Text style={{fontSize: 50}}> + </Text></TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'blue'}} ><Text style={{fontSize: 50}}> - </Text></TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveLeft}><Text style={{fontSize: 30}}> ← </Text></TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveDown}><Text style={{fontSize: 30}}> ↓ </Text></TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveUp}><Text style={{fontSize: 30}}> ↑ </Text></TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveRight}><Text style={{fontSize: 30}}> → </Text></TouchableOpacity>
+        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'black'}} onPress={addNewImgData} >
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/plus.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'blue'}} >
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/minus.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveLeft}>
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/left.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveDown}>
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/down.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveUp}>
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/up.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveRight}>
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/right.png')} />
+        </TouchableOpacity>
       </View>
 
-      <ImageDataView imgObj={imgObj}/>
+      { dataViewIsOpen && (
+        <ImageDataView imgObj={imgObj}/>
+      )}
       
-      <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
+      { gridLineIsOpen && (
+        <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
+      )}
 
-        { assetIsOpen && (
-          <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
-        )}
+      { assetIsOpen && (
+        <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
+      )}
     </View> // Container
   )
 }
