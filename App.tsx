@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
+import { numberTypeAnnotation } from '@babel/types';
+import { posix } from 'path';
+import MapView, {Circle} from 'react-native-maps';
+
 import Images from './Asset/asset';
 import GridLine from './components/GridLine';
 import AssetWindow from './components/Asset';
 import ImageDataView from './components/DataView'
 import { StyleSheet, View, Text, Button, TouchableOpacity, Dimensions, Alert, Image} from 'react-native';
-import MapView from 'react-native-maps';
-import { numberTypeAnnotation } from '@babel/types';
-import { posix } from 'path';
 
 const { width, height } = Dimensions.get('window');
 const POSITION_MAP_X = height * 0.15;
+const MAP_STYLE =  require('./mapstyle.json');
 
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
-const LATITUDE_DELTA = 0.0922;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
 
 const App = () => {
@@ -29,10 +27,10 @@ const App = () => {
   }>
   ({
     region: {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA,
+      latitude: 34.6963315,
+      longitude: 139.3749429,
+      latitudeDelta: 0.05,
+      longitudeDelta: 0.05 * ASPECT_RATIO,
     },
   })
   const [ glidNumber, setGlidNumber ] = useState(10);
@@ -107,6 +105,13 @@ const App = () => {
     setImgObj(temp_obj);
   }
 
+  const mapEventOnPress = (e: any) => {
+    let tmpObj = {...mapState};
+   // tmpObj.region.latitude = 100;
+   // tmpObj.region.longitude = 100;
+   // setMapState({region: tmpObj.region});
+    console.log(e);
+  }
 
   return (
     <View style={styles.mainContainer} >
@@ -121,7 +126,7 @@ const App = () => {
             }}
             onPress={countup}
           >
-            <Text> Up</Text>
+            <Text style={{color: "white"}}> Up</Text>
           </TouchableOpacity>
           <TouchableOpacity
           style={{
@@ -132,24 +137,27 @@ const App = () => {
           }}
               onPress={countdown}
           >
-            <Text> Down</Text>
+            <Text style={{color: "white"}}> Down</Text>
           </TouchableOpacity>
         </View>
         <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>{glidNumber}</Text></View>
         <View style={{...styles.menuButtons, backgroundColor: 'blue' }}></View>
       </View>
+      
       <View style={styles.mapLayout}>
         { mapIsOpen && (
           <MapView
             style={styles.map}
+            mapType={"satellite"}
             initialRegion={mapState.region}
+            onPress={e => mapEventOnPress(e.nativeEvent)}
           >
           </MapView>
         )}
       </View>
 
       <TouchableOpacity style={styles.assetButtonLayout} onPress={assetSelectHandler}>
-        <Text style={{fontSize: 20, textAlign: 'center'}}> Select Asset </Text>
+        <Text style={{color: "white", fontSize: 20, textAlign: 'center'}}> Select Asset </Text>
       </TouchableOpacity>
       
       <View style={styles.controllerLayout}>
@@ -184,6 +192,12 @@ const App = () => {
       { assetIsOpen && (
         <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
       )}
+      <View style={{position: 'absolute', top: 200, left: 50, width: width-100, height:100, backgroundColor: 'white', opacity: 0.7}}>
+        <Text style={{color: "black"}}>{"😺{Debug Monitor)"}</Text>
+         <Text style={{color: "black"}}>latitude  = {mapState.region.latitude}</Text>
+         <Text style={{color: "black"}}>longitude = {mapState.region.longitude}</Text>
+      </View>
+
     </View> // Container
   )
 }

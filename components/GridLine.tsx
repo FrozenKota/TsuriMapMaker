@@ -72,7 +72,7 @@ const GridLine = (props: any) => {
 
     return (
         <View style={styles.overlayMatrix}>
-            <Svg height="100%" width="100%" viewBox={"0 0 "+width+" "+height*0.7}>
+            <Svg height="100%" width="100%" >
                 {items}
             </Svg>
         </View>
@@ -82,11 +82,10 @@ const GridLine = (props: any) => {
 const styles = StyleSheet.create({
     overlayMatrix: {
         position: 'absolute',
-        top: height * 0.15,
+        top: '15%',
         left: 0,
-        height: height * 0.7,
+        height: '70%',
         width: width,
-        opacity: 1.0,
       }
 })
 

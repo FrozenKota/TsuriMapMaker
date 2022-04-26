@@ -10,25 +10,6 @@
     |-  Image ID : imgID
     |-  Divide number : divNumX, divNumY
     |-  Image position : imgPosX, imgPosY
-  
-  Output:
-    <>
-      <View style={{
-        position: 'absolute'
-        top: biasY + imgPosY * divY,
-        left: biasX + imgPosX * divX,
-        width: gridWidth / divNumX,
-        height: gridHeight / divNumY,
-      }}>
-        <Image 
-          style={{
-            width: gridWidth / divNumX,
-            height: gridHeight / divNumY,
-          }}
-        />
-      </View>
-    </>
-  
 *****************************************************/
 
 import React from 'react';
@@ -49,11 +30,11 @@ const ImgDataView = (props: any) => {
     let divX = gridWidth  / imgObj.divNumX;
     let divY = gridHeight / imgObj.divNumY;
 
-    const items = imgObj.imgData.map((value, index)=>
+    const items = imgObj.imgData.map((value, index: number)=>
       <View style={{
         position: 'absolute',
-        top: biasY + imgObj.imgData[index].PosY * divX,
-        left: biasX + imgObj.imgData[index].PosX * divX,
+        top: imgObj.imgData[index].PosY * divX,
+        left: imgObj.imgData[index].PosX * divX,
         width: width / imgObj.divNumX, 
         height: (height*0.7) / imgObj.divNumY,
         opacity: 1.0,
@@ -70,10 +51,20 @@ const ImgDataView = (props: any) => {
     );
 
     return (
-      <>
+      <View style={styles.iOverlay}>
         {items}
-      </>
+      </View>
     );
 }
+
+const styles = StyleSheet.create({
+  iOverlay: {
+      position: 'absolute',
+      top: '15%',
+      left: 0,
+      height: '70%',
+      width: width,
+    }
+})
 
 export default ImgDataView;
