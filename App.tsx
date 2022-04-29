@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { StyleSheet, View, Text, Button, TouchableOpacity, Dimensions, Alert, Image} from 'react-native';
+import MapView, {Circle} from 'react-native-maps';
+
 import { numberTypeAnnotation } from '@babel/types';
 import { posix } from 'path';
-import MapView, {Circle} from 'react-native-maps';
 
 import Images from './Asset/asset';
 import GridLine from './components/GridLine';
 import AssetWindow from './components/Asset';
 import ImageDataView from './components/DataView'
-import { StyleSheet, View, Text, Button, TouchableOpacity, Dimensions, Alert, Image} from 'react-native';
+import StorageControl from './components/StorageControl'
 
 const { width, height } = Dimensions.get('window');
 const POSITION_MAP_X = height * 0.15;
@@ -18,7 +20,7 @@ const SPACE = 0.01;
 
 const App = () => {
   const [ mapState, setMapState ] = useState<{
-    region: {
+    region: { 
       latitude: number,
       longitude: number,
       latitudeDelta: number,
@@ -56,6 +58,7 @@ const App = () => {
   const [ gridLineIsOpen, setGridLineIsOpen ] = useState(true);
   const [ dataViewIsOpen, setDataViewIsOpen ] = useState(true);
   const [ assetIsOpen, setAssetIsOpen ] = useState(false);
+  const [ storageControlIsOpen, setStorageControlIsOpen ] = useState(true);
 
 
 
@@ -192,11 +195,18 @@ const App = () => {
       { assetIsOpen && (
         <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
       )}
-      <View style={{position: 'absolute', top: 200, left: 50, width: width-100, height:100, backgroundColor: 'white', opacity: 0.7}}>
-        <Text style={{color: "black"}}>{"😺{Debug Monitor)"}</Text>
-         <Text style={{color: "black"}}>latitude  = {mapState.region.latitude}</Text>
-         <Text style={{color: "black"}}>longitude = {mapState.region.longitude}</Text>
-      </View>
+
+      { storageControlIsOpen && (
+        <StorageControl />
+      )}
+
+      { false && (
+        <View style={{position: 'absolute', top: 100, left: 50, width: width-100, height:100, backgroundColor: 'white', opacity: 0.7}}>
+          <Text style={{color: "black"}}>{"😺{Debug Monitor)"}</Text>
+          <Text style={{color: "black"}}>latitude  = {mapState.region.latitude}</Text>
+          <Text style={{color: "black"}}>longitude = {mapState.region.longitude}</Text>
+        </View>
+      )}
 
     </View> // Container
   )
