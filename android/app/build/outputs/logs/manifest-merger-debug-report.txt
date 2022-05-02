@@ -8,6 +8,7 @@ MERGED from /Users/KOTA/work/TsuriMapMaker/android/app/src/main/AndroidManifest.
 MERGED from [com.facebook.flipper:flipper:0.99.0] /Users/KOTA/.gradle/caches/transforms-3/df7b208c45426f45016d16c0c3a6a059/transformed/jetified-flipper-0.99.0/AndroidManifest.xml:8:1-18:12
 MERGED from [com.facebook.flipper:flipper-network-plugin:0.99.0] /Users/KOTA/.gradle/caches/transforms-3/24c7b3b7628557c2352d51b3335f48b6/transformed/jetified-flipper-network-plugin-0.99.0/AndroidManifest.xml:8:1-15:12
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.99.0] /Users/KOTA/.gradle/caches/transforms-3/d1f78a3bfe608333c8a8682ec4347618/transformed/jetified-flipper-fresco-plugin-0.99.0/AndroidManifest.xml:8:1-15:12
+MERGED from [:react-native-async-storage_async-storage] /Users/KOTA/work/TsuriMapMaker/node_modules/@react-native-async-storage/async-storage/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-maps] /Users/KOTA/work/TsuriMapMaker/node_modules/react-native-maps/lib/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-12:12
 MERGED from [:react-native-svg] /Users/KOTA/work/TsuriMapMaker/node_modules/react-native-svg/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [com.facebook.react:react-native:0.67.4] /Users/KOTA/.gradle/caches/transforms-3/221c71d43dbd5b88bd9ef5161912c98c/transformed/jetified-react-native-0.67.4/AndroidManifest.xml:2:1-11:12
@@ -199,6 +200,8 @@ MERGED from [com.facebook.flipper:flipper-network-plugin:0.99.0] /Users/KOTA/.gr
 MERGED from [com.facebook.flipper:flipper-network-plugin:0.99.0] /Users/KOTA/.gradle/caches/transforms-3/24c7b3b7628557c2352d51b3335f48b6/transformed/jetified-flipper-network-plugin-0.99.0/AndroidManifest.xml:11:5-13:41
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.99.0] /Users/KOTA/.gradle/caches/transforms-3/d1f78a3bfe608333c8a8682ec4347618/transformed/jetified-flipper-fresco-plugin-0.99.0/AndroidManifest.xml:11:5-13:41
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.99.0] /Users/KOTA/.gradle/caches/transforms-3/d1f78a3bfe608333c8a8682ec4347618/transformed/jetified-flipper-fresco-plugin-0.99.0/AndroidManifest.xml:11:5-13:41
+MERGED from [:react-native-async-storage_async-storage] /Users/KOTA/work/TsuriMapMaker/node_modules/@react-native-async-storage/async-storage/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-async-storage_async-storage] /Users/KOTA/work/TsuriMapMaker/node_modules/@react-native-async-storage/async-storage/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-maps] /Users/KOTA/work/TsuriMapMaker/node_modules/react-native-maps/lib/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-maps] /Users/KOTA/work/TsuriMapMaker/node_modules/react-native-maps/lib/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-svg] /Users/KOTA/work/TsuriMapMaker/node_modules/react-native-svg/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41

@@ -42,6 +42,12 @@ const App = () => {
   const [ imgObj, setImgObj ] = useState<{
     divNumX: number,
     divNumY: number,
+    region: {
+      latitude: number,
+      longitude: number,
+      latitudeDelta: number,
+      longitudeDelta: number,
+    },
     imgData:[
       {PosX: number, PosY: number, source: any},
     ]
@@ -49,6 +55,12 @@ const App = () => {
   ({
     divNumX: 10,
     divNumY: 10,
+    region: {
+      latitude: 34.6963315, 
+      longitude: 139.3749429,
+      latitudeDelta: 0.05,
+      longitudeDelta: 0.05 * ASPECT_RATIO,
+    },
     imgData:[
       {PosX: 0, PosY: 0, source: Images[0]},
     ]
@@ -60,15 +72,6 @@ const App = () => {
   const [ assetIsOpen, setAssetIsOpen ] = useState(false);
   const [ storageControlIsOpen, setStorageControlIsOpen ] = useState(true);
 
-
-
-  // let imgObj = {
-  //   divNumX: 10,
-  //   divNumY: 10,
-  //   imgData: [
-  //     {PosX: 0, PosY: 0, source: Images[3]},
-  //   ],
-  // }
 
   const countup = () => {
     setGlidNumber(glidNumber + 1);
@@ -197,7 +200,7 @@ const App = () => {
       )}
 
       { storageControlIsOpen && (
-        <StorageControl />
+        <StorageControl mode={"create"} imgObj={imgObj} />
       )}
 
       { false && (
