@@ -8,9 +8,10 @@ const { width, height} = Dimensions.get('window');
 
 const App = () => {
     const [ storageControlIsOpen, setStorageControlIsOpen ] = useState(false);
-    const [ menuModeIs, setMenuModeIs ] = useState("new");
+    const [ storageControlOption, setStorageControlOption ] = useState("");
 
-    const strageControlHandler = () => {
+    const strageControlHandler = (props: any) => {
+        setStorageControlOption(props.option)
         setStorageControlIsOpen(true);
     }
     const strageControlCloseHandler = () => {
@@ -23,14 +24,14 @@ const App = () => {
                 <Text style={styles.titleName}>釣りマップメーカー(仮)</Text>
             </View>
             <View style={styles.selectButtonLayout}>
-                <TouchableOpacity onPress={() => strageControlHandler}><View style={styles.selectButton}><Text style={styles.selectButtonText}> N E W </Text></View></TouchableOpacity>
-                <TouchableOpacity onPress={() => {console.log("edit")}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> E D I T </Text></View></TouchableOpacity>
-                <TouchableOpacity onPress={() => {console.log("gallery")}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> G A L L E R Y </Text></View></TouchableOpacity>
+                <TouchableOpacity onPress={() => {strageControlHandler({option: "new"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> N E W </Text></View></TouchableOpacity>
+                <TouchableOpacity onPress={() => {strageControlHandler({option: "edit"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> E D I T </Text></View></TouchableOpacity>
+                <TouchableOpacity onPress={() => {strageControlHandler({option: "gallery"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> G A L L E R Y </Text></View></TouchableOpacity>
             </View>
                 <View style={styles.footerLayout}>
             </View>
             {storageControlIsOpen && (
-                <StorageControl />
+                <StorageControl closeHandler={strageControlCloseHandler} option={storageControlOption}/>
             )}
         </View>
     )

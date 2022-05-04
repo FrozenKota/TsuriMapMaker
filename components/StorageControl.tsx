@@ -17,13 +17,25 @@
 *****************************************************/
 
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, Touchable} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 
 const StorageControl = (props: any) => {
-    const {imgObj, closeHandler} = props;
+    const {imgObj, closeHandler, option} = props;
+    let title = "";
+    let dummydata = [];
+
+    if(option == "new"){
+        title = "ファイル名を入力"
+    }else if(option == "edit"){
+        title = "編集するファイルを選択"
+    }else if(option == "gallery"){
+        title = "閲覧したいファイルを選択"
+    }else {
+    }
+
     // Load save data
 
     // Write save data
@@ -39,17 +51,33 @@ const StorageControl = (props: any) => {
         }
     }
 
+    for (let i = 0; i < 20; i ++){
+        dummydata.push(
+            <TouchableOpacity key={i} onPress={() => {closeHandler}}>
+                <DataBlock fileName={"セーブデータ"+String(i)} fileSize={'1129710 kbyte'} modDate={'2022/2/22'} />
+            </TouchableOpacity>
+        )
+    }
+    
+
     return(
     <View style={styles.mainContainer}>
-        <View style={{justifyContent: 'center', flexDirection: 'row', backgroundColor: 'white'}}>
-            <Text style={styles.h1}>Save Data Control</Text>
-        </View>
+        <View style={styles.titleAreaStyle}>
 
-        <ScrollView>
-            <TouchableOpacity onPress={() => {closeHandler}}>
-                <DataBlock fileName={"セーブデータ１"} fileSize={'114514 kbyte'} modDate={'2022/04/1'} />
+            <View style={styles.titleStyle}>
+              <Text style={styles.h1}>{title}</Text>
+            </View>
+
+            <TouchableOpacity onPress={closeHandler} style={styles.closeButton}>
+                <Text style={{color: 'white'}}>Close</Text>
             </TouchableOpacity>
-        </ScrollView>
+
+        </View>
+        <View style={styles.dataAreaStyle}>
+            <ScrollView>
+                {dummydata}
+            </ScrollView>
+        </View>
     </View>
     )
 }
@@ -67,8 +95,6 @@ const DataBlock = (props: any) => {
         </View>
     )
 }
-
-
 
 // Read save data
 const readData = async() => {
@@ -88,9 +114,31 @@ export default StorageControl;
 
 const styles = StyleSheet.create({
     h1: {
-        fontSize: width / 10,
-        color: 'green',
+        fontSize: width / 16,
+        color: 'white',
         fontWeight: 'bold',
+    },
+    closeButton: {
+        flex: 0.2,
+        backgroundColor: 'gray',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: '1%',
+        marginHorizontal: '1%',
+    },
+    titleStyle: {
+        flex: 0.9,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    titleAreaStyle: {
+        flex: 0.1,
+        flexDirection: 'row',
+        width: width,
+        backgroundColor: 'lightblue',
+    },
+    dataAreaStyle: {
+        flex: 0.9,
     },
     fileName: {
         fontSize: width / 15,
@@ -115,7 +163,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     mainLayout: {
-        flex: 1,
+        flex: 0.9,
         flexDirection: 'column',
     },
     mainContainer: {
@@ -123,6 +171,6 @@ const styles = StyleSheet.create({
         width: width,
         height: '100%',
         backgroundColor: 'black',
-        opacity: 0.9,
+        opacity: 0.85,
     }
 });
