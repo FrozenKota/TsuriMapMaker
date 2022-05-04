@@ -1,275 +1,96 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Button, TouchableOpacity, Dimensions, Alert, Image} from 'react-native';
-import MapView, {Circle} from 'react-native-maps';
+import React, {useState} from 'react';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions, TouchableWithoutFeedbackBase, Touchable } from  'react-native';
 
-import { numberTypeAnnotation } from '@babel/types';
-import { posix } from 'path';
+import StorageControl from './components/StorageControl';
 
-import MenuWindow from './components/MenuWindow'
-import Images from './Asset/asset';
-import GridLine from './components/GridLine';
-import AssetWindow from './components/Asset';
-import ImageDataView from './components/DataView'
-import StorageControl from './components/StorageControl'
+const { width, height} = Dimensions.get('window');
 
-const { width, height } = Dimensions.get('window');
-const POSITION_MAP_X = height * 0.15;
-const MAP_STYLE =  require('./mapstyle.json');
-
-const ASPECT_RATIO = width / height;
-const SPACE = 0.01;
 
 const App = () => {
-  const [ mapState, setMapState ] = useState<{
-    region: { 
-      latitude: number,
-      longitude: number,
-      latitudeDelta: number,
-      longitudeDelta: number,
-    },
-  }>
-  ({
-    region: {
-      latitude: 34.6963315,
-      longitude: 139.3749429,
-      latitudeDelta: 0.05,
-      longitudeDelta: 0.05 * ASPECT_RATIO,
-    },
-  })
-  const [ glidNumber, setGlidNumber ] = useState(10);
-  const [ vertical, setVertical] = useState(1);
-  const [ horizontal, setHorizontal] = useState(1);
-  const [ currentImageTag, setCurrentImageTag] = useState(-1);
-  const [ imgObj, setImgObj ] = useState<{
-    divNumX: number,
-    divNumY: number,
-    region: {
-      latitude: number,
-      longitude: number,
-      latitudeDelta: number,
-      longitudeDelta: number,
-    },
-    imgData:[
-      {PosX: number, PosY: number, source: any},
-    ]
-  }>
-  ({
-    divNumX: 10,
-    divNumY: 10,
-    region: {
-      latitude: 34.6963315, 
-      longitude: 139.3749429,
-      latitudeDelta: 0.05,
-      longitudeDelta: 0.05 * ASPECT_RATIO,
-    },
-    imgData:[
-      {PosX: 0, PosY: 0, source: Images[0]},
-    ]
-  })
-  // Components display statment
-  const [ menuIsOpen, setMenuIsOpen ] = useState(true);
-  const [ mapIsOpen, setMapIsOpen ] = useState(false);
-  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(false);
-  const [ dataViewIsOpen, setDataViewIsOpen ] = useState(false);
-  const [ assetIsOpen, setAssetIsOpen ] = useState(false);
-  const [ storageControlIsOpen, setStorageControlIsOpen ] = useState(false);
+    const [ storageControlIsOpen, setStorageControlIsOpen ] = useState(false);
+    const [ menuModeIs, setMenuModeIs ] = useState("new");
 
+    const strageControlHandler = () => {
+        setStorageControlIsOpen(true);
+    }
+    const strageControlCloseHandler = () => {
+        setStorageControlIsOpen(false);
+    }
 
-  const countup = () => {
-    setGlidNumber(glidNumber + 1);
-  }
-  const countdown = () => {
-    if(glidNumber > 1) setGlidNumber(glidNumber - 1)
-    else setGlidNumber(1)
-  }
-  const moveLeft = () => {
-    if(horizontal >= 1) setHorizontal( horizontal - 1 )
-    else setHorizontal(0)
-  }
-  const moveRight = () => {
-    setHorizontal(horizontal + 1)
-  }
-  const moveUp = () => {
-    if(vertical > 1) setVertical( vertical - 1)
-    else setVertical(0)
-  }
-  const moveDown = () => {
-    setVertical( vertical + 1 )
-  }
-  
-  const assetSelectHandler = () => {
-    setAssetIsOpen(true);
-  }
-
-  const closeAssetHandler = (imageTag: number) => {
-        setAssetIsOpen(false);
-        setCurrentImageTag(imageTag);
-  }
-
-  const addNewImgData = () => {
-    let temp_obj = imgObj;
-    temp_obj.imgData.push({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]});
-
-    setImgObj(temp_obj);
-  }
-
-  const mapEventOnPress = (e: any) => {
-    let tmpObj = {...mapState};
-   // tmpObj.region.latitude = 100;
-   // tmpObj.region.longitude = 100;
-   // setMapState({region: tmpObj.region});
-    console.log(e);
-  }
-
-  return (
-    <View style={styles.mainContainer} >
-      <View style={styles.menuLayout}>
-        <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              backgroundColor: 'black',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={countup}
-          >
-            <Text style={{color: "white"}}> Up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-          style={{
-            flex:1,
-            backgroundColor: 'gray',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-              onPress={countdown}
-          >
-            <Text style={{color: "white"}}> Down</Text>
-          </TouchableOpacity>
+    return(
+        <View style={styles.mainContainer}>
+            <View style={styles.titleLayout}>
+                <Text style={styles.titleName}>釣りマップメーカー(仮)</Text>
+            </View>
+            <View style={styles.selectButtonLayout}>
+                <TouchableOpacity onPress={() => strageControlHandler}><View style={styles.selectButton}><Text style={styles.selectButtonText}> N E W </Text></View></TouchableOpacity>
+                <TouchableOpacity onPress={() => {console.log("edit")}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> E D I T </Text></View></TouchableOpacity>
+                <TouchableOpacity onPress={() => {console.log("gallery")}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> G A L L E R Y </Text></View></TouchableOpacity>
+            </View>
+                <View style={styles.footerLayout}>
+            </View>
+            {storageControlIsOpen && (
+                <StorageControl />
+            )}
         </View>
-        <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>{glidNumber}</Text></View>
-        <View style={{...styles.menuButtons, backgroundColor: 'blue' }}></View>
-      </View>
-      
-      <View style={styles.mapLayout}>
-        { mapIsOpen && (
-          <MapView
-            style={styles.map}
-            mapType={"satellite"}
-            initialRegion={mapState.region}
-            onPress={e => mapEventOnPress(e.nativeEvent)}
-          >
-          </MapView>
-        )}
-      </View>
-
-      <TouchableOpacity style={styles.assetButtonLayout} onPress={assetSelectHandler}>
-        <Text style={{color: "white", fontSize: 20, textAlign: 'center'}}> Select Asset </Text>
-      </TouchableOpacity>
-      
-      <View style={styles.controllerLayout}>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'black'}} onPress={addNewImgData} >
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/plus.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'blue'}} >
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/minus.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveLeft}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/left.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveDown}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/down.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveUp}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/up.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveRight}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/right.png')} />
-        </TouchableOpacity>
-      </View>
-
-      { dataViewIsOpen && (
-        <ImageDataView imgObj={imgObj}/>
-      )}
-      
-      { gridLineIsOpen && (
-        <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
-      )}
-
-      { assetIsOpen && (
-        <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
-      )}
-
-      { storageControlIsOpen && (
-        <StorageControl mode={"create"} imgObj={imgObj} />
-      )}
-
-      { false && (
-        <View style={{position: 'absolute', top: 100, left: 50, width: width-100, height:100, backgroundColor: 'white', opacity: 0.7}}>
-          <Text style={{color: "black"}}>{"😺{Debug Monitor)"}</Text>
-          <Text style={{color: "black"}}>latitude  = {mapState.region.latitude}</Text>
-          <Text style={{color: "black"}}>longitude = {mapState.region.longitude}</Text>
-        </View>
-      )}
-      
-      { menuIsOpen && (
-        <MenuWindow />
-      )}
-
-    </View> // Container
-  )
+    )
 }
 
-const styles = StyleSheet.create({
-  // 親コンテナ
-  mainContainer: {
-    flex: 1,
-  },
-  // メニュー（戻る、保存など）
-  menuLayout: {
-    width: '100%',
-    height: '15%',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  menuButtons: {
-    flex: 1,
-    borderRadius: 10,
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  // GoogleMap表示エリア設定
-  mapLayout: {
-    width: '100%',
-    height: '70%',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  // コントロールボタン配置エリア
-  controllerLayout: {
-    width: '100%',
-    height: '10%',
-    flexDirection: 'row',
-  },
-  assetButtonLayout: {
-    width: '100%',
-    height: '5%',
-    flexDirection: 'row',
-    alignContent: 'center',
-    justifyContent: 'center',
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
-    backgroundColor: 'green',
-  },
-  controlButtons: {
-    flex:1,
-    backgroundColor: 'gray',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
 export default App;
-//export default SvgExample;
+
+const styles = StyleSheet.create({
+    mainContainer:{
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: 'white',
+    },
+    titleLayout:{
+        flex: 1,
+        height: '10%',
+        width: width,
+        backgroundColor: "#0000EE",
+        opacity: 1,
+        justifyContent: 'center',
+    },
+    titleName:{
+        textAlign: 'center',
+        color: '#EEEEEE',
+        fontSize: width / 12,
+        alignContent: 'center',
+    },
+    selectButtonLayout:{
+        height: '60%',
+        width: width,
+        flexDirection: 'column',
+        backgroundColor: '#000099',
+        justifyContent: 'space-around',
+    },
+    selectButton:{
+        height: (height*0.7)/8,
+        width: width*0.6,
+        left: width*0.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: 'white',
+        borderWidth: 2,
+        borderTopRightRadius: 30,
+        borderTopLeftRadius: 30,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
+        backgroundColor: '#000055',
+        
+    },
+    selectButtonText: {
+        color: 'white',
+        fontSize: width/15,
+        fontFamily: 'sans-serif-light',
+    },
+    footerLayout: {
+        flex: 1,
+        height: '30%',
+        width: width,
+        backgroundColor: '#000044',
+        opacity: 1,
+        justifyContent: 'center',
+    }
+})
