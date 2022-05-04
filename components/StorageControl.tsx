@@ -17,8 +17,9 @@
 *****************************************************/
 
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, Touchable} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ITextInput from './ITextInput';
 
 const { width, height } = Dimensions.get('window');
 
@@ -26,6 +27,8 @@ const StorageControl = (props: any) => {
     const {imgObj, closeHandler, option} = props;
     let title = "";
     let dummydata = [];
+    let fileNameInput = "NewFileName";
+    const Data = {};
 
     if(option == "new"){
         title = "ファイル名を入力"
@@ -59,27 +62,32 @@ const StorageControl = (props: any) => {
         )
     }
     
-
-    return(
-    <View style={styles.mainContainer}>
-        <View style={styles.titleAreaStyle}>
-
-            <View style={styles.titleStyle}>
-              <Text style={styles.h1}>{title}</Text>
+    if(option === "new"){
+        return(
+            <ITextInput closeHandler={closeHandler}/>
+        )
+    }else{
+        return(
+            <View style={styles.mainContainer}>
+                <View style={styles.titleAreaLayout}>
+        
+                    <View style={styles.titleStyle}>
+                      <Text style={styles.h1}>{title}</Text>
+                    </View>
+        
+                    <TouchableOpacity onPress={closeHandler} style={styles.closeButton}>
+                        <Text style={{color: 'white'}}>Close</Text>
+                    </TouchableOpacity>
+        
+                </View>
+                <View style={styles.dataAreaLayout}>
+                    <ScrollView>
+                        {dummydata}
+                    </ScrollView>
+                </View>
             </View>
-
-            <TouchableOpacity onPress={closeHandler} style={styles.closeButton}>
-                <Text style={{color: 'white'}}>Close</Text>
-            </TouchableOpacity>
-
-        </View>
-        <View style={styles.dataAreaStyle}>
-            <ScrollView>
-                {dummydata}
-            </ScrollView>
-        </View>
-    </View>
-    )
+        )
+    }
 }
 
 // DataBlock will display file information
@@ -131,13 +139,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    titleAreaStyle: {
+    titleAreaLayout: {
         flex: 0.1,
         flexDirection: 'row',
         width: width,
         backgroundColor: 'lightblue',
     },
-    dataAreaStyle: {
+    dataAreaLayout: {
         flex: 0.9,
     },
     fileName: {
@@ -171,6 +179,6 @@ const styles = StyleSheet.create({
         width: width,
         height: '100%',
         backgroundColor: 'black',
-        opacity: 0.85,
+        opacity: 1,
     }
 });

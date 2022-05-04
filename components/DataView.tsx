@@ -30,7 +30,7 @@ const ImgDataView = (props: any) => {
     let divX = gridWidth  / imgObj.divNumX;
     let divY = gridHeight / imgObj.divNumY;
 
-    const items = imgObj.imgData.map((value, index: number)=>
+    const items = imgObj.imgData.map((value: any, index: number)=>
       <View style={{
         position: 'absolute',
         top: imgObj.imgData[index].PosY * divX,
