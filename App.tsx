@@ -5,6 +5,7 @@ import MapView, {Circle} from 'react-native-maps';
 import { numberTypeAnnotation } from '@babel/types';
 import { posix } from 'path';
 
+import MenuWindow from './components/MenuWindow'
 import Images from './Asset/asset';
 import GridLine from './components/GridLine';
 import AssetWindow from './components/Asset';
@@ -66,11 +67,12 @@ const App = () => {
     ]
   })
   // Components display statment
-  const [ mapIsOpen, setMapIsOpen ] = useState(true);
-  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(true);
-  const [ dataViewIsOpen, setDataViewIsOpen ] = useState(true);
+  const [ menuIsOpen, setMenuIsOpen ] = useState(true);
+  const [ mapIsOpen, setMapIsOpen ] = useState(false);
+  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(false);
+  const [ dataViewIsOpen, setDataViewIsOpen ] = useState(false);
   const [ assetIsOpen, setAssetIsOpen ] = useState(false);
-  const [ storageControlIsOpen, setStorageControlIsOpen ] = useState(true);
+  const [ storageControlIsOpen, setStorageControlIsOpen ] = useState(false);
 
 
   const countup = () => {
@@ -209,6 +211,10 @@ const App = () => {
           <Text style={{color: "black"}}>latitude  = {mapState.region.latitude}</Text>
           <Text style={{color: "black"}}>longitude = {mapState.region.longitude}</Text>
         </View>
+      )}
+      
+      { menuIsOpen && (
+        <MenuWindow />
       )}
 
     </View> // Container

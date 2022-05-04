@@ -11,31 +11,42 @@
  * - Save the Object data.              :
  *   (input a name of data -> create data -> editor mode)
  * - Delete the Object data.            :
- *   (select a data -> confirm before delete )
+ *   (select a data -> confirm )
  * 
  * Input
 *****************************************************/
 
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, Touchable} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 
 const StorageControl = (props: any) => {
-    const {imgObj} = props;
+    const {imgObj, closeHandler} = props;
     // Load save data
 
-    // Make components (Data Blocks) to display
+    // Write save data
+    const createData = async(props: any) => {
+        const {value} = props;
+        console.log("#Saving data")
+        console.log(value);
+        try {
+            const jsonValue = JSON.stringify(value);
+            await AsyncStorage.setItem('data1', jsonValue);
+        } catch (e) {
+            // saving error
+        }
+    }
 
     return(
     <View style={styles.mainContainer}>
         <View style={{justifyContent: 'center', flexDirection: 'row', backgroundColor: 'white'}}>
-            <Text style={styles.h1}>Save Data Control1</Text>
+            <Text style={styles.h1}>Save Data Control</Text>
         </View>
 
         <ScrollView>
-            <TouchableOpacity onPress={()=>createData(imgObj)}>
+            <TouchableOpacity onPress={() => {closeHandler}}>
                 <DataBlock fileName={"セーブデータ１"} fileSize={'114514 kbyte'} modDate={'2022/04/1'} />
             </TouchableOpacity>
         </ScrollView>
@@ -57,19 +68,7 @@ const DataBlock = (props: any) => {
     )
 }
 
-// Write save data
-const createData = async(value: any) => {
-    console.log("#Saving data")
-    console.log(value);
-    try {
-        const jsonValue = JSON.stringify(value);
-        await AsyncStorage.setItem('data1', jsonValue);
 
-        readData();
-    } catch (e) {
-        // saving error
-    }
-}
 
 // Read save data
 const readData = async() => {
@@ -124,6 +123,6 @@ const styles = StyleSheet.create({
         width: width,
         height: '100%',
         backgroundColor: 'black',
-        opacity: 0.8,
+        opacity: 0.9,
     }
 });
