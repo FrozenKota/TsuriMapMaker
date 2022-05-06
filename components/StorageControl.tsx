@@ -17,18 +17,60 @@
 *****************************************************/
 
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ITextInput from './ITextInput';
+import Images from '../Asset/asset';
 
 const { width, height } = Dimensions.get('window');
 
 const StorageControl = (props: any) => {
-    const {imgObj, closeHandler, option} = props;
+    const {closeHandler, option} = props;
+    const ASPECT_RATIO = width / height;
+
+    const [ fileName, setFileName ] = useState("new_file");
+    const [ imgObj, setImgObj ] = useState<{
+        key: string,
+        divNumX: number,
+        divNumY: number,
+        region: {
+            latitude: number,
+            longitude: number,
+            latitudeDelta: number,
+            longitudeDelta: number,
+        },
+        imgData:[
+            {PosX: number, PosY: number, source: any},
+        ]
+      }>
+      ({
+        key: "sample",
+        divNumX: 0,
+        divNumY: 0,
+        region: {
+            latitude: 34.6963315, 
+            longitude: 139.3749429,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05 * ASPECT_RATIO,
+        },
+        imgData:[
+            { PosX: 0, PosY: 0, source: Images[0] },
+        ]
+      })
     let title = "";
     let dummydata = [];
-    let fileNameInput = "NewFileName";
     const Data = {};
+
+    const setFileNameHandler = (fileName: string) => {
+        // データベースのキーが重複しないかチェック
+
+        // 新規ファイル作成
+        setFileName(fileName);
+        createData(fileName);
+
+        //新規の空データ作成
+        closeHandler();
+    }
 
     if(option == "new"){
         title = "ファイル名を入力"
@@ -37,21 +79,6 @@ const StorageControl = (props: any) => {
     }else if(option == "gallery"){
         title = "閲覧したいファイルを選択"
     }else {
-    }
-
-    // Load save data
-
-    // Write save data
-    const createData = async(props: any) => {
-        const {value} = props;
-        console.log("#Saving data")
-        console.log(value);
-        try {
-            const jsonValue = JSON.stringify(value);
-            await AsyncStorage.setItem('data1', jsonValue);
-        } catch (e) {
-            // saving error
-        }
     }
 
     for (let i = 0; i < 20; i ++){
@@ -64,9 +91,9 @@ const StorageControl = (props: any) => {
     
     if(option === "new"){
         return(
-            <ITextInput closeHandler={closeHandler}/>
+            <ITextInput closeHandler={(fileName: string) => setFileNameHandler(fileName)}/>
         )
-    }else{
+    } else {
         return(
             <View style={styles.mainContainer}>
                 <View style={styles.titleAreaLayout}>
@@ -104,6 +131,20 @@ const DataBlock = (props: any) => {
     )
 }
 
+export default StorageControl;
+
+// Write save data
+const createData = async(fileName: string) => {
+    console.log("#Saving data")
+    console.log(fileName);
+    try {
+        const jsonValue = JSON.stringify(value);
+        await AsyncStorage.setItem('data1', jsonValue);
+    } catch (e) {
+        // saving error
+    }
+}
+
 // Read save data
 const readData = async() => {
     try {
@@ -115,9 +156,7 @@ const readData = async() => {
         // error reading value
         console.log("error");
     }
- }
-
-export default StorageControl;
+}
 
 
 const styles = StyleSheet.create({
@@ -143,7 +182,7 @@ const styles = StyleSheet.create({
         flex: 0.1,
         flexDirection: 'row',
         width: width,
-        backgroundColor: 'lightblue',
+        backgroundColor: '#191970',
     },
     dataAreaLayout: {
         flex: 0.9,

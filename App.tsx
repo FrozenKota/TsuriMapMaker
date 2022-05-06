@@ -11,17 +11,18 @@ const App = () => {
     const [ storageControlOption, setStorageControlOption ] = useState("");
 
     const strageControlHandler = (props: any) => {
-        setStorageControlOption(props.option)
+        const {option} = props;
+        setStorageControlOption(option)
         setStorageControlIsOpen(true);
     }
-    const strageControlCloseHandler = () => {
+    const strageControlCloseHandler = (props: any) => {
         setStorageControlIsOpen(false);
     }
 
     return(
         <View style={styles.mainContainer}>
             <View style={styles.titleLayout}>
-                <Text style={styles.titleName}>釣りマップメーカー(仮)</Text>
+                <Text style={styles.titleName}>釣りマップメーカー(β)</Text>
             </View>
             <View style={styles.selectButtonLayout}>
                 <TouchableOpacity onPress={() => {strageControlHandler({option: "new"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> N E W </Text></View></TouchableOpacity>
@@ -43,19 +44,19 @@ const styles = StyleSheet.create({
     mainContainer:{
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: 'white',
+        backgroundColor: 'yellow',
     },
     titleLayout:{
         flex: 1,
         height: '10%',
         width: width,
-        backgroundColor: "#0000EE",
+        backgroundColor: "#87cefa",
         opacity: 1,
         justifyContent: 'center',
     },
     titleName:{
         textAlign: 'center',
-        color: '#EEEEEE',
+        color: 'white',
         fontSize: width / 12,
         alignContent: 'center',
     },
@@ -74,10 +75,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: 'white',
         borderWidth: 2,
-        borderTopRightRadius: 30,
-        borderTopLeftRadius: 30,
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 0,
         backgroundColor: '#000055',
         
     },
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: '30%',
         width: width,
-        backgroundColor: '#000044',
+        backgroundColor: '#000055',
         opacity: 1,
         justifyContent: 'center',
     }

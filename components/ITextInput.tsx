@@ -7,14 +7,22 @@ const { width, height } = Dimensions.get('window');
 
 const ITextInput = (props: any) => {
     const {closeHandler} = props;
-    const [text, onChangeText] = React.useState("ファイル名を入力");
+    const [text, onChangeText] = React.useState('新規ファイル');
+
+    const okHandler = () => {
+        closeHandler(text);
+    }
+
+    const cancelHandler = () => {
+        closeHandler("");
+    }
 
     return(
         <View style={styles.mainContainer} >
             <View style={styles.inputContainer} >
                 <View style={styles.titleLayout}>
                     <View style={styles.titleStyle}>
-                        <Text style={styles.titleText}>ファイル名を入力</Text>
+                        <Text style={styles.titleText}>新規作成</Text>
                     </View>
                 </View>
                 <View style={styles.inputLayout}>
@@ -23,12 +31,15 @@ const ITextInput = (props: any) => {
                         onChangeText={onChangeText}
                         value={text}> 
                     </TextInput>
+                    <View style={styles.message}>
+                        <Text style={{color: '#222222', fontSize: 15}}>使用可能なファイル名です(checker 未実装)</Text>
+                    </View>
                     <View style={styles.buttonLayout}>
-                        <TouchableOpacity onPress={closeHandler} style={styles.Button}>
-                            <Text style={{color: 'black'}}>Close</Text>
+                        <TouchableOpacity onPress={cancelHandler} style={styles.Button}>
+                            <Text style={{color: 'black'}}>Cancel</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={closeHandler} style={styles.Button}>
+                        <TouchableOpacity onPress={okHandler} style={styles.Button}>
                             <Text style={{color: 'black'}}>OK</Text>
                         </TouchableOpacity>
                     </View>
@@ -48,17 +59,17 @@ const styles = StyleSheet.create({
         width: width,
         backgroundColor: 'black',
         opacity: 0.9,
-        justifyContent: 'center',
     },
     inputContainer: {
         flexDirection: 'column',
         height: '30%',
         width: width,
+        marginTop: '30%',
     },
     titleLayout: {
         flex: 0.2,
         flexDirection: 'row',
-        backgroundColor: 'lightblue',
+        backgroundColor: '#191970',
         opacity: 0.8,
         width: width,
         alignItems: 'center',
@@ -68,7 +79,7 @@ const styles = StyleSheet.create({
         flex: 0.8,
         flexDirection: 'column',
         backgroundColor: 'white',
-        opacity: 0.8,
+        opacity: 0.9,
         width: width,
         justifyContent: 'space-around',
 
@@ -104,4 +115,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
       },
+    message: {
+        marginLeft: 12,
+        marginBottom: 12,
+        color: 'blue'
+    }
 });

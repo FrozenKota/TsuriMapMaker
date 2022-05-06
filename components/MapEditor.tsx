@@ -13,7 +13,8 @@ const MAP_STYLE =  require('./mapstyle.json');
 
 const ASPECT_RATIO = width / height;
 
-const MapEditor = () => {
+const MapEditor = (props: any) => {
+  const {imgObj} = props;
   const [ mapState, setMapState ] = useState<{
     region: { 
       latitude: number,
@@ -34,32 +35,7 @@ const MapEditor = () => {
   const [ vertical, setVertical] = useState(1);
   const [ horizontal, setHorizontal] = useState(1);
   const [ currentImageTag, setCurrentImageTag] = useState(-1);
-  const [ imgObj, setImgObj ] = useState<{
-    divNumX: number,
-    divNumY: number,
-    region: {
-      latitude: number,
-      longitude: number,
-      latitudeDelta: number,
-      longitudeDelta: number,
-    },
-    imgData:[
-      {PosX: number, PosY: number, source: any},
-    ]
-  }>
-  ({
-    divNumX: 10,
-    divNumY: 10,
-    region: {
-      latitude: 34.6963315, 
-      longitude: 139.3749429,
-      latitudeDelta: 0.05,
-      longitudeDelta: 0.05 * ASPECT_RATIO,
-    },
-    imgData:[
-      {PosX: 0, PosY: 0, source: Images[0]},
-    ]
-  })
+
   // Components display statment
   const [ mapIsOpen, setMapIsOpen ] = useState(false);
   const [ gridLineIsOpen, setGridLineIsOpen ] = useState(false);
@@ -142,7 +118,7 @@ const MapEditor = () => {
         <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>{glidNumber}</Text></View>
         <View style={{...styles.menuButtons, backgroundColor: 'blue' }}></View>
       </View>
-      
+       
       <View style={styles.mapLayout}>
         { mapIsOpen && (
           <MapView
