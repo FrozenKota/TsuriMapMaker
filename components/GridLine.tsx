@@ -47,12 +47,12 @@ const GridLine = (props: any) => {
 
     for( let i = 0; i <= DIV_NUM_X; i ++){
         items.push(
-            <Line key={"0"+i} x1={X1+i*DIV_X} y1={Y1} x2={X1+i*DIV_X} y2={Math.floor(HEIGHT / DIV_X)*DIV_X} stroke="black" strokeWidth="1" />
+            <Line key={"0"+String(i)} x1={X1+i*DIV_X} y1={Y1} x2={X1+i*DIV_X} y2={Math.floor(HEIGHT / DIV_X)*DIV_X} stroke="black" strokeWidth="1" />
         )
     }
     for( let i = 0; i <= Math.floor(HEIGHT / DIV_X); i ++){
         items.push(
-            <Line key={"1"+i} x1={X1} y1={Y1+i*DIV_Y} x2={X2} y2={Y1+i*DIV_Y} stroke="black" strokeWidth="1" />
+            <Line key={"1"+String(i)} x1={X1} y1={Y1+i*DIV_Y} x2={X2} y2={Y1+i*DIV_Y} stroke="black" strokeWidth="1" />
         )
     }
     

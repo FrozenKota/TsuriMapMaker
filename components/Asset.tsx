@@ -13,42 +13,42 @@ const AssetWindow = (props :any) => {
     for(let i = 0; i < num; i+=rowNum){
         data.push(
             <View style={{flex:1, flexDirection: 'row'}}>
-                <TouchableOpacity  style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i)}>
+                <TouchableOpacity  key={i} style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i)}>
                     <Image
                     style={{width: width/rowNum, height: width/rowNum}}
                     resizeMode='contain'
                     source={Images[i]}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+1)}>
+                <TouchableOpacity key={i+1} style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+1)}>
                     <Image
                     style={{width: width/rowNum, height:width/rowNum}}
                     resizeMode='contain'
                     source={Images[i+1]}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+2)}>
+                <TouchableOpacity key={i+2} style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+2)}>
                     <Image
                     style={{width: width/rowNum, height:width/rowNum}}
                     resizeMode='contain'
                     source={Images[i+2]}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+3)}>
+                <TouchableOpacity key={i+3} style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+3)}>
                     <Image
                     style={{width: width/rowNum, height:width/rowNum}}
                     resizeMode='contain'
                     source={Images[i+3]}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+4)}>
+                <TouchableOpacity key={i+4} style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+4)}>
                     <Image
                     style={{width: width/rowNum, height:width/rowNum}}
                     resizeMode='contain'
                     source={Images[i+4]}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+5)}>
+                <TouchableOpacity key={i+5} style={{width: width/rowNum, height: width/rowNum}} onPress={() => closeAssetHandler(i+5)}>
                     <Image
                     style={{width: width/rowNum, height:width/rowNum}}
                     resizeMode='contain'
