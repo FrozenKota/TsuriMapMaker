@@ -14,7 +14,8 @@ const MAP_STYLE =  require('./mapstyle.json');
 const ASPECT_RATIO = width / height;
 
 const MapEditor = (props: any) => {
-  const {imgObj} = props;
+  const {imgObj, addData } = props;
+
   const [ mapState, setMapState ] = useState<{
     region: { 
       latitude: number,
@@ -37,9 +38,9 @@ const MapEditor = (props: any) => {
   const [ currentImageTag, setCurrentImageTag] = useState(-1);
 
   // Components display statment
-  const [ mapIsOpen, setMapIsOpen ] = useState(false);
-  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(false);
-  const [ dataViewIsOpen, setDataViewIsOpen ] = useState(false);
+  const [ mapIsOpen, setMapIsOpen ] = useState(true);
+  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(true);
+  const [ dataViewIsOpen, setDataViewIsOpen ] = useState(true);
   const [ assetIsOpen, setAssetIsOpen ] = useState(false);
 
   const countup = () => {
@@ -73,12 +74,10 @@ const MapEditor = (props: any) => {
         setCurrentImageTag(imageTag);
   }
 
-  const addNewImgData = () => {
-    let temp_obj = imgObj;
-    temp_obj.imgData.push({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]});
-
-    setImgObj(temp_obj);
-  }
+  // const addNewImgData = () => {
+  //   let temp_obj = imgObj;
+  //   imgObj.imgData.push({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]});
+  // }
 
   const mapEventOnPress = (e: any) => {
     let tmpObj = {...mapState};
@@ -125,7 +124,6 @@ const MapEditor = (props: any) => {
             style={styles.map}
             mapType={"satellite"}
             initialRegion={mapState.region}
-            onPress={e => mapEventOnPress(e.nativeEvent)}
           >
           </MapView>
         )}
@@ -136,23 +134,23 @@ const MapEditor = (props: any) => {
       </TouchableOpacity>
       
       <View style={styles.controllerLayout}>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'black'}} onPress={addNewImgData} >
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/plus.png')} />
+        <TouchableOpacity style={styles.controlButtons} onPress={() => addData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})} >
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/plus.png')} />
         </TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'blue'}} >
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/minus.png')} />
+        <TouchableOpacity style={styles.controlButtons} >
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/minus.png')} />
         </TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveLeft}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/left.png')} />
+        <TouchableOpacity style={styles.controlButtons} onPress={moveLeft}>
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/left.png')} />
         </TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveDown}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/down.png')} />
+        <TouchableOpacity style={styles.controlButtons} onPress={moveDown}>
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/down.png')} />
         </TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveUp}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/up.png')} />
+        <TouchableOpacity style={styles.controlButtons} onPress={moveUp}>
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/up.png')} />
         </TouchableOpacity>
-        <TouchableOpacity style={{...styles.controlButtons, backgroundColor: 'gray'}} onPress={moveRight}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('./Asset/Buttons/right.png')} />
+        <TouchableOpacity style={styles.controlButtons} onPress={moveRight}>
+          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/right.png')} />
         </TouchableOpacity>
       </View>
 
@@ -183,8 +181,10 @@ const MapEditor = (props: any) => {
 const styles = StyleSheet.create({
   // 親コンテナ
   mainContainer: {
-    flex: 1,
     position: 'absolute',
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'black',
   },
   // メニュー（戻る、保存など）
   menuLayout: {
@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
   },
   menuButtons: {
     flex: 1,
+    height: '100%',
     borderRadius: 10,
     alignContent: 'center',
     justifyContent: 'center',
@@ -219,12 +220,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
     justifyContent: 'center',
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
     backgroundColor: 'green',
   },
   controlButtons: {
     flex:1,
+    width: '100%',
     backgroundColor: 'gray',
     justifyContent: 'center',
     alignItems: 'center',

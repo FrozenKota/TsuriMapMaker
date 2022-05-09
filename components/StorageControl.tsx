@@ -29,34 +29,6 @@ const StorageControl = (props: any) => {
     const ASPECT_RATIO = width / height;
 
     const [ fileName, setFileName ] = useState("new_file");
-    const [ imgObj, setImgObj ] = useState<{
-        key: string,
-        divNumX: number,
-        divNumY: number,
-        region: {
-            latitude: number,
-            longitude: number,
-            latitudeDelta: number,
-            longitudeDelta: number,
-        },
-        imgData:[
-            {PosX: number, PosY: number, source: any},
-        ]
-      }>
-      ({
-        key: "sample",
-        divNumX: 0,
-        divNumY: 0,
-        region: {
-            latitude: 34.6963315, 
-            longitude: 139.3749429,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05 * ASPECT_RATIO,
-        },
-        imgData:[
-            { PosX: 0, PosY: 0, source: Images[0] },
-        ]
-      })
     let title = "";
     let dummydata = [];
     const Data = {};
@@ -157,7 +129,6 @@ const readData = async() => {
         console.log("error");
     }
 }
-
 
 const styles = StyleSheet.create({
     h1: {

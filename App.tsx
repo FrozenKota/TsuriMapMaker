@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Dimensions, TouchableWithoutFeedbackBase, Touchable } from  'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions, TouchableWithoutFeedbackBase, Touchable, Alert} from  'react-native';
 
 import StorageControl from './components/StorageControl';
+import MapEditor from './components/MapEditor';
+import Images from './Asset/asset';
 
 const { width, height} = Dimensions.get('window');
 
@@ -9,30 +11,78 @@ const { width, height} = Dimensions.get('window');
 const App = () => {
     const [ storageControlIsOpen, setStorageControlIsOpen ] = useState(false);
     const [ storageControlOption, setStorageControlOption ] = useState("");
+    const [ mapEditorIsOpen, setMapEditorIsOpen ] = useState(true);
+    const [ imgObj, setImgObj ] = useState<{
+        key: string,
+        divNumX: number,
+        divNumY: number,
+        region: {
+            latitude: number,
+            longitude: number,
+            latitudeDelta: number,
+            longitudeDelta: number,
+        },
+        imgData:[
+            {PosX: number, PosY: number, source: any},
+        ]
+      }>
+      ({
+        key: "sample",
+        divNumX: 10,
+        divNumY: 10,
+        region: {
+            latitude: 34.6963315, 
+            longitude: 139.3749429,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05 * (width / height),
+        },
+        imgData:[
+            { PosX: 0, PosY: 0, source: Images[0] },
+        ]
+      })
+
 
     const strageControlHandler = (props: any) => {
         const {option} = props;
         setStorageControlOption(option)
         setStorageControlIsOpen(true);
     }
+    const createNewFileHandler = (props: any) => {
+        const {option} = props;
+        setStorageControlOption(option);
+        setStorageControlIsOpen(true);
+    }
+
     const strageControlCloseHandler = (props: any) => {
         setStorageControlIsOpen(false);
     }
 
+    const addNewImgData = (imgData: any) => {
+        let tempObj = imgObj;
+        tempObj.imgData.push(imgData);
+        setImgObj(tempObj);
+        console.log(imgObj);
+      }
+
     return(
         <View style={styles.mainContainer}>
             <View style={styles.titleLayout}>
-                <Text style={styles.titleName}>釣りマップメーカー(β)</Text>
+                <Text style={styles.titleName}>タイトル表示エリア</Text>
             </View>
             <View style={styles.selectButtonLayout}>
-                <TouchableOpacity onPress={() => {strageControlHandler({option: "new"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> N E W </Text></View></TouchableOpacity>
+                <TouchableOpacity onPress={() => {createNewFileHandler({option: "new"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> N E W </Text></View></TouchableOpacity>
                 <TouchableOpacity onPress={() => {strageControlHandler({option: "edit"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> E D I T </Text></View></TouchableOpacity>
                 <TouchableOpacity onPress={() => {strageControlHandler({option: "gallery"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> G A L L E R Y </Text></View></TouchableOpacity>
             </View>
                 <View style={styles.footerLayout}>
             </View>
+
             {storageControlIsOpen && (
                 <StorageControl closeHandler={strageControlCloseHandler} option={storageControlOption}/>
+            )}
+
+            {mapEditorIsOpen && (
+                <MapEditor imgObj={imgObj} addData={(imgData: any) => addNewImgData(imgData)} />
             )}
         </View>
     )

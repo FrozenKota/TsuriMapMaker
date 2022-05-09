@@ -57,7 +57,7 @@ const GridLine = (props: any) => {
     }
     
     items.push(
-        <Image
+        <Image key={"img"}
         x={X1+props.horizontal*DIV_X}
         y={Y1+props.vertical*DIV_Y}
         width = {DIV_X}
@@ -67,7 +67,7 @@ const GridLine = (props: any) => {
     )
 
     items.push(
-        <Rect x={X1+props.horizontal*DIV_X} y={Y1+props.vertical*DIV_Y} width={DIV_X} height={DIV_Y} stroke="yellow" strokeWidth="2" />
+        <Rect key={"rect"} x={X1+props.horizontal*DIV_X} y={Y1+props.vertical*DIV_Y} width={DIV_X} height={DIV_Y} stroke="yellow" strokeWidth="2" />
     )
 
     return (
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         top: '15%',
         left: 0,
         height: '70%',
-        width: width,
+        width: '100%',
       }
 })
 

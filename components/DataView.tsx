@@ -12,7 +12,7 @@
     |-  Image position : imgPosX, imgPosY
 *****************************************************/
 
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Dimensions, StyleSheet, Image, Alert} from 'react-native';
 import Images from '../Asset/asset';
 
@@ -21,7 +21,8 @@ const { width, height } = Dimensions.get('window');
 
 const ImgDataView = (props: any) => {
 
-    const {imgObj} = props; 
+    const {imgObj} = props;
+
     let biasX = 0;
     let biasY = height * 0.15;
     let gridWidth = width;
