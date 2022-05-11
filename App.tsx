@@ -12,6 +12,19 @@ const App = () => {
     const [ storageControlIsOpen, setStorageControlIsOpen ] = useState(false);
     const [ storageControlOption, setStorageControlOption ] = useState("");
     const [ mapEditorIsOpen, setMapEditorIsOpen ] = useState(true);
+
+    let data: any = {xy00:1, xy01:2, xy10:3, xy11:4};   //登録済みデータ
+    let newdata = {x:1, y:1, value:9};                  //更新したい新規データ
+    
+    console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:4}
+    data['xy'+String(newdata.x)+String(newdata.y)] = newdata.value; // プロパティ更新
+    console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:9};
+
+    newdata = {x:2, y:2, value: 1};
+    data['xy'+String(newdata.x)+String(newdata.y)] = newdata.value; // プロパティ追加
+    console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:9, xy22:1};
+
+
     const [ imgObj, setImgObj ] = useState<{
         key: string,
         divNumX: number,
@@ -61,7 +74,6 @@ const App = () => {
         let tempObj = imgObj;
         tempObj.imgData.push(imgData);
         setImgObj(tempObj);
-        console.log(imgObj);
       }
 
     return(
@@ -78,7 +90,7 @@ const App = () => {
             </View>
 
             {storageControlIsOpen && (
-                <StorageControl closeHandler={strageControlCloseHandler} option={storageControlOption}/>
+                <StorageControl closeHandler={strageControlCloseHandler} option={storageControlOption} imgObj={imgObj}/>
             )}
 
             {mapEditorIsOpen && (
