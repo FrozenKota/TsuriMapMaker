@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Images from '../Asset/asset';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, Image, Alert } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Dimensions, ScrollView, Image} from 'react-native';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const AssetWindow = (props :any) => {
-    let data = [];
+    const data = [];
     const num = 123;
 
     const {closeAssetHandler, rowNum} = props;

@@ -12,10 +12,8 @@
     |-  Image position : imgPosX, imgPosY
 *****************************************************/
 
-import React, {useState} from 'react';
-import {View, Dimensions, StyleSheet, Image, Alert} from 'react-native';
-import Images from '../Asset/asset';
-
+import React from 'react';
+import {View, Dimensions, StyleSheet, Image } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -23,19 +21,14 @@ const ImgDataView = (props: any) => {
 
     const {imgObj} = props;
 
-    let biasX = 0;
-    let biasY = height * 0.15;
-    let gridWidth = width;
-    let gridHeight = height * 0.7;
+    let divX = width  / imgObj.divNumX;
+    const keys = Object.keys(imgObj.imgData);
 
-    let divX = gridWidth  / imgObj.divNumX;
-    let divY = gridHeight / imgObj.divNumY;
-
-    const items = imgObj.imgData.map((value: any, index: number)=>
+    const items = keys.map((value: any, index: number)=>
       <View style={{
         position: 'absolute',
-        top: imgObj.imgData[index].PosY * divX,
-        left: imgObj.imgData[index].PosX * divX,
+        top: imgObj.imgData[keys[index]].PosY * divX,
+        left: imgObj.imgData[keys[index]].PosX * divX,
         width: width / imgObj.divNumX, 
         height: (height*0.7) / imgObj.divNumY,
         opacity: 1.0,
@@ -46,7 +39,7 @@ const ImgDataView = (props: any) => {
             width: width / imgObj.divNumX,
             height: width / imgObj.divNumX,
           }}
-          source={imgObj.imgData[index].source}
+          source={imgObj.imgData[keys[index]].source}
         />
       </View>
     );

@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Dimensions, TouchableWithoutFeedbackBase, Touchable, Alert} from  'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions} from  'react-native';
 
 import StorageControl from './components/StorageControl';
 import MapEditor from './components/MapEditor';
 import Images from './Asset/asset';
+import { Image } from 'react-native-svg';
 
 const { width, height} = Dimensions.get('window');
 
@@ -13,16 +14,16 @@ const App = () => {
     const [ storageControlOption, setStorageControlOption ] = useState("");
     const [ mapEditorIsOpen, setMapEditorIsOpen ] = useState(true);
 
-    let data: any = {xy00:1, xy01:2, xy10:3, xy11:4};   //登録済みデータ
-    let newdata = {x:1, y:1, value:9};                  //更新したい新規データ
+    // let data: any = {xy00:1, xy01:2, xy10:3, xy11:4};   //登録済みデータ
+    // let newdata = {x:1, y:1, value:9};                  //更新したい新規データ
     
-    console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:4}
-    data['xy'+String(newdata.x)+String(newdata.y)] = newdata.value; // プロパティ更新
-    console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:9};
+    // console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:4}
+    // data['xy'+String(newdata.x)+String(newdata.y)] = newdata.value; // プロパティ更新
+    // console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:9};
 
-    newdata = {x:2, y:2, value: 1};
-    data['xy'+String(newdata.x)+String(newdata.y)] = newdata.value; // プロパティ追加
-    console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:9, xy22:1};
+    // newdata = {x:2, y:2, value: 1};
+    // data['xy'+String(newdata.x)+String(newdata.y)] = newdata.value; // プロパティ追加
+    // console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:9, xy22:1};
 
 
     const [ imgObj, setImgObj ] = useState<{
@@ -35,9 +36,7 @@ const App = () => {
             latitudeDelta: number,
             longitudeDelta: number,
         },
-        imgData:[
-            {PosX: number, PosY: number, source: any},
-        ]
+        imgData:any
       }>
       ({
         key: "sample",
@@ -49,9 +48,9 @@ const App = () => {
             latitudeDelta: 0.05,
             longitudeDelta: 0.05 * (width / height),
         },
-        imgData:[
-            { PosX: 0, PosY: 0, source: Images[0] },
-        ]
+        imgData: {
+            xy00:{PosX: 0, PosY: 0, source:Images[5]}
+        },
       })
 
 
@@ -66,15 +65,25 @@ const App = () => {
         setStorageControlIsOpen(true);
     }
 
-    const strageControlCloseHandler = (props: any) => {
+    const strageControlCloseHandler = () => {
         setStorageControlIsOpen(false);
     }
 
     const addNewImgData = (imgData: any) => {
-        let tempObj = imgObj;
-        tempObj.imgData.push(imgData);
-        setImgObj(tempObj);
-      }
+        const {PosX, PosY, source} = imgData;
+
+        const tmpImgObj: any = imgObj;
+        tmpImgObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, source: source};;
+        setImgObj(tmpImgObj);
+    }
+
+    const deleteImgData = (imgData: any) => {
+        const {PosX, PosY, source} = imgData;
+
+        const tmpImgObj: any = imgObj;
+        delete tmpImgObj.imgData['xy'+String(PosX)+String(PosY)];
+        setImgObj(tmpImgObj);
+    }
 
     return(
         <View style={styles.mainContainer}>
@@ -94,11 +103,15 @@ const App = () => {
             )}
 
             {mapEditorIsOpen && (
-                <MapEditor imgObj={imgObj} addData={(imgData: any) => addNewImgData(imgData)} />
+                <MapEditor imgObj={imgObj} 
+                    addData={(imgData: any) => addNewImgData(imgData)} 
+                    deleteData={(imgData: any) => deleteImgData(imgData)}
+                />
             )}
         </View>
     )
 }
+
 
 export default App;
 

@@ -14,7 +14,7 @@ const MAP_STYLE =  require('./mapstyle.json');
 const ASPECT_RATIO = width / height;
 
 const MapEditor = (props: any) => {
-  const {imgObj, addData } = props;
+  const {imgObj, addData, deleteData} = props;
 
   const [ mapState, setMapState ] = useState<{
     region: { 
@@ -74,11 +74,6 @@ const MapEditor = (props: any) => {
         setCurrentImageTag(imageTag);
   }
 
-  // const addNewImgData = () => {
-  //   let temp_obj = imgObj;
-  //   imgObj.imgData.push({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]});
-  // }
-
   const mapEventOnPress = (e: any) => {
     let tmpObj = {...mapState};
    // tmpObj.region.latitude = 100;
@@ -137,7 +132,7 @@ const MapEditor = (props: any) => {
         <TouchableOpacity style={styles.controlButtons} onPress={() => addData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})} >
           <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/plus.png')} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} >
+        <TouchableOpacity style={styles.controlButtons} onPress={() => deleteData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})}>
           <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/minus.png')} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.controlButtons} onPress={moveLeft}>
