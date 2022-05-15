@@ -1,7 +1,5 @@
-import { generateKey } from 'crypto';
-import { setDefaultResultOrder } from 'dns';
-import React, {useState} from 'react';
-import {StyleSheet, View, Text, TextInput, TouchableOpacity, Dimensions, Alert} from 'react-native';
+import React from 'react';
+import {StyleSheet, View, Text, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 

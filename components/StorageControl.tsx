@@ -17,21 +17,18 @@
 *****************************************************/
 
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, Alert} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ITextInput from './ITextInput';
-import Images from '../Asset/asset';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const StorageControl = (props: any) => {
     const {closeHandler, option} = props;
-    const ASPECT_RATIO = width / height;
 
     const [ fileName, setFileName ] = useState("new_file");
     let title = "";
-    let dummydata = [];
-    const Data = {};
+    const dummydata = [];
 
     const setFileNameHandler = (fileName: string) => {
         // データベースのキーが重複しないかチェック
@@ -50,7 +47,6 @@ const StorageControl = (props: any) => {
         title = "編集するファイルを選択"
     }else if(option == "gallery"){
         title = "閲覧したいファイルを選択"
-    }else {
     }
 
     for (let i = 0; i < 20; i ++){
@@ -118,17 +114,17 @@ const createData = async(fileName: string) => {
 }
 
 // Read save data
-const readData = async() => {
-    try {
-        const loadedValue = await AsyncStorage.getItem('data1');
-        console.log("Loaded data");
-        console.log(loadedValue);
-        return loadedValue != null ? JSON.parse(loadedValue) : null;
-    } catch (e) {
-        // error reading value
-        console.log("error");
-    }
-}
+// const readData = async() => {
+//     try {
+//         const loadedValue = await AsyncStorage.getItem('data1');
+//         console.log("Loaded data");
+//         console.log(loadedValue);
+//         return loadedValue != null ? JSON.parse(loadedValue) : null;
+//     } catch (e) {
+//         // error reading value
+//         console.log("error");
+//     }
+// }
 
 const styles = StyleSheet.create({
     h1: {

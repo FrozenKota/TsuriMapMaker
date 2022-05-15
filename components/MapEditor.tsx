@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Button, TouchableOpacity, Dimensions, Alert, Image} from 'react-native';
-import MapView, {Circle} from 'react-native-maps';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
+import MapView from 'react-native-maps';
 
 import Images from '../Asset/asset';
 import GridLine from './GridLine';
@@ -8,8 +8,7 @@ import AssetWindow from './Asset';
 import ImageDataView from './DataView'
 
 const { width, height } = Dimensions.get('window');
-const POSITION_MAP_X = height * 0.15;
-const MAP_STYLE =  require('./mapstyle.json');
+//const MAP_STYLE =  require('./mapstyle.json');
 
 const ASPECT_RATIO = width / height;
 
@@ -74,13 +73,13 @@ const MapEditor = (props: any) => {
         setCurrentImageTag(imageTag);
   }
 
-  const mapEventOnPress = (e: any) => {
-    let tmpObj = {...mapState};
-   // tmpObj.region.latitude = 100;
-   // tmpObj.region.longitude = 100;
-   // setMapState({region: tmpObj.region});
-    console.log(e);
-  }
+  // const mapEventOnPress = (e: any) => {
+  //   let tmpObj = {...mapState};
+  //  // tmpObj.region.latitude = 100;
+  //  // tmpObj.region.longitude = 100;
+  //  // setMapState({region: tmpObj.region});
+  //   console.log(e);
+  // }
 
   return (
     <View style={styles.mainContainer} >

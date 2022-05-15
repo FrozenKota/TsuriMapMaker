@@ -21,11 +21,11 @@ const ImgDataView = (props: any) => {
 
     const {imgObj} = props;
 
-    let divX = width  / imgObj.divNumX;
+    const divX = width  / imgObj.divNumX;
     const keys = Object.keys(imgObj.imgData);
 
     const items = keys.map((value: any, index: number)=>
-      <View style={{
+      <View key={index} style={{
         position: 'absolute',
         top: imgObj.imgData[keys[index]].PosY * divX,
         left: imgObj.imgData[keys[index]].PosX * divX,

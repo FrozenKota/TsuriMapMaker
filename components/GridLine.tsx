@@ -1,49 +1,47 @@
 import React from 'react';
-import {View, Dimensions, StyleSheet, Alert} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Images from '../Asset/asset';
 import Svg, {
-    Circle,
-    Ellipse,
-    G,
-   // Text,
-    TSpan,
-    TextPath,
-    Path,
-    Polygon,
-    Polyline,
+    // Circle,
+    // Ellipse,
+    // G,
+    // Text,
+    // TSpan,
+    // TextPath,
+    // Path,
+    // Polygon,
+    // Polyline,
     Line,
     Rect,
-    Use,
+    // Use,
     Image,
-    Symbol,
-    Defs,
-    LinearGradient,
-    RadialGradient,
-    Stop,
-    ClipPath,
-    Pattern,
-    Mask,
+    // Symbol,
+    // Defs,
+    // LinearGradient,
+    // RadialGradient,
+    // Stop,
+    // ClipPath,
+    // Pattern,
+    // Mask,
   } from 'react-native-svg';
 
-  const { width, height } = Dimensions.get('window');
-
+//  const { width, height } = Dimensions.get('window');
 
 const GridLine = (props: any) => {
+    
     const X1 = props.x1;
     const X2 = props.x2;
     const Y1 = props.y1;
     const Y2 = props.y2;
 
     const DIV_NUM_X = props.divNumX;
-    const DIV_NUM_Y = props.divNumY;
 
     const WIDTH = X2 - X1;
     const HEIGHT = Y2 - Y1;
     const DIV_X = WIDTH / DIV_NUM_X;
-    const DIV_Y = DIV_X;
+    const DIV_Y = DIV_X;            // DIV_X = DIV_Y
 
-    let items = [];
-    let imageTag = props.imageTag;
+    const items = [];
 
     for( let i = 0; i <= DIV_NUM_X; i ++){
         items.push(
