@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
 import {StyleSheet, View, Text, TextInput, TouchableOpacity, Dimensions } from 'react-native';
+import { SequenceContext } from '../App'
 
 const { width, height } = Dimensions.get('window');
 
 const ITextInput = (props: any) => {
     const {closeHandler} = props;
-    const [text, onChangeText] = React.useState('新規ファイル');
+    const [text, onChangeText] = useState('新規ファイルｃ');
+
+    const context = useContext(SequenceContext);
 
     const okHandler = () => {
         closeHandler(text);
@@ -27,7 +30,7 @@ const ITextInput = (props: any) => {
                     <TextInput 
                         style={styles.input}
                         onChangeText={onChangeText}
-                        value={text}> 
+                        value={context.stateIs}> 
                     </TextInput>
                     <View style={styles.message}>
                         <Text style={{color: '#222222', fontSize: 15}}>使用可能なファイル名です(checker 未実装)</Text>

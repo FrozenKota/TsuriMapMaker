@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, createContext} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions} from  'react-native';
 
 import StorageControl from './components/StorageControl';
@@ -6,25 +6,22 @@ import MapEditor from './components/MapEditor';
 import Images from './Asset/asset';
 import { Image } from 'react-native-svg';
 
+export const SequenceContext = createContext({});
 const { width, height} = Dimensions.get('window');
 
 
 const App = () => {
     const [ storageControlIsOpen, setStorageControlIsOpen ] = useState(false);
     const [ storageControlOption, setStorageControlOption ] = useState("");
-    const [ mapEditorIsOpen, setMapEditorIsOpen ] = useState(true);
+    const [ mapEditorIsOpen, setMapEditorIsOpen ] = useState(false);
 
-    // let data: any = {xy00:1, xy01:2, xy10:3, xy11:4};   //登録済みデータ
-    // let newdata = {x:1, y:1, value:9};                  //更新したい新規データ
-    
-    // console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:4}
-    // data['xy'+String(newdata.x)+String(newdata.y)] = newdata.value; // プロパティ更新
-    // console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:9};
+    const [ stateIs , setStateIs ] = useState("menu");
+    const [ asCreateMode, setAsCreateMode ] = useState(false);
+    const [ asEditMode, setAsEditMode ] = useState(false);
+    const [ asViewMode, setAsViewMode ] = useState(false);
 
-    // newdata = {x:2, y:2, value: 1};
-    // data['xy'+String(newdata.x)+String(newdata.y)] = newdata.value; // プロパティ追加
-    // console.log(data);  // {xy00:1, xy01:2, xy10:3, xy11:9, xy22:1};
-
+    const stateContext = {storageControlIsOpen, mapEditorIsOpen, asCreateMode, asEditMode, asViewMode, stateIs};
+    const setStateContext = {setStorageControlIsOpen, setMapEditorIsOpen, setAsCreateMode, setAsEditMode, setAsViewMode, setStateIs};
 
     const [ imgObj, setImgObj ] = useState<{
         key: string,
@@ -51,21 +48,17 @@ const App = () => {
         imgData: {
             xy00:{PosX: 0, PosY: 0, source:Images[5]}
         },
-      })
+    })
 
 
-    const strageControlHandler = (props: any) => {
+    // S1, S2, S3
+    const storageControlHandler = (props: any) => {
         const {option} = props;
         setStorageControlOption(option)
         setStorageControlIsOpen(true);
     }
-    const createNewFileHandler = (props: any) => {
-        const {option} = props;
-        setStorageControlOption(option);
-        setStorageControlIsOpen(true);
-    }
 
-    const strageControlCloseHandler = () => {
+    const storageControlCloseHandler = () => {
         setStorageControlIsOpen(false);
     }
 
@@ -86,29 +79,31 @@ const App = () => {
     }
 
     return(
-        <View style={styles.mainContainer}>
-            <View style={styles.titleLayout}>
-                <Text style={styles.titleName}>タイトル表示エリア</Text>
-            </View>
-            <View style={styles.selectButtonLayout}>
-                <TouchableOpacity onPress={() => {createNewFileHandler({option: "new"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> N E W </Text></View></TouchableOpacity>
-                <TouchableOpacity onPress={() => {strageControlHandler({option: "edit"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> E D I T </Text></View></TouchableOpacity>
-                <TouchableOpacity onPress={() => {strageControlHandler({option: "gallery"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> G A L L E R Y </Text></View></TouchableOpacity>
-            </View>
-                <View style={styles.footerLayout}>
-            </View>
+        <SequenceContext.Provider value={{stateIs, setStateIs}}>
+            <View style={styles.mainContainer}>
+                <View style={styles.titleLayout}>
+                    <Text style={styles.titleName}>タイトル表示エリア</Text>
+                </View>
+                <View style={styles.selectButtonLayout}>
+                    <TouchableOpacity onPress={() => {storageControlHandler({option: "new"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> N E W </Text></View></TouchableOpacity>
+                    <TouchableOpacity onPress={() => {storageControlHandler({option: "edit"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> E D I T </Text></View></TouchableOpacity>
+                    <TouchableOpacity onPress={() => {storageControlHandler({option: "gallery"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> G A L L E R Y </Text></View></TouchableOpacity>
+                </View>
+                    <View style={styles.footerLayout}>
+                </View>
 
-            {storageControlIsOpen && (
-                <StorageControl closeHandler={strageControlCloseHandler} option={storageControlOption} imgObj={imgObj}/>
-            )}
+                {storageControlIsOpen && (
+                    <StorageControl closeHandler={storageControlCloseHandler} option={storageControlOption} imgObj={imgObj}/>
+                )}
 
-            {mapEditorIsOpen && (
-                <MapEditor imgObj={imgObj} 
-                    addData={(imgData: any) => addNewImgData(imgData)} 
-                    deleteData={(imgData: any) => deleteImgData(imgData)}
-                />
-            )}
-        </View>
+                {mapEditorIsOpen && (
+                    <MapEditor imgObj={imgObj} 
+                        addData={(imgData: any) => addNewImgData(imgData)} 
+                        deleteData={(imgData: any) => deleteImgData(imgData)}
+                    />
+                )}
+            </View>
+        </SequenceContext.Provider>
     )
 }
 
