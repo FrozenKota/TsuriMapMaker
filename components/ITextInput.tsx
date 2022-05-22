@@ -6,11 +6,12 @@ const { width, height } = Dimensions.get('window');
 
 const ITextInput = (props: any) => {
     const {closeHandler} = props;
-    const [text, onChangeText] = useState('新規ファイルｃ');
-
-    const context = useContext(SequenceContext);
+    const [text, onChangeText] = useState('');
 
     const okHandler = () => {
+        console.log("<ITextInput>");
+        console.log(" okHandler");
+        console.log("   text= "+text);
         closeHandler(text);
     }
 
@@ -30,7 +31,7 @@ const ITextInput = (props: any) => {
                     <TextInput 
                         style={styles.input}
                         onChangeText={onChangeText}
-                        value={context.stateIs}> 
+                        value={text}> 
                     </TextInput>
                     <View style={styles.message}>
                         <Text style={{color: '#222222', fontSize: 15}}>使用可能なファイル名です(checker 未実装)</Text>

@@ -13,9 +13,9 @@ const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 
 const MapEditor = (props: any) => {
-  const {imgObj, addData, deleteData} = props;
+  const {closeHandler, imgObj, addData, deleteData} = props;
 
-  const [ mapState, setMapState ] = useState<{
+  const [ mapState, setMapState] = useState<{
     region: { 
       latitude: number,
       longitude: number,
@@ -38,8 +38,8 @@ const MapEditor = (props: any) => {
 
   // Components display statment
   const [ mapIsOpen, setMapIsOpen ] = useState(true);
-  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(true);
-  const [ dataViewIsOpen, setDataViewIsOpen ] = useState(true);
+  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(false);
+  const [ dataViewIsOpen, setDataViewIsOpen ] = useState(false);
   const [ assetIsOpen, setAssetIsOpen ] = useState(false);
 
   const countup = () => {
@@ -109,7 +109,31 @@ const MapEditor = (props: any) => {
           </TouchableOpacity>
         </View>
         <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>{glidNumber}</Text></View>
-        <View style={{...styles.menuButtons, backgroundColor: 'blue' }}></View>
+        <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              backgroundColor: 'black',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={countup}
+          >
+            <Text style={{color: "white"}}> Save</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+          style={{
+            flex:1,
+            backgroundColor: 'gray',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+              onPress={closeHandler}
+          >
+            <Text style={{color: "white"}}> Close</Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
        
       <View style={styles.mapLayout}>

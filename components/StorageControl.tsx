@@ -24,20 +24,22 @@ import ITextInput from './ITextInput';
 const { width } = Dimensions.get('window');
 
 const StorageControl = (props: any) => {
-    const {closeHandler, option} = props;
-
-    const [ fileName, setFileName ] = useState("new_file");
+    const {closeHandler, option, storageEvent } = props;
     let title = "";
     const dummydata = [];
 
-    const setFileNameHandler = (fileName: string) => {
+    const setFileNameHandler = (name: string) => {
+        console.log("<StorageControl>");
+        console.log(" setFileNameHandler");
+        console.log("   name= "+ name);
         // データベースのキーが重複しないかチェック
 
-        // 新規ファイル作成
-        setFileName(fileName);
-        createData(fileName);
+        if(name !== "") createData(name);
 
-        //新規の空データ作成
+        // <StorageControl> の状態を返す
+        storageEvent({fileName: name, option: option});
+
+        //ITextInput をクローズ
         closeHandler();
     }
 
@@ -59,7 +61,7 @@ const StorageControl = (props: any) => {
     
     if(option === "new"){
         return(
-            <ITextInput closeHandler={(fileName: string) => setFileNameHandler(fileName)}/>
+            <ITextInput closeHandler={(name: string) => setFileNameHandler(name)}/>
         )
     } else {
         return(

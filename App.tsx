@@ -25,6 +25,7 @@ const App = () => {
 
     const [ imgObj, setImgObj ] = useState<{
         key: string,
+        isInitialized: boolean,
         divNumX: number,
         divNumY: number,
         region: {
@@ -37,6 +38,7 @@ const App = () => {
       }>
       ({
         key: "sample",
+        isInitialized: false,
         divNumX: 10,
         divNumY: 10,
         region: {
@@ -50,6 +52,8 @@ const App = () => {
         },
     })
 
+    const [ eventManager, setEventManager ] = useState({fileName:"", option:""});
+
 
     // S1, S2, S3
     const storageControlHandler = (props: any) => {
@@ -58,8 +62,32 @@ const App = () => {
         setStorageControlIsOpen(true);
     }
 
-    const storageControlCloseHandler = () => {
+    const closeStorageControlHandler = () => {
         setStorageControlIsOpen(false);
+    }
+
+    const closeMapEditorHandler = () => {
+        setMapEditorIsOpen(false);
+    }
+
+    const storageEventHandler = (e:any) => {
+        console.log("<App> ");
+        console.log(" storageEventHandler")
+        console.log("  e=");
+        console.log(e);
+        const tmpObj: any = eventManager;
+        tmpObj['fileName'] = e['fileName'];
+        tmpObj['option'] = e['option'];
+
+        setEventManager(tmpObj);
+        console.log('  evengManager=')
+        console.log(eventManager);
+
+        if(eventManager.fileName !== "" && (eventManager.option === "new" || eventManager.option === "gallery")){
+            setMapEditorIsOpen(true);
+        }else{
+            setMapEditorIsOpen(false);
+        }
     }
 
     const addNewImgData = (imgData: any) => {
@@ -84,26 +112,45 @@ const App = () => {
                 <View style={styles.titleLayout}>
                     <Text style={styles.titleName}>タイトル表示エリア</Text>
                 </View>
+
                 <View style={styles.selectButtonLayout}>
-                    <TouchableOpacity onPress={() => {storageControlHandler({option: "new"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> N E W </Text></View></TouchableOpacity>
-                    <TouchableOpacity onPress={() => {storageControlHandler({option: "edit"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> E D I T </Text></View></TouchableOpacity>
-                    <TouchableOpacity onPress={() => {storageControlHandler({option: "gallery"})}}><View style={styles.selectButton}><Text style={styles.selectButtonText}> G A L L E R Y </Text></View></TouchableOpacity>
+                    <MenuButton title={' N E W '} handler={() => {storageControlHandler({option: "new"})}}/>
+                    <MenuButton title={' E D I T '} handler={() => {storageControlHandler({option: "edit"})}} />
+                    <MenuButton title={' G A L L E R Y '} handler={() => {storageControlHandler({option: "gallery"})}} />
                 </View>
-                    <View style={styles.footerLayout}>
+
+                <View style={styles.footerLayout}>
                 </View>
 
                 {storageControlIsOpen && (
-                    <StorageControl closeHandler={storageControlCloseHandler} option={storageControlOption} imgObj={imgObj}/>
+                    <StorageControl 
+                        closeHandler={closeStorageControlHandler} 
+                        option={storageControlOption}
+                        imgObj={imgObj}
+                        storageEvent={(e: any) => {storageEventHandler(e)}}
+                    />
                 )}
 
                 {mapEditorIsOpen && (
                     <MapEditor imgObj={imgObj} 
                         addData={(imgData: any) => addNewImgData(imgData)} 
                         deleteData={(imgData: any) => deleteImgData(imgData)}
+                        closeHandler={closeMapEditorHandler}
+                        editType={eventManager.option}
                     />
                 )}
             </View>
         </SequenceContext.Provider>
+    )
+}
+
+const MenuButton = (props: any) => {
+    const {title, handler} = props;
+
+    return (
+        <TouchableOpacity onPress={() => {handler({option: "new"})}}>
+            <View style={styles.selectButton}><Text style={styles.selectButtonText}>{title}</Text></View>
+        </TouchableOpacity>
     )
 }
 
