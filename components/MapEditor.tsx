@@ -73,104 +73,116 @@ const MapEditor = (props: any) => {
         setCurrentImageTag(imageTag);
   }
 
-  // const mapEventOnPress = (e: any) => {
-  //   let tmpObj = {...mapState};
-  //  // tmpObj.region.latitude = 100;
-  //  // tmpObj.region.longitude = 100;
-  //  // setMapState({region: tmpObj.region});
-  //   console.log(e);
-  // }
+const TopAreaComponents = () => {
+  return (
+    <View style={styles.menuLayout}>
+    <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
+      <TouchableOpacity
+        style={{
+          flex: 1,
+          backgroundColor: 'black',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        onPress={countup}
+      >
+        <Text style={{color: "white"}}> Up</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+      style={{
+        flex:1,
+        backgroundColor: 'gray',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+          onPress={countdown}
+      >
+        <Text style={{color: "white"}}> Down</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>{glidNumber}</Text></View>
+    <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
+      <TouchableOpacity
+        style={{
+          flex: 1,
+          backgroundColor: 'black',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        onPress={countup}
+      >
+        <Text style={{color: "white"}}> Save</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+      style={{
+        flex:1,
+        backgroundColor: 'gray',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+          onPress={closeHandler}
+      >
+        <Text style={{color: "white"}}> Close</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+  )
+}
+
+const MapAreaComponents = () => {
+  return (
+    <View style={styles.mapLayout}>
+      { mapIsOpen && (
+        <MapView
+          style={styles.map}
+          mapType={"satellite"}
+          initialRegion={mapState.region}
+        >
+        </MapView>
+      )}
+    </View>
+  )
+}
+
+const BottomAreaComponents = () => {
+  return (
+    <View style={styles.controllerLayout}>
+    <TouchableOpacity style={styles.controlButtons} onPress={() => addData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})} >
+      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/plus.png')} />
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.controlButtons} onPress={() => deleteData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})}>
+      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/minus.png')} />
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.controlButtons} onPress={moveLeft}>
+      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/left.png')} />
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.controlButtons} onPress={moveDown}>
+      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/down.png')} />
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.controlButtons} onPress={moveUp}>
+      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/up.png')} />
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.controlButtons} onPress={moveRight}>
+      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/right.png')} />
+    </TouchableOpacity>
+  </View>
+  )
+}
+
+const SelectButton = () => {
+  return (
+    <TouchableOpacity style={styles.assetButtonLayout} onPress={assetSelectHandler}>
+        <Text style={{color: "white", fontSize: 20, textAlign: 'center'}}> Select Asset </Text>
+    </TouchableOpacity>
+  )
+}
 
   return (
     <View style={styles.mainContainer} >
-      <View style={styles.menuLayout}>
-        <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              backgroundColor: 'black',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={countup}
-          >
-            <Text style={{color: "white"}}> Up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-          style={{
-            flex:1,
-            backgroundColor: 'gray',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-              onPress={countdown}
-          >
-            <Text style={{color: "white"}}> Down</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>{glidNumber}</Text></View>
-        <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              backgroundColor: 'black',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={countup}
-          >
-            <Text style={{color: "white"}}> Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-          style={{
-            flex:1,
-            backgroundColor: 'gray',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-              onPress={closeHandler}
-          >
-            <Text style={{color: "white"}}> Close</Text>
-          </TouchableOpacity>
-        </View>
-
-      </View>
-       
-      <View style={styles.mapLayout}>
-        { mapIsOpen && (
-          <MapView
-            style={styles.map}
-            mapType={"satellite"}
-            initialRegion={mapState.region}
-          >
-          </MapView>
-        )}
-      </View>
-
-      <TouchableOpacity style={styles.assetButtonLayout} onPress={assetSelectHandler}>
-        <Text style={{color: "white", fontSize: 20, textAlign: 'center'}}> Select Asset </Text>
-      </TouchableOpacity>
-      
-      <View style={styles.controllerLayout}>
-        <TouchableOpacity style={styles.controlButtons} onPress={() => addData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})} >
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/plus.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} onPress={() => deleteData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/minus.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} onPress={moveLeft}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/left.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} onPress={moveDown}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/down.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} onPress={moveUp}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/up.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} onPress={moveRight}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/right.png')} />
-        </TouchableOpacity>
-      </View>
+      <TopAreaComponents />
+      <MapAreaComponents />
+      <SelectButton />
+      <BottomAreaComponents />
 
       { dataViewIsOpen && (
         <ImageDataView imgObj={imgObj}/>
