@@ -29,9 +29,10 @@ const StorageControl = (props: any) => {
     const dummydata = [];
 
     const setFileNameHandler = (name: string) => {
-        console.log("<StorageControl>");
-        console.log(" setFileNameHandler");
-        console.log("   name= "+ name);
+        // console.log("<StorageControl>");
+        // console.log(" setFileNameHandler");
+        // console.log("   name= "+ name);
+
         // データベースのキーが重複しないかチェック
 
         if(name !== "") createData(name);

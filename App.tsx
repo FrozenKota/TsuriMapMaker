@@ -20,11 +20,12 @@ const App = () => {
     const [ asEditMode, setAsEditMode ] = useState(false);
     const [ asViewMode, setAsViewMode ] = useState(false);
 
-    const stateContext = {storageControlIsOpen, mapEditorIsOpen, asCreateMode, asEditMode, asViewMode, stateIs};
-    const setStateContext = {setStorageControlIsOpen, setMapEditorIsOpen, setAsCreateMode, setAsEditMode, setAsViewMode, setStateIs};
-
     const [ imgObj, setImgObj ] = useState<{
-        key: string,
+        fileName: string,
+        initStatus: {
+            location: boolean,
+            divNum: boolean,
+        },
         isInitialized: boolean,
         divNumX: number,
         divNumY: number,
@@ -37,7 +38,11 @@ const App = () => {
         imgData:any
       }>
       ({
-        key: "sample",
+        fileName: "",
+        initStatus: {
+            location: true,
+            divNum: true,
+        },
         isInitialized: false,
         divNumX: 10,
         divNumY: 10,
@@ -71,11 +76,12 @@ const App = () => {
     }
 
     const storageEventHandler = (e:any) => {
-        console.log("<App> ");
-        console.log(" storageEventHandler")
-        console.log("  e=");
-        console.log(e);
-        const tmpObj: any = eventManager;
+        // console.log("<App> ");
+        // console.log(" storageEventHandler")
+        // console.log("  e=");
+        // console.log(e);
+
+        let tmpObj: any = eventManager;
         tmpObj['fileName'] = e['fileName'];
         tmpObj['option'] = e['option'];
 
@@ -84,6 +90,12 @@ const App = () => {
         console.log(eventManager);
 
         if(eventManager.fileName !== "" && (eventManager.option === "new" || eventManager.option === "gallery")){
+            tmpObj = imgObj;
+            tmpObj.fileName = e['fileName'];
+            tmpObj.initStatus.initLocation = true;
+            tmpObj.initStatus.initDivNum = true;
+            console.log(imgObj);
+            setImgObj(tmpObj);
             setMapEditorIsOpen(true);
         }else{
             setMapEditorIsOpen(false);
@@ -107,40 +119,38 @@ const App = () => {
     }
 
     return(
-        <SequenceContext.Provider value={{stateIs, setStateIs}}>
-            <View style={styles.mainContainer}>
-                <View style={styles.titleLayout}>
-                    <Text style={styles.titleName}>タイトル表示エリア</Text>
-                </View>
-
-                <View style={styles.selectButtonLayout}>
-                    <MenuButton title={' N E W '} handler={() => {storageControlHandler({option: "new"})}}/>
-                    <MenuButton title={' E D I T '} handler={() => {storageControlHandler({option: "edit"})}} />
-                    <MenuButton title={' G A L L E R Y '} handler={() => {storageControlHandler({option: "gallery"})}} />
-                </View>
-
-                <View style={styles.footerLayout}>
-                </View>
-
-                {storageControlIsOpen && (
-                    <StorageControl 
-                        closeHandler={closeStorageControlHandler} 
-                        option={storageControlOption}
-                        imgObj={imgObj}
-                        storageEvent={(e: any) => {storageEventHandler(e)}}
-                    />
-                )}
-
-                {mapEditorIsOpen && (
-                    <MapEditor imgObj={imgObj} 
-                        addData={(imgData: any) => addNewImgData(imgData)} 
-                        deleteData={(imgData: any) => deleteImgData(imgData)}
-                        closeHandler={closeMapEditorHandler}
-                        editType={eventManager.option}
-                    />
-                )}
+        <View style={styles.mainContainer}>
+            <View style={styles.titleLayout}>
+                <Text style={styles.titleName}>タイトル表示エリア</Text>
             </View>
-        </SequenceContext.Provider>
+
+            <View style={styles.selectButtonLayout}>
+                <MenuButton title={' N E W '} handler={() => {storageControlHandler({option: "new"})}}/>
+                <MenuButton title={' E D I T '} handler={() => {storageControlHandler({option: "edit"})}} />
+                <MenuButton title={' G A L L E R Y '} handler={() => {storageControlHandler({option: "gallery"})}} />
+            </View>
+
+            <View style={styles.footerLayout}>
+            </View>
+
+            {storageControlIsOpen && (
+                <StorageControl 
+                    closeHandler={closeStorageControlHandler} 
+                    option={storageControlOption}
+                    imgObj={imgObj}
+                    storageEvent={(e: any) => {storageEventHandler(e)}}
+                />
+            )}
+
+            {mapEditorIsOpen && (
+                <MapEditor imgObj={imgObj} 
+                    addData={(imgData: any) => addNewImgData(imgData)} 
+                    deleteData={(imgData: any) => deleteImgData(imgData)}
+                    closeHandler={closeMapEditorHandler}
+                    editType={eventManager.option}
+                />
+            )}
+        </View>
     )
 }
 

@@ -15,22 +15,6 @@ const ASPECT_RATIO = width / height;
 const MapEditor = (props: any) => {
   const {closeHandler, imgObj, addData, deleteData} = props;
 
-  const [ mapState, setMapState] = useState<{
-    region: { 
-      latitude: number,
-      longitude: number,
-      latitudeDelta: number,
-      longitudeDelta: number,
-    },
-  }>
-  ({
-    region: {
-      latitude: 34.6963315,
-      longitude: 139.3749429,
-      latitudeDelta: 0.05,
-      longitudeDelta: 0.05 * ASPECT_RATIO,
-    },
-  })
   const [ glidNumber, setGlidNumber ] = useState(10);
   const [ vertical, setVertical] = useState(1);
   const [ horizontal, setHorizontal] = useState(1);
@@ -76,13 +60,15 @@ const MapEditor = (props: any) => {
 
   // Main Components
 const TopAreaComponents = () => {
+
   const InitLocationMenu = () => {
     return(
       <View style={styles.menuLayout}>
-        <View style={{...styles.menuButtons, backgroundColor: 'green'}}>
-          <Text style={{textAlign: 'center', fontSize: 50}}>init Location Menu</Text>
+        <View style={{...styles.initMenu, backgroundColor: 'black'}}>
+          <Text style={{color: 'white', textAlign: 'center', fontSize: width/20}}>地図を動かして好きな編集領域を表示</Text>
+          <Text style={{color: 'lightblue', textAlign: 'center', fontSize: width/20}}>OKボタンで決定です</Text>
         </View>
-      </View>
+      </View> 
     )
   }
   const InitDivNumMenu = () => {
@@ -150,11 +136,22 @@ const TopAreaComponents = () => {
     )
   }
 
-  return (
-    <>
-      <EditMapMode />
-    </>
-  )
+  if(imgObj.initStatus.location){
+    console.log("#init Location Mode")
+    return(
+      <><InitLocationMenu /></>
+    )
+  }else if(imgObj.initStatus.divNum){
+    console.log("#init DivNum Mode")
+    return(
+      <><InitDivNumMenu /></>
+    )
+  }else{
+    console.log("#edit Map Mode")
+    return (
+      <><EditMapMode /></>
+    )
+  }
 }
 const MapAreaComponents = () => {
   return (
@@ -163,7 +160,7 @@ const MapAreaComponents = () => {
         <MapView
           style={styles.map}
           mapType={"satellite"}
-          initialRegion={mapState.region}
+          initialRegion={imgObj.region}
         >
         </MapView>
       )}
@@ -252,6 +249,13 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     borderRadius: 10,
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  initMenu: {
+    flex: 1,
+    flexDirection: 'column',
+    height: '100%',
     alignContent: 'center',
     justifyContent: 'center',
   },
