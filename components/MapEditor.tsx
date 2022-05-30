@@ -57,166 +57,187 @@ const MapEditor = (props: any) => {
         setAssetIsOpen(false);
         setCurrentImageTag(imageTag);
   }
+  const onRegionChange = (e: any) => {
+    console.log(e);
+  }
 
   // Main Components
-const TopAreaComponents = () => {
+  const TopAreaComponents = () => {
 
-  const InitLocationMenu = () => {
-    return(
-      <View style={styles.menuLayout}>
-        <View style={{...styles.initMenu, backgroundColor: 'black'}}>
-          <Text style={{color: 'white', textAlign: 'center', fontSize: width/20}}>地図を動かして好きな編集領域を表示</Text>
-          <Text style={{color: 'lightblue', textAlign: 'center', fontSize: width/20}}>OKボタンで決定です</Text>
+    const InitLocationMenu = () => {
+      return(
+        <View style={styles.menuLayout}>
+          <View style={{...styles.initMenu, backgroundColor: 'black'}}>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: width/20}}>地図を動かして好きな編集領域を表示</Text>
+            <Text style={{color: 'lightblue', textAlign: 'center', fontSize: width/20}}>OKボタンで決定です</Text>
+          </View>
+        </View> 
+      )
+    }
+    const InitDivNumMenu = () => {
+      return(
+        <View style={styles.menuLayout}>
+          <View style={{...styles.menuButtons, backgroundColor: 'green'}}>
+            <Text style={{textAlign: 'center', fontSize: 50}}>Init DivNum Menu</Text>
+          </View>
         </View>
-      </View> 
-    )
-  }
-  const InitDivNumMenu = () => {
-    return(
-      <View style={styles.menuLayout}>
-        <View style={{...styles.menuButtons, backgroundColor: 'green'}}>
-          <Text style={{textAlign: 'center', fontSize: 50}}>Init DivNum Menu</Text>
-        </View>
-      </View>
-    )
-  }
-  const EditMapMode = () => {
-    return(
-      <View style={styles.menuLayout}>
-        <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
-          <TouchableOpacity
+      )
+    }
+    const EditMapMode = () => {
+      return(
+        <View style={styles.menuLayout}>
+          <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                backgroundColor: 'black',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={countup}
+            >
+              <Text style={{color: "white"}}> Up</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
             style={{
-              flex: 1,
-              backgroundColor: 'black',
+              flex:1,
+              backgroundColor: 'gray',
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={countup}
-          >
-            <Text style={{color: "white"}}> Up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-          style={{
-            flex:1,
-            backgroundColor: 'gray',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-              onPress={countdown}
-          >
-            <Text style={{color: "white"}}> Down</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>{glidNumber}</Text></View>
-        <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
-          <TouchableOpacity
+                onPress={countdown}
+            >
+              <Text style={{color: "white"}}> Down</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>{glidNumber}</Text></View>
+          <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                backgroundColor: 'black',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={countup}
+            >
+            <Text style={{color: "white"}}> Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
             style={{
-              flex: 1,
-              backgroundColor: 'black',
+              flex:1,
+              backgroundColor: 'gray',
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={countup}
-          >
-          <Text style={{color: "white"}}> Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-          style={{
-            flex:1,
-            backgroundColor: 'gray',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-              onPress={closeHandler}
-          >
-            <Text style={{color: "white"}}> Close</Text>
-          </TouchableOpacity>
+                onPress={closeHandler}
+            >
+              <Text style={{color: "white"}}> Close</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    )
-  }
+      )
+    }
 
-  if(imgObj.initStatus.location){
-    console.log("#init Location Mode")
-    return(
-      <><InitLocationMenu /></>
-    )
-  }else if(imgObj.initStatus.divNum){
-    console.log("#init DivNum Mode")
-    return(
-      <><InitDivNumMenu /></>
-    )
-  }else{
-    console.log("#edit Map Mode")
+    if(imgObj.initStatus.location){
+      console.log("#init Location Mode")
+      return(
+        <><InitLocationMenu /></>
+      )
+    }else if(imgObj.initStatus.divNum){
+      console.log("#init DivNum Mode")
+      return(
+        <><InitDivNumMenu /></>
+      )
+    }else{
+      console.log("#edit Map Mode")
+      return (
+        <><EditMapMode /></>
+      )
+    }
+  }
+  const MapAreaComponents = () => {
     return (
-      <><EditMapMode /></>
+      <View style={styles.mapLayout}>
+        { mapIsOpen && (
+          <MapView
+            style={styles.map}
+            mapType={"satellite"}
+            initialRegion={imgObj.region}
+            onRegionChangeComplete={(e:any) => onRegionChange(e)}
+          >
+          </MapView>
+        )}
+      </View>
     )
   }
-}
-const MapAreaComponents = () => {
-  return (
-    <View style={styles.mapLayout}>
-      { mapIsOpen && (
-        <MapView
-          style={styles.map}
-          mapType={"satellite"}
-          initialRegion={imgObj.region}
-        >
-        </MapView>
-      )}
+  const SelectButton = () => {
+    return (
+      <TouchableOpacity style={styles.okButtonForInitLocation} onPress={assetSelectHandler}>
+          <Text style={{color: "darkblue", fontSize: 20}}> 決定 </Text>
+      </TouchableOpacity>
+    )
+  }
+  const BottomAreaComponents = () => {
+    return (
+      <View style={styles.controllerLayout}>
+      <TouchableOpacity style={styles.controlButtons} onPress={() => addData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})} >
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/plus.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.controlButtons} onPress={() => deleteData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})}>
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/minus.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.controlButtons} onPress={moveLeft}>
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/left.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.controlButtons} onPress={moveDown}>
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/down.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.controlButtons} onPress={moveUp}>
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/up.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.controlButtons} onPress={moveRight}>
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/right.png')} />
+      </TouchableOpacity>
     </View>
-  )
-}
-const BottomAreaComponents = () => {
-  return (
-    <View style={styles.controllerLayout}>
-    <TouchableOpacity style={styles.controlButtons} onPress={() => addData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})} >
-      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/plus.png')} />
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.controlButtons} onPress={() => deleteData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})}>
-      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/minus.png')} />
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.controlButtons} onPress={moveLeft}>
-      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/left.png')} />
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.controlButtons} onPress={moveDown}>
-      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/down.png')} />
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.controlButtons} onPress={moveUp}>
-      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/up.png')} />
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.controlButtons} onPress={moveRight}>
-      <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/right.png')} />
-    </TouchableOpacity>
-  </View>
-  )
-}
-const SelectButton = () => {
-  return (
-    <TouchableOpacity style={styles.assetButtonLayout} onPress={assetSelectHandler}>
-        <Text style={{color: "white", fontSize: 20, textAlign: 'center'}}> Select Asset </Text>
-    </TouchableOpacity>
-  )
-}
+    )
+  }
 
-// Overlay Components
-const OverlayComponents = () => {
-  return (
-    <>
-      { dataViewIsOpen && (
-        <ImageDataView imgObj={imgObj}/>
-      )}
-      
-      { gridLineIsOpen && (
-        <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
-      )}
+  // Overlay Components
+  const OverlayComponents = () => {
+    return (
+      <>
+        { dataViewIsOpen && (
+          <ImageDataView imgObj={imgObj}/>
+        )}
+        
+        { gridLineIsOpen && (
+          <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
+        )}
 
-      { assetIsOpen && (
-        <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
-      )}
-    </>
-  )
-}
+        { assetIsOpen && (
+          <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
+        )}
+
+        { true && (
+          <View style={{position: 'absolute', width: '100%', height: 100, top: 120, backgroundColor: 'black', opacity: 0.6,}}>
+            <Text style={{color: 'white',fontSize: width/20,}}>
+              latitude = {imgObj.region.latitude}     
+            </Text>
+            <Text style={{color: 'white',fontSize: width/20,}}>
+              longitude = {imgObj.region.longitude}     
+            </Text>
+            <Text style={{color: 'white',fontSize: width/20,}}>
+              latitudeDelta = {imgObj.region.latitudeDelta}     
+            </Text>
+            <Text style={{color: 'white',fontSize: width/20,}}>
+              longitudeDelta = {imgObj.region.longitudeDelta}     
+            </Text>
+          </View>
+        )}
+      </>
+    )
+  }
 
   return (
     <View style={styles.mainContainer} >
@@ -280,6 +301,14 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     backgroundColor: 'green',
+  },
+  okButtonForInitLocation: {
+    width: '100%',
+    height: '5%',
+    flexDirection: 'row',
+    alignContent: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'lightblue',
   },
   controlButtons: {
     flex:1,

@@ -15,11 +15,6 @@ const App = () => {
     const [ storageControlOption, setStorageControlOption ] = useState("");
     const [ mapEditorIsOpen, setMapEditorIsOpen ] = useState(false);
 
-    const [ stateIs , setStateIs ] = useState("menu");
-    const [ asCreateMode, setAsCreateMode ] = useState(false);
-    const [ asEditMode, setAsEditMode ] = useState(false);
-    const [ asViewMode, setAsViewMode ] = useState(false);
-
     const [ imgObj, setImgObj ] = useState<{
         fileName: string,
         initStatus: {
