@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
 import MapView from 'react-native-maps';
 
@@ -12,7 +12,8 @@ const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 
-const MapEditor = (props: any) => {
+const MapEditor = memo((props: any) => {
+  console.log("MapEditor.tsx")
   const {closeHandler, imgObj, addData, deleteData} = props;
 
   const [ glidNumber, setGlidNumber ] = useState(10);
@@ -27,43 +28,43 @@ const MapEditor = (props: any) => {
   const [ assetIsOpen, setAssetIsOpen ] = useState(false);
 
   // Functions(Not component)
-  const countup = () => {
+  const countup = useCallback(() => {
     setGlidNumber(glidNumber + 1);
-  }
-  const countdown = () => {
+  },[])
+  const countdown = useCallback(() => {
     if(glidNumber > 1) setGlidNumber(glidNumber - 1)
     else setGlidNumber(1)
-  }
-  const moveLeft = () => {
+  },[])
+  const moveLeft = useCallback(() => {
     if(horizontal >= 1) setHorizontal( horizontal - 1 )
     else setHorizontal(0)
-  }
-  const moveRight = () => {
+  },[])
+  const moveRight = useCallback(() => {
     setHorizontal(horizontal + 1)
-  }
-  const moveUp = () => {
+  },[])
+  const moveUp = useCallback(() => {
     if(vertical > 1) setVertical( vertical - 1)
     else setVertical(0)
-  }
-  const moveDown = () => {
+  },[])
+  const moveDown = useCallback(() => {
     setVertical( vertical + 1 )
-  }
+  },[])
 
   // Handlers
-  const assetSelectHandler = () => {
+  const assetSelectHandler = useCallback(() => {
     setAssetIsOpen(true);
-  }
-  const closeAssetHandler = (imageTag: number) => {
+  },[])
+  const closeAssetHandler = useCallback((imageTag: number) => {
         setAssetIsOpen(false);
         setCurrentImageTag(imageTag);
-  }
-  const onRegionChange = (e: any) => {
-    console.log(e);
-  }
+  },[])
+  const onRegionChange = useCallback((e: any) => {
+    //console.log(e);
+  },[])
 
   // Main Components
-  const TopAreaComponents = () => {
-
+  const TopAreaComponents = memo(() => {
+    console.log("TopAreaComponents");
     const InitLocationMenu = () => {
       return(
         <View style={styles.menuLayout}>
@@ -155,8 +156,9 @@ const MapEditor = (props: any) => {
         <><EditMapMode /></>
       )
     }
-  }
-  const MapAreaComponents = () => {
+  })
+  const MapAreaComponents = memo(() => {
+    console.log("MapAreaComponents");
     return (
       <View style={styles.mapLayout}>
         { mapIsOpen && (
@@ -170,15 +172,17 @@ const MapEditor = (props: any) => {
         )}
       </View>
     )
-  }
-  const SelectButton = () => {
+  })
+  const SelectButton = memo(() => {
+    console.log("SelectButton");
     return (
       <TouchableOpacity style={styles.okButtonForInitLocation} onPress={assetSelectHandler}>
           <Text style={{color: "darkblue", fontSize: 20}}> 決定 </Text>
       </TouchableOpacity>
     )
-  }
-  const BottomAreaComponents = () => {
+  })
+  const BottomAreaComponents = memo(() => {
+    console.log("ButtomAreaComponents");
     return (
       <View style={styles.controllerLayout}>
       <TouchableOpacity style={styles.controlButtons} onPress={() => addData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})} >
@@ -201,10 +205,11 @@ const MapEditor = (props: any) => {
       </TouchableOpacity>
     </View>
     )
-  }
+  })
 
   // Overlay Components
-  const OverlayComponents = () => {
+  const OverlayComponents = memo(() => {
+    console.log("OverlayComponents");
     return (
       <>
         { dataViewIsOpen && (
@@ -237,7 +242,7 @@ const MapEditor = (props: any) => {
         )}
       </>
     )
-  }
+  })
 
   return (
     <View style={styles.mainContainer} >
@@ -249,7 +254,7 @@ const MapEditor = (props: any) => {
       <OverlayComponents />
     </View> // Container
   )
-}
+})
 
 const styles = StyleSheet.create({
   // 親コンテナ

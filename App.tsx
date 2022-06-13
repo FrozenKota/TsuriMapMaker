@@ -1,4 +1,4 @@
-import React, {useState, createContext} from 'react';
+import React, {useState, memo, useCallback} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions} from  'react-native';
 
 import StorageControl from './components/StorageControl';
@@ -6,11 +6,10 @@ import MapEditor from './components/MapEditor';
 import Images from './Asset/asset';
 import { Image } from 'react-native-svg';
 
-export const SequenceContext = createContext({});
 const { width, height} = Dimensions.get('window');
 
-
 const App = () => {
+    console.log("App.tsx");
     const [ storageControlIsOpen, setStorageControlIsOpen ] = useState(false);
     const [ storageControlOption, setStorageControlOption ] = useState("");
     const [ mapEditorIsOpen, setMapEditorIsOpen ] = useState(false);
@@ -56,21 +55,21 @@ const App = () => {
 
 
     // S1, S2, S3
-    const storageControlHandler = (props: any) => {
+    const storageControlHandler = useCallback((props: any) => {
         const {option} = props;
         setStorageControlOption(option)
         setStorageControlIsOpen(true);
-    }
+    },[])
 
-    const closeStorageControlHandler = () => {
+    const closeStorageControlHandler = useCallback(() => {
         setStorageControlIsOpen(false);
-    }
+    },[])
 
-    const closeMapEditorHandler = () => {
+    const closeMapEditorHandler = useCallback(() => {
         setMapEditorIsOpen(false);
-    }
+    },[])
 
-    const storageEventHandler = (e:any) => {
+    const storageEventHandler = useCallback((e:any) => {
         // console.log("<App> ");
         // console.log(" storageEventHandler")
         // console.log("  e=");
@@ -81,8 +80,8 @@ const App = () => {
         tmpObj['option'] = e['option'];
 
         setEventManager(tmpObj);
-        console.log('  evengManager=')
-        console.log(eventManager);
+        //console.log('  evengManager=')
+        //console.log(eventManager);
 
         if(eventManager.fileName !== "" && (eventManager.option === "new" || eventManager.option === "gallery")){
             tmpObj = imgObj;
@@ -95,23 +94,23 @@ const App = () => {
         }else{
             setMapEditorIsOpen(false);
         }
-    }
+    },[])
 
-    const addNewImgData = (imgData: any) => {
+    const addNewImgData = useCallback((imgData: any) => {
         const {PosX, PosY, source} = imgData;
 
         const tmpImgObj: any = imgObj;
         tmpImgObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, source: source};;
         setImgObj(tmpImgObj);
-    }
+    },[])
 
-    const deleteImgData = (imgData: any) => {
+    const deleteImgData = useCallback((imgData: any) => {
         const {PosX, PosY, source} = imgData;
 
         const tmpImgObj: any = imgObj;
         delete tmpImgObj.imgData['xy'+String(PosX)+String(PosY)];
         setImgObj(tmpImgObj);
-    }
+    },[])
 
     return(
         <View style={styles.mainContainer}>
