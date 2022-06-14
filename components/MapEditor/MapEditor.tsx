@@ -2,10 +2,10 @@ import React, { useState, memo, useCallback} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
 import MapView from 'react-native-maps';
 
-import Images from '../Asset/asset';
-import GridLine from './GridLine';
-import AssetWindow from './Asset';
-import ImageDataView from './DataView'
+import Images from '../../Asset/asset';
+import GridLine from '../GridLine';
+import AssetWindow from '../Asset';
+import ImageDataView from '../DataView'
 
 const { width, height } = Dimensions.get('window');
 //const MAP_STYLE =  require('./mapstyle.json');
@@ -157,7 +157,7 @@ const MapEditor = memo((props: any) => {
       )
     }
   })
-  const MapAreaComponents = memo(() => {
+  const MapAreaComponents = memo((props:any) => {
     console.log("MapAreaComponents");
     return (
       <View style={styles.mapLayout}>
@@ -173,7 +173,7 @@ const MapEditor = memo((props: any) => {
       </View>
     )
   })
-  const SelectButton = memo(() => {
+  const SelectButton = memo((props:any) => {
     console.log("SelectButton");
     return (
       <TouchableOpacity style={styles.okButtonForInitLocation} onPress={assetSelectHandler}>
@@ -181,34 +181,34 @@ const MapEditor = memo((props: any) => {
       </TouchableOpacity>
     )
   })
-  const BottomAreaComponents = memo(() => {
+  const BottomAreaComponents = memo((props:any) => {
     console.log("ButtomAreaComponents");
     return (
       <View style={styles.controllerLayout}>
       <TouchableOpacity style={styles.controlButtons} onPress={() => addData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})} >
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/plus.png')} />
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/plus.png')} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.controlButtons} onPress={() => deleteData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})}>
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/minus.png')} />
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/minus.png')} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.controlButtons} onPress={moveLeft}>
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/left.png')} />
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/left.png')} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.controlButtons} onPress={moveDown}>
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/down.png')} />
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/down.png')} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.controlButtons} onPress={moveUp}>
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/up.png')} />
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/up.png')} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.controlButtons} onPress={moveRight}>
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../Asset/Buttons/right.png')} />
+        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/right.png')} />
       </TouchableOpacity>
     </View>
     )
   })
 
   // Overlay Components
-  const OverlayComponents = memo(() => {
+  const OverlayComponents = memo((props:any) => {
     console.log("OverlayComponents");
     return (
       <>
@@ -247,7 +247,7 @@ const MapEditor = memo((props: any) => {
   return (
     <View style={styles.mainContainer} >
       <TopAreaComponents />
-      <MapAreaComponents />
+      <MapAreaComponents initialRegion={imgObj.region} mapType={"satelite"} onRegionChange={onRegionChange}/>
       <SelectButton />
       <BottomAreaComponents />
 

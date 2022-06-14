@@ -2,7 +2,7 @@ import React, {useState, memo, useCallback} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions} from  'react-native';
 
 import StorageControl from './components/StorageControl';
-import MapEditor from './components/MapEditor';
+import MapEditor from './components/MapEditor/MapEditor';
 import Images from './Asset/asset';
 import { Image } from 'react-native-svg';
 
