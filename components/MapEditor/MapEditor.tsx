@@ -5,7 +5,9 @@ import MapView from 'react-native-maps';
 import Images from '../../Asset/asset';
 import GridLine from '../GridLine';
 import AssetWindow from '../Asset';
-import ImageDataView from '../DataView'
+import ImageDataView from '../DataView';
+import MapAreaComponents from './MapAreaComponents'
+import TopAreaComponents from './TopAreaComponents';
 
 const { width, height } = Dimensions.get('window');
 //const MAP_STYLE =  require('./mapstyle.json');
@@ -14,7 +16,7 @@ const ASPECT_RATIO = width / height;
 
 const MapEditor = memo((props: any) => {
   console.log("MapEditor.tsx")
-  const {closeHandler, imgObj, addData, deleteData} = props;
+  const {closeMapEditorHandler, imgObj, addData, deleteData} = props;
 
   const [ glidNumber, setGlidNumber ] = useState(10);
   const [ vertical, setVertical] = useState(1);
@@ -62,117 +64,6 @@ const MapEditor = memo((props: any) => {
     //console.log(e);
   },[])
 
-  // Main Components
-  const TopAreaComponents = memo(() => {
-    console.log("TopAreaComponents");
-    const InitLocationMenu = () => {
-      return(
-        <View style={styles.menuLayout}>
-          <View style={{...styles.initMenu, backgroundColor: 'black'}}>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: width/20}}>地図を動かして好きな編集領域を表示</Text>
-            <Text style={{color: 'lightblue', textAlign: 'center', fontSize: width/20}}>OKボタンで決定です</Text>
-          </View>
-        </View> 
-      )
-    }
-    const InitDivNumMenu = () => {
-      return(
-        <View style={styles.menuLayout}>
-          <View style={{...styles.menuButtons, backgroundColor: 'green'}}>
-            <Text style={{textAlign: 'center', fontSize: 50}}>Init DivNum Menu</Text>
-          </View>
-        </View>
-      )
-    }
-    const EditMapMode = () => {
-      return(
-        <View style={styles.menuLayout}>
-          <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                backgroundColor: 'black',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={countup}
-            >
-              <Text style={{color: "white"}}> Up</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            style={{
-              flex:1,
-              backgroundColor: 'gray',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-                onPress={countdown}
-            >
-              <Text style={{color: "white"}}> Down</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>{glidNumber}</Text></View>
-          <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                backgroundColor: 'black',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={countup}
-            >
-            <Text style={{color: "white"}}> Save</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            style={{
-              flex:1,
-              backgroundColor: 'gray',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-                onPress={closeHandler}
-            >
-              <Text style={{color: "white"}}> Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )
-    }
-
-    if(imgObj.initStatus.location){
-      console.log("#init Location Mode")
-      return(
-        <><InitLocationMenu /></>
-      )
-    }else if(imgObj.initStatus.divNum){
-      console.log("#init DivNum Mode")
-      return(
-        <><InitDivNumMenu /></>
-      )
-    }else{
-      console.log("#edit Map Mode")
-      return (
-        <><EditMapMode /></>
-      )
-    }
-  })
-  const MapAreaComponents = memo((props:any) => {
-    console.log("MapAreaComponents");
-    return (
-      <View style={styles.mapLayout}>
-        { mapIsOpen && (
-          <MapView
-            style={styles.map}
-            mapType={"satellite"}
-            initialRegion={imgObj.region}
-            onRegionChangeComplete={(e:any) => onRegionChange(e)}
-          >
-          </MapView>
-        )}
-      </View>
-    )
-  })
   const SelectButton = memo((props:any) => {
     console.log("SelectButton");
     return (
@@ -246,8 +137,8 @@ const MapEditor = memo((props: any) => {
 
   return (
     <View style={styles.mainContainer} >
-      <TopAreaComponents />
-      <MapAreaComponents initialRegion={imgObj.region} mapType={"satelite"} onRegionChange={onRegionChange}/>
+      <TopAreaComponents initStatus={imgObj.initStatus} countup={countup} countdown={countdown} closeHandler={closeMapEditorHandler} />
+      <MapAreaComponents initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)}/>
       <SelectButton />
       <BottomAreaComponents />
 
@@ -289,9 +180,6 @@ const styles = StyleSheet.create({
   mapLayout: {
     width: '100%',
     height: '70%',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
   },
   // コントロールボタン配置エリア
   controllerLayout: {
