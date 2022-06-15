@@ -16,7 +16,7 @@
  * Input
 *****************************************************/
 
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ITextInput from './ITextInput';

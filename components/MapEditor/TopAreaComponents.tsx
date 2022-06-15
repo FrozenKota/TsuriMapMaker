@@ -1,18 +1,18 @@
-import React, { useState, memo, useCallback} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
-import MapView from 'react-native-maps';
+import React, {memo} from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions} from 'react-native';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 
 const TopAreaComponents = memo((props:any) => {
     console.log("TopAreaComponents");
+
     const InitLocationMenu = () => {
       return(
         <View style={styles.menuLayout}>
           <View style={{...styles.initMenu, backgroundColor: 'black'}}>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: width/20}}>地図を動かして好きな編集領域を表示</Text>
-            <Text style={{color: 'lightblue', textAlign: 'center', fontSize: width/20}}>OKボタンで決定です</Text>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: width/20}}>地図の位置選択</Text>
+            <Text style={{color: 'lightblue', textAlign: 'center', fontSize: width/20}}>OKボタンで決定（未実装）</Text>
           </View>
         </View> 
       )
@@ -21,7 +21,7 @@ const TopAreaComponents = memo((props:any) => {
       return(
         <View style={styles.menuLayout}>
           <View style={{...styles.menuButtons, backgroundColor: 'green'}}>
-            <Text style={{textAlign: 'center', fontSize: 40}}>Init DivNum Menu</Text>
+            <Text style={{textAlign: 'center', fontSize: 40}}>アセット配置の細かさ設定</Text>
           </View>
         </View>
       )

@@ -8,6 +8,7 @@ import ImageDataView from '../DataView';
 import MapAreaComponents from './MapAreaComponents'
 import TopAreaComponents from './TopAreaComponents';
 import SelectButton from './SelectButton';
+import BottomAreaComponents from './BottomAreaComponents';
 
 const { width, height } = Dimensions.get('window');
 //const MAP_STYLE =  require('./mapstyle.json');
@@ -23,32 +24,32 @@ const MapEditor = memo((props: any) => {
 
   // Components display statment
   const [ mapIsOpen, setMapIsOpen ] = useState(true);
-  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(false);
-  const [ dataViewIsOpen, setDataViewIsOpen ] = useState(false);
+  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(true);
+  const [ dataViewIsOpen, setDataViewIsOpen ] = useState(true);
   const [ assetIsOpen, setAssetIsOpen ] = useState(false);
 
   // Functions(Not component)
   const countup = useCallback(() => {
     setGlidNumber(glidNumber + 1);
-  },[])
+  },[glidNumber])
   const countdown = useCallback(() => {
     if(glidNumber > 1) setGlidNumber(glidNumber - 1)
     else setGlidNumber(1)
-  },[])
+  },[glidNumber])
   const moveLeft = useCallback(() => {
     if(horizontal >= 1) setHorizontal( horizontal - 1 )
     else setHorizontal(0)
-  },[])
+  },[horizontal])
   const moveRight = useCallback(() => {
     setHorizontal(horizontal + 1)
-  },[])
+  },[horizontal])
   const moveUp = useCallback(() => {
     if(vertical > 1) setVertical( vertical - 1)
     else setVertical(0)
-  },[])
+  },[vertical])
   const moveDown = useCallback(() => {
     setVertical( vertical + 1 )
-  },[])
+  },[vertical])
 
   // Handlers
   const assetSelectHandler = useCallback(() => {
@@ -64,46 +65,12 @@ const MapEditor = memo((props: any) => {
     console.log("----------------------");
   },[])
 
-  // const SelectButton = memo((props:any) => {
-  //   console.log("SelectButton");
-  //   return (
-  //     <TouchableOpacity style={styles.okButtonForInitLocation} onPress={assetSelectHandler}>
-  //         <Text style={{color: "darkblue", fontSize: 20}}> 決定 </Text>
-  //     </TouchableOpacity>
-  //   )
-  // })
-  const BottomAreaComponents = memo((props:any) => {
-    console.log("ButtomAreaComponents");
-    return (
-      <View style={styles.controllerLayout}>
-      <TouchableOpacity style={styles.controlButtons} onPress={() => addData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})} >
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/plus.png')} />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.controlButtons} onPress={() => deleteData({PosX: horizontal, PosY: vertical, source: Images[currentImageTag]})}>
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/minus.png')} />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.controlButtons} onPress={moveLeft}>
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/left.png')} />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.controlButtons} onPress={moveDown}>
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/down.png')} />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.controlButtons} onPress={moveUp}>
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/up.png')} />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.controlButtons} onPress={moveRight}>
-        <Image style={{resizeMode: 'stretch', width: width/6, height: height*0.1}} source={require('../../Asset/Buttons/right.png')} />
-      </TouchableOpacity>
-    </View>
-    )
-  })
-
   return (
     <View style={styles.mainContainer} >
       <TopAreaComponents initStatus={imgObj.initStatus} countup={countup} countdown={countdown} closeHandler={closeMapEditorHandler} />
       <MapAreaComponents initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)}/>
       <SelectButton assetSelectHandler={assetSelectHandler}/>
-      <BottomAreaComponents />
+      <BottomAreaComponents addData={addData} deleteData={deleteData} moveLeft={moveLeft} moveDown={moveDown} moveUp={moveUp} moveRight={moveRight} horizontal={horizontal} vertical={vertical} currentImageTag={currentImageTag} />
 
       { dataViewIsOpen && (
         <ImageDataView imgObj={imgObj}/>
