@@ -1,10 +1,9 @@
-import React, {useState, memo, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions} from  'react-native';
 
 import StorageControl from './components/StorageControl';
 import MapEditor from './components/MapEditor/MapEditor';
 import Images from './Asset/asset';
-import { Image } from 'react-native-svg';
 
 const { width, height} = Dimensions.get('window');
 
@@ -100,12 +99,12 @@ const App = () => {
         const {PosX, PosY, source} = imgData;
 
         const tmpImgObj: any = imgObj;
-        tmpImgObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, source: source};;
+        tmpImgObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, source: source}
         setImgObj(tmpImgObj);
     },[])
 
     const deleteImgData = useCallback((imgData: any) => {
-        const {PosX, PosY, source} = imgData;
+        const {PosX, PosY} = imgData;
 
         const tmpImgObj: any = imgObj;
         delete tmpImgObj.imgData['xy'+String(PosX)+String(PosY)];
@@ -140,7 +139,7 @@ const App = () => {
                 <MapEditor imgObj={imgObj} 
                     addData={(imgData: any) => addNewImgData(imgData)} 
                     deleteData={(imgData: any) => deleteImgData(imgData)}
-                    closeHandler={closeMapEditorHandler}
+                    closeMapEditorHandler={closeMapEditorHandler}
                     editType={eventManager.option}
                 />
             )}

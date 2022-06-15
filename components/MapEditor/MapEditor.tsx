@@ -1,6 +1,5 @@
 import React, { useState, memo, useCallback} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
-import MapView from 'react-native-maps';
 
 import Images from '../../Asset/asset';
 import GridLine from '../GridLine';
@@ -8,11 +7,10 @@ import AssetWindow from '../Asset';
 import ImageDataView from '../DataView';
 import MapAreaComponents from './MapAreaComponents'
 import TopAreaComponents from './TopAreaComponents';
+import SelectButton from './SelectButton';
 
 const { width, height } = Dimensions.get('window');
 //const MAP_STYLE =  require('./mapstyle.json');
-
-const ASPECT_RATIO = width / height;
 
 const MapEditor = memo((props: any) => {
   console.log("MapEditor.tsx")
@@ -61,17 +59,19 @@ const MapEditor = memo((props: any) => {
         setCurrentImageTag(imageTag);
   },[])
   const onRegionChange = useCallback((e: any) => {
-    //console.log(e);
+    console.log("----onRegionChange----");
+    console.log(e);
+    console.log("----------------------");
   },[])
 
-  const SelectButton = memo((props:any) => {
-    console.log("SelectButton");
-    return (
-      <TouchableOpacity style={styles.okButtonForInitLocation} onPress={assetSelectHandler}>
-          <Text style={{color: "darkblue", fontSize: 20}}> 決定 </Text>
-      </TouchableOpacity>
-    )
-  })
+  // const SelectButton = memo((props:any) => {
+  //   console.log("SelectButton");
+  //   return (
+  //     <TouchableOpacity style={styles.okButtonForInitLocation} onPress={assetSelectHandler}>
+  //         <Text style={{color: "darkblue", fontSize: 20}}> 決定 </Text>
+  //     </TouchableOpacity>
+  //   )
+  // })
   const BottomAreaComponents = memo((props:any) => {
     console.log("ButtomAreaComponents");
     return (
@@ -98,51 +98,41 @@ const MapEditor = memo((props: any) => {
     )
   })
 
-  // Overlay Components
-  const OverlayComponents = memo((props:any) => {
-    console.log("OverlayComponents");
-    return (
-      <>
-        { dataViewIsOpen && (
-          <ImageDataView imgObj={imgObj}/>
-        )}
-        
-        { gridLineIsOpen && (
-          <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
-        )}
-
-        { assetIsOpen && (
-          <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
-        )}
-
-        { true && (
-          <View style={{position: 'absolute', width: '100%', height: 100, top: 120, backgroundColor: 'black', opacity: 0.6,}}>
-            <Text style={{color: 'white',fontSize: width/20,}}>
-              latitude = {imgObj.region.latitude}     
-            </Text>
-            <Text style={{color: 'white',fontSize: width/20,}}>
-              longitude = {imgObj.region.longitude}     
-            </Text>
-            <Text style={{color: 'white',fontSize: width/20,}}>
-              latitudeDelta = {imgObj.region.latitudeDelta}     
-            </Text>
-            <Text style={{color: 'white',fontSize: width/20,}}>
-              longitudeDelta = {imgObj.region.longitudeDelta}     
-            </Text>
-          </View>
-        )}
-      </>
-    )
-  })
-
   return (
     <View style={styles.mainContainer} >
       <TopAreaComponents initStatus={imgObj.initStatus} countup={countup} countdown={countdown} closeHandler={closeMapEditorHandler} />
       <MapAreaComponents initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)}/>
-      <SelectButton />
+      <SelectButton assetSelectHandler={assetSelectHandler}/>
       <BottomAreaComponents />
 
-      <OverlayComponents />
+      { dataViewIsOpen && (
+        <ImageDataView imgObj={imgObj}/>
+      )}
+        
+      { gridLineIsOpen && (
+        <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
+      )}
+
+      { assetIsOpen && (
+        <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
+      )}
+
+      { false && (
+        <View style={{position: 'absolute', width: '100%', height: 100, top: 120, backgroundColor: 'black', opacity: 0.6,}}>
+          <Text style={{color: 'white',fontSize: width/20,}}>
+            latitude = {imgObj.region.latitude}     
+          </Text>
+          <Text style={{color: 'white',fontSize: width/20,}}>
+            longitude = {imgObj.region.longitude}     
+          </Text>
+          <Text style={{color: 'white',fontSize: width/20,}}>
+            latitudeDelta = {imgObj.region.latitudeDelta}     
+          </Text>
+          <Text style={{color: 'white',fontSize: width/20,}}>
+            longitudeDelta = {imgObj.region.longitudeDelta}     
+          </Text>
+        </View>
+      )}
     </View> // Container
   )
 })

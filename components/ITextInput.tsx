@@ -1,6 +1,5 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text, TextInput, TouchableOpacity, Dimensions } from 'react-native';
-import { SequenceContext } from '../App'
 
 const { width, height } = Dimensions.get('window');
 

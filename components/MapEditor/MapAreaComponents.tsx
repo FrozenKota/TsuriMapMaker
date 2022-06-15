@@ -1,5 +1,5 @@
-import React, { useState, memo, useCallback} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import MapView from 'react-native-maps';
 
 const MapAreaComponents = (props:any) => {

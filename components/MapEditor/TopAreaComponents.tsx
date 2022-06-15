@@ -21,7 +21,7 @@ const TopAreaComponents = memo((props:any) => {
       return(
         <View style={styles.menuLayout}>
           <View style={{...styles.menuButtons, backgroundColor: 'green'}}>
-            <Text style={{textAlign: 'center', fontSize: 50}}>Init DivNum Menu</Text>
+            <Text style={{textAlign: 'center', fontSize: 40}}>Init DivNum Menu</Text>
           </View>
         </View>
       )
