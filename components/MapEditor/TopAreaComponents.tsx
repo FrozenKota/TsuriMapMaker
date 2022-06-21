@@ -11,8 +11,7 @@ const TopAreaComponents = memo((props:any) => {
       return(
         <View style={styles.menuLayout}>
           <View style={{...styles.initMenu, backgroundColor: 'black'}}>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: width/20}}>地図の位置選択</Text>
-            <Text style={{color: 'lightblue', textAlign: 'center', fontSize: width/20}}>OKボタンで決定（未実装）</Text>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: width/15}}>地図を動かして、エリアを選択🐟</Text>
           </View>
         </View> 
       )
@@ -20,8 +19,8 @@ const TopAreaComponents = memo((props:any) => {
     const InitDivNumMenu = () => {
       return(
         <View style={styles.menuLayout}>
-          <View style={{...styles.menuButtons, backgroundColor: 'green'}}>
-            <Text style={{textAlign: 'center', fontSize: 40}}>アセット配置の細かさ設定</Text>
+          <View style={{...styles.initMenu, backgroundColor: 'black'}}>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 20}}>アセット配置の細かさ設定</Text>
           </View>
         </View>
       )

@@ -111,6 +111,14 @@ const App = () => {
         setImgObj(tmpImgObj);
     },[])
 
+    const setRegionHandler = useCallback((region:any) => {
+        console.log("setRegionHandler");
+        const tmpObj = imgObj;
+        tmpObj['region'] = region;
+        tmpObj.initStatus['location'] = false;
+        setImgObj(tmpObj);
+    },[imgObj.initStatus])
+
     return(
         <View style={styles.mainContainer}>
             <View style={styles.titleLayout}>
@@ -139,6 +147,7 @@ const App = () => {
                 <MapEditor imgObj={imgObj} 
                     addData={(imgData: any) => addNewImgData(imgData)} 
                     deleteData={(imgData: any) => deleteImgData(imgData)}
+                    setRegionHandler={(region: any) => setRegionHandler(region)}
                     closeMapEditorHandler={closeMapEditorHandler}
                     editType={eventManager.option}
                 />
