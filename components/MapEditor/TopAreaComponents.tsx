@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions} from 'react-nativ
 const { width } = Dimensions.get('window');
 
 
-const TopAreaComponents = memo((props:any) => {
+const TopAreaComponents = (props:any) => {
     console.log("TopAreaComponents");
 
     const InitLocationMenu = () => {
@@ -17,15 +17,6 @@ const TopAreaComponents = memo((props:any) => {
       )
     }
     const InitDivNumMenu = () => {
-      return(
-        <View style={styles.menuLayout}>
-          <View style={{...styles.initMenu, backgroundColor: 'black'}}>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 20}}>アセット配置の細かさ設定</Text>
-          </View>
-        </View>
-      )
-    }
-    const EditMapMode = () => {
       return(
         <View style={styles.menuLayout}>
           <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
@@ -52,34 +43,20 @@ const TopAreaComponents = memo((props:any) => {
               <Text style={{color: "white"}}> Down</Text>
             </TouchableOpacity>
           </View>
-          <View style={{...styles.menuButtons, backgroundColor: 'green'}}><Text style={{textAlign: 'center', fontSize: 50}}>hoge</Text></View>
-          <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                backgroundColor: 'black',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={props.countup}
-            >
-            <Text style={{color: "white"}}> Save</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            style={{
-              flex:1,
-              backgroundColor: 'gray',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-                onPress={props.closeMapEditorHandler}
-            >
-              <Text style={{color: "white"}}> Close</Text>
-            </TouchableOpacity>
+          <View style={{...styles.menuButtons, backgroundColor: 'darkblue'}}><Text style={{color: 'white', textAlign: 'center', fontSize: 20}}>分割数を設定！</Text></View>
+        </View>
+      )
+    }
+    const EditMapMode = () => {
+      return(
+        <View style={styles.menuLayout}>
+          <View style={{...styles.initMenu, backgroundColor: 'black'}}>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 20}}>地図を編集しよう</Text>
           </View>
         </View>
       )
     }
+
 
     if(props.initStatus.location){
       console.log("#init Location Mode")
@@ -97,7 +74,7 @@ const TopAreaComponents = memo((props:any) => {
         <><EditMapMode /></>
       )
     }
-})
+}
 
 export default TopAreaComponents;
 

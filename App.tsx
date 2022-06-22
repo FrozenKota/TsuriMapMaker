@@ -46,7 +46,7 @@ const App = () => {
             longitudeDelta: 0.05 * (width / height),
         },
         imgData: {
-            xy00:{PosX: 0, PosY: 0, source:Images[5]}
+            xy00:{PosX: 0, PosY: 0, source:Images[-1]}
         },
     })
 
@@ -112,12 +112,20 @@ const App = () => {
     },[])
 
     const setRegionHandler = useCallback((region:any) => {
-        console.log("setRegionHandler");
+        console.log("setRegionHandler(App.tsx)");
         const tmpObj = imgObj;
         tmpObj['region'] = region;
-        tmpObj.initStatus['location'] = false;
+        tmpObj.initStatus['location'] = false;  // 地図位置設定フラグを解除
         setImgObj(tmpObj);
-    },[imgObj.initStatus])
+    },[])
+
+    const setDivNumHandler = useCallback(({divNumX, divNumY}: any) => {
+        console.log("setDivNumHandler(App.tsx)")
+        const tmpObj = imgObj;
+        tmpObj['divNumX'] = divNumX;
+        tmpObj['divNumY'] = divNumY;
+        tmpObj.initStatus['divNum'] = false;    // 分割数設定フラグを解除
+    },[])
 
     return(
         <View style={styles.mainContainer}>
@@ -148,6 +156,7 @@ const App = () => {
                     addData={(imgData: any) => addNewImgData(imgData)} 
                     deleteData={(imgData: any) => deleteImgData(imgData)}
                     setRegionHandler={(region: any) => setRegionHandler(region)}
+                    setDivNumHandler={(divNum: any) => setDivNumHandler(divNum)}
                     closeMapEditorHandler={closeMapEditorHandler}
                     editType={eventManager.option}
                 />

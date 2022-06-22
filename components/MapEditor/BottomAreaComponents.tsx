@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get('window');
 
 
 const BottomAreaComponents = memo((props:any) => {
-    console.log("ButtomAreaComponents");
+    console.log("BottomAreaComponents");
     return (
       <View style={styles.controllerLayout}>
       <TouchableOpacity style={styles.controlButtons} onPress={() => props.addData({PosX: props.horizontal, PosY: props.vertical, source: Images[props.currentImageTag]})} >

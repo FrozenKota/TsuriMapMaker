@@ -15,13 +15,17 @@ const { width, height } = Dimensions.get('window');
 
 const MapEditor = memo((props: any) => {
   console.log("MapEditor.tsx")
-  const {closeMapEditorHandler, imgObj, addData, deleteData, setRegionHandler} = props;
+  // props
+  const {closeMapEditorHandler, imgObj, addData, deleteData, setRegionHandler, setDivNumHandler} = props;
 
+  // useState
   const [ glidNumber, setGlidNumber ] = useState(10);
   const [ vertical, setVertical] = useState(1);
   const [ horizontal, setHorizontal] = useState(1);
   const [ currentImageTag, setCurrentImageTag] = useState(-1);
   const [ regionTemp, setRegionTemp] = useState({region:{}});
+  const [ locationIsSelected, setLocationIsSelected ] = useState(imgObj.initStatus.location);
+  const [ divNumIsSelected, setDivNumIsSelected ] = useState(imgObj.initStatus.divNum);
 
   // Components display statment
   const [ mapIsOpen, setMapIsOpen ] = useState(true);
@@ -62,16 +66,19 @@ const MapEditor = memo((props: any) => {
   },[])
   const onRegionChange = useCallback((region: any) => {
     console.log("onRegionChange");
-    // 位置をstateの仮保存. (決定ボタン押下で、親)
- //   setRegionTemp(region);
-    regionTemp['region'] = {...region};
+    let tmp = regionTemp;
+    tmp['region'] = {...region};
+    setRegionTemp(tmp);
     console.log(regionTemp);
   },[])
   const onRegionSelect = useCallback(() => {
     console.log("onRegionSelect")
     setRegionHandler(regionTemp['region']);
     console.log(regionTemp['region']);
-  },[])
+
+    setLocationIsSelected(false);
+  },[locationIsSelected])
+
   const setPreviewMode = useCallback((e: boolean) => {
     if(e === true){
       setDataViewIsOpen(false);
@@ -86,15 +93,15 @@ const MapEditor = memo((props: any) => {
   return (
     <View style={styles.mainContainer} >
       <TopAreaComponents initStatus={imgObj.initStatus} countup={countup} countdown={countdown} closeHandler={closeMapEditorHandler} />
-      <MapAreaComponents initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)}/>
+      <MapAreaComponents initStatus={imgObj.initStatus} initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)}/>
       <SelectButton assetSelectHandler={assetSelectHandler} initStatus={imgObj.initStatus} onRegionSelect={onRegionSelect} />
       <BottomAreaComponents addData={addData} deleteData={deleteData} moveLeft={moveLeft} moveDown={moveDown} moveUp={moveUp} moveRight={moveRight} horizontal={horizontal} vertical={vertical} currentImageTag={currentImageTag}/>
 
-      { dataViewIsOpen && (
+      { dataViewIsOpen || (!imgObj.initStatus.location && imgObj.initStatus.divNum) && (
         <ImageDataView imgObj={imgObj}/>
       )}
         
-      { gridLineIsOpen && (
+      { gridLineIsOpen || (!imgObj.initStatus.location && imgObj.initStatus.divNum) && (
         <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
       )}
 
