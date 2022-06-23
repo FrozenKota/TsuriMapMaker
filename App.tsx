@@ -46,7 +46,7 @@ const App = () => {
             longitudeDelta: 0.05 * (width / height),
         },
         imgData: {
-            xy00:{PosX: 0, PosY: 0, source:Images[-1]}
+            xy00:{PosX: 0, PosY: 0, source:Images[3]}
         },
     })
 
@@ -124,6 +124,7 @@ const App = () => {
         const tmpObj = imgObj;
         tmpObj['divNumX'] = divNumX;
         tmpObj['divNumY'] = divNumY;
+        setImgObj(tmpObj);
         tmpObj.initStatus['divNum'] = false;    // 分割数設定フラグを解除
     },[])
 

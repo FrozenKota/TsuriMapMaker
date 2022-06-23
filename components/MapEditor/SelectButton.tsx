@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 const SelectButton = memo((props:any) => {
     console.log("SelectButton");
-    const {assetSelectHandler, initStatus, onRegionSelect} = props;
+    const {assetSelectHandler, initStatus, onRegionSelect, onDivNumSelect} = props;
 
     const InitLocationMenu = () => {
         return (
@@ -16,7 +16,7 @@ const SelectButton = memo((props:any) => {
     }
     const InitDivNumMenu = () => {
         return(
-            <TouchableOpacity style={styles.okButtonForInitLocation} onPress={assetSelectHandler}>
+            <TouchableOpacity style={styles.okButtonForInitLocation} onPress={onDivNumSelect}>
                 <Text style={{color: "white", fontSize: 20}}> 分割数を決定 </Text>
             </TouchableOpacity>
         )

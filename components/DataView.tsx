@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
       top: '15%',
       left: 0,
       height: '70%',
-      width: width,
+      width: '100%',
     }
 })
 

@@ -1,5 +1,5 @@
 import React, { useState, memo, useCallback} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
+import { StyleSheet, View, Text, Dimensions} from 'react-native';
 
 import Images from '../../Asset/asset';
 import GridLine from '../GridLine';
@@ -34,10 +34,10 @@ const MapEditor = memo((props: any) => {
   const [ assetIsOpen, setAssetIsOpen ] = useState(false);
 
   // Functions(Not component)
-  const countup = useCallback(() => {
+  const upDivNum = useCallback(() => {
     setGlidNumber(glidNumber + 1);
   },[glidNumber,imgObj.initStatus])
-  const countdown = useCallback(() => {
+  const downDivNum = useCallback(() => {
     if(glidNumber > 1) setGlidNumber(glidNumber - 1)
     else setGlidNumber(1)
   },[glidNumber])
@@ -60,10 +60,12 @@ const MapEditor = memo((props: any) => {
   const assetSelectHandler = useCallback(() => {
     setAssetIsOpen(true);
   },[])
+  
   const closeAssetHandler = useCallback((imageTag: number) => {
         setAssetIsOpen(false);
         setCurrentImageTag(imageTag);
   },[])
+
   const onRegionChange = useCallback((region: any) => {
     console.log("onRegionChange");
     let tmp = regionTemp;
@@ -71,6 +73,7 @@ const MapEditor = memo((props: any) => {
     setRegionTemp(tmp);
     console.log(regionTemp);
   },[])
+
   const onRegionSelect = useCallback(() => {
     console.log("onRegionSelect")
     setRegionHandler(regionTemp['region']);
@@ -79,29 +82,32 @@ const MapEditor = memo((props: any) => {
     setLocationIsSelected(false);
   },[locationIsSelected])
 
-  const setPreviewMode = useCallback((e: boolean) => {
-    if(e === true){
-      setDataViewIsOpen(false);
-      setGridLineIsOpen(false);
-    }else{
+  const onDivNumSelect = useCallback(() => {
+    console.log("onDivNumSelect")
+    setDivNumHandler(glidNumber);
+    console.log(glidNumber );
+    enableEditMode()
+    setDivNumIsSelected(!setDivNumIsSelected);
+  },[divNumIsSelected])
+
+  const enableEditMode = () => {
       setDataViewIsOpen(true);
       setGridLineIsOpen(true);
-    }
-  },[])
+  }
 
 
   return (
     <View style={styles.mainContainer} >
-      <TopAreaComponents initStatus={imgObj.initStatus} countup={countup} countdown={countdown} closeHandler={closeMapEditorHandler} />
-      <MapAreaComponents initStatus={imgObj.initStatus} initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)}/>
-      <SelectButton assetSelectHandler={assetSelectHandler} initStatus={imgObj.initStatus} onRegionSelect={onRegionSelect} />
+      <TopAreaComponents initStatus={imgObj.initStatus} countup={upDivNum} countdown={downDivNum} closeHandler={closeMapEditorHandler} />
+      <MapAreaComponents initStatus={imgObj.initStatus} initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)} />
+      <SelectButton assetSelectHandler={assetSelectHandler} initStatus={imgObj.initStatus} enableEditMode={enableEditMode} onRegionSelect={onRegionSelect} onDivNumSelect={onDivNumSelect} />
       <BottomAreaComponents addData={addData} deleteData={deleteData} moveLeft={moveLeft} moveDown={moveDown} moveUp={moveUp} moveRight={moveRight} horizontal={horizontal} vertical={vertical} currentImageTag={currentImageTag}/>
 
-      { dataViewIsOpen || (!imgObj.initStatus.location && imgObj.initStatus.divNum) && (
+      { ((!imgObj.initStatus.location && imgObj.initStatus.divNum) || dataViewIsOpen) && (
         <ImageDataView imgObj={imgObj}/>
       )}
         
-      { gridLineIsOpen || (!imgObj.initStatus.location && imgObj.initStatus.divNum) && (
+      { ((!imgObj.initStatus.location && imgObj.initStatus.divNum) || gridLineIsOpen) && (
         <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
       )}
 
