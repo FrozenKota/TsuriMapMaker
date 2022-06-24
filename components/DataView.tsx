@@ -18,37 +18,37 @@ import {View, Dimensions, StyleSheet, Image } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 const ImgDataView = (props: any) => {
+  const {imgObj} = props;
 
-    const {imgObj} = props;
+  const divX = width / imgObj.divNumX;
+  const divY = divX;
+  const keys = Object.keys(imgObj.imgData);
 
-    const divX = width  / imgObj.divNumX;
-    const keys = Object.keys(imgObj.imgData);
+  const items = keys.map((value: any, index: number)=>
+    <View key={index} style={{
+      position: 'absolute',
+      top: imgObj.imgData[keys[index]].PosY * divX,
+      left: imgObj.imgData[keys[index]].PosX * divY,
+      width: width / imgObj.divNumX, 
+      height: (height*0.7) / imgObj.divNumX,
+      opacity: 1.0,
+    }}>
+    <Image 
+      style={{
+        resizeMode: 'stretch',
+        width: divX,
+        height: divY,
+      }}
+      source={imgObj.imgData[keys[index]].source}
+    />
+    </View>
+  );
 
-    const items = keys.map((value: any, index: number)=>
-      <View key={index} style={{
-        position: 'absolute',
-        top: imgObj.imgData[keys[index]].PosY * divX,
-        left: imgObj.imgData[keys[index]].PosX * divX,
-        width: width / imgObj.divNumX, 
-        height: (height*0.7) / imgObj.divNumY,
-        opacity: 1.0,
-      }}>
-        <Image 
-          style={{
-            resizeMode: 'stretch',
-            width: width / imgObj.divNumX,
-            height: width / imgObj.divNumX,
-          }}
-          source={imgObj.imgData[keys[index]].source}
-        />
-      </View>
-    );
-
-    return (
-      <View style={styles.iOverlay}>
-        {items}
-      </View>
-    );
+  return (
+    <View style={styles.iOverlay}>
+      {items}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

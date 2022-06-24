@@ -119,11 +119,11 @@ const App = () => {
         setImgObj(tmpObj);
     },[])
 
-    const setDivNumHandler = useCallback(({divNumX, divNumY}: any) => {
+    const setDivNumHandler = useCallback((divNumX: any) => {
         console.log("setDivNumHandler(App.tsx)")
         const tmpObj = imgObj;
         tmpObj['divNumX'] = divNumX;
-        tmpObj['divNumY'] = divNumY;
+        tmpObj['divNumY'] = divNumX;
         setImgObj(tmpObj);
         tmpObj.initStatus['divNum'] = false;    // 分割数設定フラグを解除
     },[])
