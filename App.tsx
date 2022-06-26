@@ -67,26 +67,20 @@ const App = () => {
     },[])
 
     const storageEventHandler = useCallback((e:any) => {
-        // console.log("<App> ");
-        // console.log(" storageEventHandler")
-        // console.log("  e=");
-        // console.log(e);
-
-        let tmpObj: any = eventManager;
-        tmpObj['fileName'] = e['fileName'];
-        tmpObj['option'] = e['option'];
-
-        setEventManager(tmpObj);
-        //console.log('  evengManager=')
-        //console.log(eventManager);
-
-        if(eventManager.fileName !== "" && (eventManager.option === "new" || eventManager.option === "gallery")){
-            tmpObj = imgObj;
-            tmpObj.fileName = e['fileName'];
+        console.log("storageEventHandler(App.tsx)")
+        let tmpObj: any = imgObj;
+        const {fileName, option} = e;
+        
+        if(fileName !== "" && option === 'new'){
+            tmpObj.fileName = fileName;
+            // 地図位置、分割数設定シーケンスを有効化
             tmpObj.initStatus.initLocation = true;
             tmpObj.initStatus.initDivNum = true;
             console.log(imgObj);
             setImgObj(tmpObj);
+
+            console.log("fileName is " + fileName);
+            
             setMapEditorIsOpen(true);
         }else{
             setMapEditorIsOpen(false);
@@ -126,6 +120,12 @@ const App = () => {
         tmpObj.initStatus['divNum'] = false;    // 分割数設定フラグを解除
     },[])
 
+    const setFileNameHandler = useCallback((fileName: any) => {
+        const tmpObj = imgObj;
+        tmpObj['fileName'] = fileName;
+        setImgObj(tmpObj);
+    },[])
+
     return(
         <View style={styles.mainContainer}>
             <View style={styles.titleLayout}>
@@ -151,7 +151,8 @@ const App = () => {
             )}
 
             {mapEditorIsOpen && (
-                <MapEditor imgObj={imgObj} 
+                <MapEditor 
+                    imgObj={imgObj} 
                     addData={(imgData: any) => addNewImgData(imgData)} 
                     deleteData={(imgData: any) => deleteImgData(imgData)}
                     setRegionHandler={(region: any) => setRegionHandler(region)}

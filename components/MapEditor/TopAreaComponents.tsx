@@ -6,82 +6,82 @@ const { width } = Dimensions.get('window');
 
 
 const TopAreaComponents = (props:any) => {
-    console.log("TopAreaComponents");
+  const {fileName} = props;
+  console.log("TopAreaComponents");
 
-    const InitLocationMenu = () => {
-      return(
-        <View style={styles.menuLayout}>
-          <View style={{...styles.initMenu, backgroundColor: 'black'}}>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: width/15}}>地図を動かして、エリアを選択🐟</Text>
-          </View>
-        </View> 
-      )
-    }
-    const InitDivNumMenu = () => {
-      return(
-        <View style={styles.menuLayout}>
-          <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                backgroundColor: 'black',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={props.countup}
-            >
-              <Text style={{color: "white"}}> Up</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+  const InitLocationMenu = () => {
+    return(
+      <View style={styles.menuLayout}>
+        <View style={{...styles.initMenu, backgroundColor: 'black'}}>
+          <Text style={{color: 'white', textAlign: 'center', fontSize: width/15}}>地図を動かして、エリアを選択🐟</Text>
+        </View>
+      </View> 
+    )
+  }
+  const InitDivNumMenu = () => {
+    return(
+      <View style={styles.menuLayout}>
+        <View style={{...styles.menuButtons, backgroundColor: 'brown'}}>
+          <TouchableOpacity
             style={{
-              flex:1,
-              backgroundColor: 'gray',
+              flex: 1,
+              backgroundColor: 'black',
               justifyContent: 'center',
               alignItems: 'center',
             }}
-                onPress={props.countdown}
-            >
-              <Text style={{color: "white"}}> Down</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{...styles.menuButtons, backgroundColor: 'darkblue'}}><Text style={{color: 'white', textAlign: 'center', fontSize: 20}}>分割数を設定！</Text></View>
-        </View>
-      )
-    }
-    const EditMapMode = () => {
-      return(
-        <View style={styles.menuLayout}>
-          <View style={{...styles.initMenu, backgroundColor: 'black'}}>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 20}}>地図を編集しよう</Text>
-            <Text style={{color: 'gray', textAlign: 'center', fontSize: 10}}>hoge</Text>
-          </View>
-          <TouchableOpacity style={styles.saveButton} onPress={()=>{console.log("SAVE")}}>
-            <Text style={{color:'white', fontSize:(width*0.25)/5}}>SAVE</Text>
+            onPress={props.countup}
+          >
+            <Text style={{color: "white"}}> Up</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.closeButton} onPress={()=>{console.log("CLOSE")}}>
-            <Text style={{color:'white', fontSize:(width*0.25)/5}}>CLOSE</Text>
+          <TouchableOpacity
+          style={{
+            flex:1,
+            backgroundColor: 'gray',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+              onPress={props.countdown}
+          >
+            <Text style={{color: "white"}}> Down</Text>
           </TouchableOpacity>
         </View>
-      )
-    }
+        <View style={{...styles.menuButtons, backgroundColor: 'darkblue'}}><Text style={{color: 'white', textAlign: 'center', fontSize: 20}}>分割数を設定！</Text></View>
+      </View>
+    )
+  }
+  const EditMapMode = () => {
+    return(
+      <View style={styles.menuLayout}>
+        <View style={{...styles.initMenu, backgroundColor: 'black'}}>
+          <Text style={{color: 'white', textAlign: 'center', fontSize: 20}}>地図を編集しよう</Text>
+          <Text style={{color: 'gray', textAlign: 'center', fontSize: 15}}>{fileName}</Text>
+        </View>
+        <TouchableOpacity style={styles.saveButton} onPress={()=>{console.log("SAVE")}}>
+          <Text style={{color:'white', fontSize:(width*0.25)/5}}>SAVE</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.closeButton} onPress={()=>{console.log("CLOSE")}}>
+          <Text style={{color:'white', fontSize:(width*0.25)/5}}>CLOSE</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
 
-
-    if(props.initStatus.location){
-      console.log("#init Location Mode")
-      return(
-        <><InitLocationMenu /></>
-      )
-    }else if(props.initStatus.divNum){
-      console.log("#init DivNum Mode")
-      return(
-        <><InitDivNumMenu /></>
-      )
-    }else{
-      console.log("#edit Map Mode")
-      return (
-        <><EditMapMode /></>
-      )
-    }
+  if(props.initStatus.location){
+    console.log("#init Location Mode")
+    return(
+      <><InitLocationMenu /></>
+    )
+  }else if(props.initStatus.divNum){
+    console.log("#init DivNum Mode")
+    return(
+      <><InitDivNumMenu /></>
+    )
+  }else{
+    console.log("#edit Map Mode")
+    return (
+      <><EditMapMode /></>
+    )
+  }
 }
 
 export default TopAreaComponents;

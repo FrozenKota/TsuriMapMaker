@@ -29,16 +29,12 @@ const StorageControl = (props: any) => {
     const dummydata = [];
 
     const setFileNameHandler = (name: string) => {
-        // console.log("<StorageControl>");
-        // console.log(" setFileNameHandler");
-        // console.log("   name= "+ name);
-
         // データベースのキーが重複しないかチェック
 
-        if(name !== "") createData(name);
+        // if(name !== "") createData(name);
 
         // <StorageControl> の状態を返す
-        storageEvent({fileName: name, option: option});
+        storageEvent({fileName: name, option: 'new'});
 
         //ITextInput をクローズ
         closeHandler();
