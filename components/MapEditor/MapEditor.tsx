@@ -88,13 +88,12 @@ const MapEditor = memo((props: any) => {
     console.log(glidNumber );
     enableEditMode()
     setDivNumIsSelected(!setDivNumIsSelected);
-  },[divNumIsSelected])
+  },[divNumIsSelected, glidNumber])
 
   const enableEditMode = () => {
       setDataViewIsOpen(true);
       setGridLineIsOpen(true);
   }
-
 
   return (
     <View style={styles.mainContainer} >
@@ -201,4 +200,3 @@ const styles = StyleSheet.create({
 });
 
 export default MapEditor;
-//export default SvgExample;

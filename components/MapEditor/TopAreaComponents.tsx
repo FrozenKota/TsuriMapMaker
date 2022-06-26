@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions} from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Touchable} from 'react-native';
+import { isArgumentsObject } from 'util/types';
 
 const { width } = Dimensions.get('window');
 
@@ -52,7 +53,14 @@ const TopAreaComponents = (props:any) => {
         <View style={styles.menuLayout}>
           <View style={{...styles.initMenu, backgroundColor: 'black'}}>
             <Text style={{color: 'white', textAlign: 'center', fontSize: 20}}>地図を編集しよう</Text>
+            <Text style={{color: 'gray', textAlign: 'center', fontSize: 10}}>hoge</Text>
           </View>
+          <TouchableOpacity style={styles.saveButton} onPress={()=>{console.log("SAVE")}}>
+            <Text style={{color:'white', fontSize:(width*0.25)/5}}>SAVE</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.closeButton} onPress={()=>{console.log("CLOSE")}}>
+            <Text style={{color:'white', fontSize:(width*0.25)/5}}>CLOSE</Text>
+          </TouchableOpacity>
         </View>
       )
     }
@@ -91,6 +99,7 @@ const styles = StyleSheet.create({
       width: '100%',
       height: '15%',
       justifyContent: 'center',
+      alignContent: 'center',
       flexDirection: 'row',
     },
     menuButtons: {
@@ -101,11 +110,33 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     initMenu: {
-      flex: 1,
+      flex: 3,
       flexDirection: 'column',
       height: '100%',
-      alignContent: 'center',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    saveButton: {
+      flex: 1,
+      height: '100%',
+      color: 'white',
+      borderColor: 'white',
+      borderWidth: 3,
+      backgroundColor: 'darkblue',
+      alignItems: 'center',
       justifyContent: 'center',
+      marginHorizontal: 1,
+    },
+    closeButton: {
+      flex: 1,
+      height: '100%',
+      color: 'white',
+      borderColor: 'white',
+      borderWidth: 2,
+      backgroundColor: 'darkred',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: 1,
     },
     // GoogleMap表示エリア設定
     mapLayout: {

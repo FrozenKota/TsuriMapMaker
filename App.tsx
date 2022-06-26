@@ -19,7 +19,6 @@ const App = () => {
             location: boolean,
             divNum: boolean,
         },
-        isInitialized: boolean,
         divNumX: number,
         divNumY: number,
         region: {
@@ -36,7 +35,6 @@ const App = () => {
             location: true,
             divNum: true,
         },
-        isInitialized: false,
         divNumX: 10,
         divNumY: 10,
         region: {
