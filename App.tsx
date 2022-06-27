@@ -1,7 +1,7 @@
 import React, {useState, useCallback} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Dimensions} from  'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions, Alert} from  'react-native';
 
-import StorageControl from './components/StorageControl';
+import StorageControl, {createData, readData} from './components/StorageControl';
 import MapEditor from './components/MapEditor/MapEditor';
 import Images from './Asset/asset';
 
@@ -68,20 +68,34 @@ const App = () => {
 
     const storageEventHandler = useCallback((e:any) => {
         console.log("storageEventHandler(App.tsx)")
+
         let tmpObj: any = imgObj;
+        let readDataBuffer: any;
+        let readListBuffer: any;
         const {fileName, option} = e;
         
+        // セーブデータ新規作成
         if(fileName !== "" && option === 'new'){
-            tmpObj.fileName = fileName;
-            // 地図位置、分割数設定シーケンスを有効化
-            tmpObj.initStatus.initLocation = true;
-            tmpObj.initStatus.initDivNum = true;
-            console.log(imgObj);
-            setImgObj(tmpObj);
+            // ファイル名重複確認
+            readDataBuffer = readData(fileName);
+            if(readDataBuffer !== null){
+                Alert.alert("使われているファイル名です")
+                console.log("使われているファイル名です");
+            }else{
+                // ファイル名とシーケンス情報を設定
+                tmpObj.fileName = fileName;
+                tmpObj.initStatus.initLocation = true;  // 位置設定シーケンスを有効
+                tmpObj.initStatus.initDivNum = true;    // 分割数設定シーケンスを有効
+                setImgObj(tmpObj);
+                createData(tmpObj);
+                readListBuffer = readData("List");
+                if(readListBuffer === null){
+                
+                }else{
 
-            console.log("fileName is " + fileName);
-            
-            setMapEditorIsOpen(true);
+                }
+                setMapEditorIsOpen(true);               // 地図編集画面起動
+            }
         }else{
             setMapEditorIsOpen(false);
         }

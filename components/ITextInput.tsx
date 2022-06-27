@@ -8,10 +8,6 @@ const ITextInput = (props: any) => {
     const [text, onChangeText] = useState('');
 
     const okHandler = () => {
-        
-        // console.log("<ITextInput>");
-        // console.log(" okHandler");
-        // console.log("   text= "+text);
         closeHandler(text);
     }
 

@@ -29,10 +29,7 @@ const StorageControl = (props: any) => {
     const dummydata = [];
 
     const setFileNameHandler = (name: string) => {
-        // データベースのキーが重複しないかチェック
-
-        // if(name !== "") createData(name);
-
+        console.log("setFileNameHandler(StorageControl.tsx)");
         // <StorageControl> の状態を返す
         storageEvent({fileName: name, option: 'new'});
 
@@ -48,6 +45,7 @@ const StorageControl = (props: any) => {
         title = "閲覧したいファイルを選択"
     }
 
+    // デモ用　ダミー空データ
     for (let i = 0; i < 20; i ++){
         dummydata.push(
             <TouchableOpacity key={i} onPress={() => {closeHandler}}>
@@ -101,29 +99,28 @@ const DataBlock = (props: any) => {
 export default StorageControl;
 
 // Write save data
-const createData = async(fileName: string) => {
+export const createData = async(imgObj: any) => {
     console.log("#Saving data")
-    console.log(fileName);
+    console.log(imgObj.fileName);
     try {
-        const jsonValue = JSON.stringify(value);
-        await AsyncStorage.setItem('data1', jsonValue);
+        const jsonValue = JSON.stringify(imgObj);
+        await AsyncStorage.setItem(imgObj.fileName, jsonValue);
     } catch (e) {
         // saving error
     }
 }
 
 // Read save data
-// const readData = async() => {
-//     try {
-//         const loadedValue = await AsyncStorage.getItem('data1');
-//         console.log("Loaded data");
-//         console.log(loadedValue);
-//         return loadedValue != null ? JSON.parse(loadedValue) : null;
-//     } catch (e) {
-//         // error reading value
-//         console.log("error");
-//     }
-// }
+export const readData = async(e: string) => {
+    console.log("readData(StorageControl.tsx)")
+    try {
+        const dataBuffer = await AsyncStorage.getItem(e);
+        return dataBuffer != null ? JSON.parse(dataBuffer) : null;
+    } catch (e) {
+        // error reading value
+        console.log("error");
+    }
+}
 
 const styles = StyleSheet.create({
     h1: {
