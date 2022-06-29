@@ -50,6 +50,16 @@ const App = () => {
 
     const [ eventManager, setEventManager ] = useState({fileName:"", option:""});
 
+    const initNewData = () => {
+        imgObj.initStatus['location'] = true;
+        imgObj.initStatus['divNum'] = true;
+        imgObj['region'] = {
+            latitude: 34.6963315, 
+            longitude: 139.3749429,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05 * (width / height),
+        };
+    }
 
     // S1, S2, S3
     const storageControlHandler = useCallback((props: any) => {
@@ -78,31 +88,31 @@ const App = () => {
         // セーブデータ新規作成
         if(newFileName !== "" && option === 'new'){
             // ファイル名重複確認.
-            readDataBuffer = readData(newFileName);
-            console.log("2");
-
-            console.log("readDataBuffer("+ newFileName + ") is... ");
-            console.log(readDataBuffer);
-
-            //if(readDataBuffer !== null){
-            if(readDataBuffer !== null){
-                console.log("使われているファイル名です");
-            }else{
-                // ファイル名とシーケンス情報を設定
-                tmpObj.fileName = newFileName;
-                tmpObj.initStatus.initLocation = true;  // 位置設定シーケンスを有効
-                tmpObj.initStatus.initDivNum = true;    // 分割数設定シーケンスを有効
-                setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
-
-                createData({key:{newFileName}, obj:{tmpObj}});
-                readListBuffer = readData("List");
-                if(readListBuffer === null){
-                    
+            readData(newFileName).then(readDataBuffer => {
+                if(readDataBuffer !== null){
+                    console.log("失敗. 使われているファイル名です");
+                    Alert.alert("失敗. 使われているファイル名です");
+                    console.log(readDataBuffer);
                 }else{
-                    console.log("読み出しERROR");
+                    Alert.alert("使用可能なファイル名です");
+                    // ファイル名とシーケンス情報を設定
+                    tmpObj.fileName = newFileName;
+                    tmpObj.initStatus.initLocation = true;  // 位置設定シーケンスを有効
+                    tmpObj.initStatus.initDivNum = true;    // 分割数設定シーケンスを有効
+                    setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
+    
+                    createData({key:{newFileName}, obj:{tmpObj}});
+                    //readListBuffer = readData("List");
+                    if(readListBuffer === null){
+                        
+                    }else{
+
+                    }
+                    initNewData();
+                    setMapEditorIsOpen(true);               // 地図編集画面起動
                 }
-                setMapEditorIsOpen(true);               // 地図編集画面起動
-            }
+                
+            })
         }else{
             setMapEditorIsOpen(false);
         }

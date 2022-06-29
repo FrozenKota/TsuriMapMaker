@@ -6,7 +6,7 @@ const { width } = Dimensions.get('window');
 
 
 const TopAreaComponents = (props:any) => {
-  const {fileName} = props;
+  const {fileName, closeHandler} = props;
   console.log("TopAreaComponents");
 
   const InitLocationMenu = () => {
@@ -59,7 +59,7 @@ const TopAreaComponents = (props:any) => {
         <TouchableOpacity style={styles.saveButton} onPress={()=>{console.log("SAVE")}}>
           <Text style={{color:'white', fontSize:(width*0.25)/5}}>SAVE</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.closeButton} onPress={()=>{console.log("CLOSE")}}>
+        <TouchableOpacity style={styles.closeButton} onPress={closeHandler}>
           <Text style={{color:'white', fontSize:(width*0.25)/5}}>CLOSE</Text>
         </TouchableOpacity>
       </View>

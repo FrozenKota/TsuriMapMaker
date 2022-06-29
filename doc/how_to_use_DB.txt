@@ -39,6 +39,7 @@ DB{					// DB は async-storageの管理ディレクトリを想定
 　　・ファイル名をkeyにデータ書き込み。
 
   - 実装（シーケンス）
-　　・fileNameList:{ }を読み出し
-　　・fileNames　が存在しない場合、オブジェクトを作成
-　　・fileNames
+　　・List:{}を読み出し
+　　・List:{}が存在しない場合、オブジェクトを作成
+　　・List:{}にfileNameを登録
+　　・fileNameをkeyにimgObjを記録

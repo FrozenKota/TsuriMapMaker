@@ -108,15 +108,15 @@ export const createData = async(props: any) => {
         await AsyncStorage.setItem(String(key), jsonValue);
     } catch (e) {
         // saving error
+        console.log("新規 作成失敗");
     }
 }
 
 // Read save data
-export const readData = async(e: string) => {
-    console.log("readData(StorageControl.tsx)")
-    console.log(e + " is now on reading...");
+export const readData = async(name: string) => {
     try {
-        const dataBuffer = await AsyncStorage.getItem(String(e));
+        // AsyncStorage.getItem()が終わるまで待機し、dataBuffer に代入
+        const dataBuffer = await AsyncStorage.getItem(String(name));
         return dataBuffer != null ? JSON.parse(dataBuffer) : null;
     } catch (e) {
         // error reading value

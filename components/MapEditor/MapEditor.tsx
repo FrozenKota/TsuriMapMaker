@@ -66,6 +66,15 @@ const MapEditor = memo((props: any) => {
         setCurrentImageTag(imageTag);
   },[])
 
+  const closeMapEditorHandler1 = useCallback(() => {
+    setMapIsOpen(false);
+    setGridLineIsOpen(false);
+    setDataViewIsOpen(false);
+    setAssetIsOpen(false);
+
+    closeMapEditorHandler();  // 親コンポーネント App.tsx でMapEditor.tsx を非表示. 
+  },[])
+
   const onRegionChange = useCallback((region: any) => {
     console.log("onRegionChange");
     let tmp = regionTemp;
@@ -97,7 +106,7 @@ const MapEditor = memo((props: any) => {
 
   return (
     <View style={styles.mainContainer} >
-      <TopAreaComponents fileName={imgObj.fileName} initStatus={imgObj.initStatus} countup={upDivNum} countdown={downDivNum} closeHandler={closeMapEditorHandler} />
+      <TopAreaComponents fileName={imgObj.fileName} initStatus={imgObj.initStatus} countup={upDivNum} countdown={downDivNum} closeHandler={closeMapEditorHandler1} />
       <MapAreaComponents initStatus={imgObj.initStatus} initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)} />
       <SelectButton assetSelectHandler={assetSelectHandler} initStatus={imgObj.initStatus} enableEditMode={enableEditMode} onRegionSelect={onRegionSelect} onDivNumSelect={onDivNumSelect} />
       <BottomAreaComponents addData={addData} deleteData={deleteData} moveLeft={moveLeft} moveDown={moveDown} moveUp={moveUp} moveRight={moveRight} horizontal={horizontal} vertical={vertical} currentImageTag={currentImageTag}/>
