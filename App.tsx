@@ -69,30 +69,37 @@ const App = () => {
     const storageEventHandler = useCallback((e:any) => {
         console.log("storageEventHandler(App.tsx)")
 
+        const {newFileName, option} = e;
         let tmpObj: any = imgObj;
+        let key: string = "";
         let readDataBuffer: any;
         let readListBuffer: any;
-        const {fileName, option} = e;
         
         // セーブデータ新規作成
-        if(fileName !== "" && option === 'new'){
-            // ファイル名重複確認
-            readDataBuffer = readData(fileName);
+        if(newFileName !== "" && option === 'new'){
+            // ファイル名重複確認.
+            readDataBuffer = readData(newFileName);
+            console.log("2");
+
+            console.log("readDataBuffer("+ newFileName + ") is... ");
+            console.log(readDataBuffer);
+
+            //if(readDataBuffer !== null){
             if(readDataBuffer !== null){
-                Alert.alert("使われているファイル名です")
                 console.log("使われているファイル名です");
             }else{
                 // ファイル名とシーケンス情報を設定
-                tmpObj.fileName = fileName;
+                tmpObj.fileName = newFileName;
                 tmpObj.initStatus.initLocation = true;  // 位置設定シーケンスを有効
                 tmpObj.initStatus.initDivNum = true;    // 分割数設定シーケンスを有効
-                setImgObj(tmpObj);
-                createData(tmpObj);
+                setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
+
+                createData({key:{newFileName}, obj:{tmpObj}});
                 readListBuffer = readData("List");
                 if(readListBuffer === null){
-                
+                    
                 }else{
-
+                    console.log("読み出しERROR");
                 }
                 setMapEditorIsOpen(true);               // 地図編集画面起動
             }

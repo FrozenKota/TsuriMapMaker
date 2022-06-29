@@ -31,7 +31,7 @@ const StorageControl = (props: any) => {
     const setFileNameHandler = (name: string) => {
         console.log("setFileNameHandler(StorageControl.tsx)");
         // <StorageControl> の状態を返す
-        storageEvent({fileName: name, option: 'new'});
+        storageEvent({newFileName: name, option: 'new'});
 
         //ITextInput をクローズ
         closeHandler();
@@ -99,12 +99,13 @@ const DataBlock = (props: any) => {
 export default StorageControl;
 
 // Write save data
-export const createData = async(imgObj: any) => {
-    console.log("#Saving data")
-    console.log(imgObj.fileName);
+export const createData = async(props: any) => {
+    const {key, obj} = props;
+    console.log("createData(StorageControl.tsx)");
+    console.log(props);
     try {
-        const jsonValue = JSON.stringify(imgObj);
-        await AsyncStorage.setItem(imgObj.fileName, jsonValue);
+        const jsonValue = JSON.stringify(obj);
+        await AsyncStorage.setItem(String(key), jsonValue);
     } catch (e) {
         // saving error
     }
@@ -113,8 +114,9 @@ export const createData = async(imgObj: any) => {
 // Read save data
 export const readData = async(e: string) => {
     console.log("readData(StorageControl.tsx)")
+    console.log(e + " is now on reading...");
     try {
-        const dataBuffer = await AsyncStorage.getItem(e);
+        const dataBuffer = await AsyncStorage.getItem(String(e));
         return dataBuffer != null ? JSON.parse(dataBuffer) : null;
     } catch (e) {
         // error reading value
