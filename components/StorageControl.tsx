@@ -101,6 +101,8 @@ export default StorageControl;
 // Write save data
 export const createData = async(props: any) => {
     const {key, obj} = props;
+    console.log("key = ");
+    console.log(key);
     console.log("createData(StorageControl.tsx)");
     console.log(props);
     try {

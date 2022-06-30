@@ -51,14 +51,17 @@ const App = () => {
     const [ eventManager, setEventManager ] = useState({fileName:"", option:""});
 
     const initNewData = () => {
-        imgObj.initStatus['location'] = true;
-        imgObj.initStatus['divNum'] = true;
-        imgObj['region'] = {
+        let tmpObj = imgObj;
+        tmpObj.initStatus['location'] = true;
+        tmpObj.initStatus['divNum'] = true;
+        tmpObj.imgData = {};
+        tmpObj['region'] = {
             latitude: 34.6963315, 
             longitude: 139.3749429,
             latitudeDelta: 0.05,
             longitudeDelta: 0.05 * (width / height),
         };
+        setImgObj(tmpObj);
     }
 
     // S1, S2, S3
@@ -82,9 +85,7 @@ const App = () => {
         const {newFileName, option} = e;
         let tmpObj: any = imgObj;
         let key: string = "";
-        let readDataBuffer: any;
-        let readListBuffer: any;
-        
+
         // セーブデータ新規作成
         if(newFileName !== "" && option === 'new'){
             // ファイル名重複確認.
@@ -94,20 +95,26 @@ const App = () => {
                     Alert.alert("失敗. 使われているファイル名です");
                     console.log(readDataBuffer);
                 }else{
+                    // debug: newFileName は正常な文字列でここまで到達
                     Alert.alert("使用可能なファイル名です");
+
                     // ファイル名とシーケンス情報を設定
                     tmpObj.fileName = newFileName;
                     tmpObj.initStatus.initLocation = true;  // 位置設定シーケンスを有効
                     tmpObj.initStatus.initDivNum = true;    // 分割数設定シーケンスを有効
                     setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
     
-                    createData({key:{newFileName}, obj:{tmpObj}});
-                    //readListBuffer = readData("List");
-                    if(readListBuffer === null){
-                        
-                    }else{
+                    createData({key: newFileName, obj: tmpObj});
 
-                    }
+                    // 新規ファイルのファイル名をリストに追加
+                    readData('nameList').then((nameList) => {
+                        if(nameList === null){
+                            console.log("セーブデータ名リストが無いため、新規作成します。");
+                            //createData({key: 'nameList', obj: {}})
+                        }else{
+                        }
+                    })
+
                     initNewData();
                     setMapEditorIsOpen(true);               // 地図編集画面起動
                 }

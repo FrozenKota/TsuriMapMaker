@@ -27,7 +27,7 @@ const ImgDataView = (props: any) => {
   const keys = Object.keys(imgObj.imgData);
 
   const items = keys.map((value: any, index: number)=>
-    <View key={index} style={{
+    <View key={"view"+index} style={{
       position: 'absolute',
       top: imgObj.imgData[keys[index]].PosY * divX,
       left: imgObj.imgData[keys[index]].PosX * divY,
@@ -35,7 +35,7 @@ const ImgDataView = (props: any) => {
       height: (height*0.7) / imgObj.divNumX,
       opacity: 1.0,
     }}>
-    <Image 
+    <Image key={"img"+index}
       style={{
         resizeMode: 'stretch',
         width: divX,
