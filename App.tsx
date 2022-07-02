@@ -4,6 +4,8 @@ import {StyleSheet, View, Text, TouchableOpacity, Dimensions, Alert} from  'reac
 import StorageControl, {createData, readData} from './components/StorageControl';
 import MapEditor from './components/MapEditor/MapEditor';
 import Images from './Asset/asset';
+import { storage } from './Storage';
+
 
 const { width, height} = Dimensions.get('window');
 
@@ -84,42 +86,63 @@ const App = () => {
 
         const {newFileName, option} = e;
         let tmpObj: any = imgObj;
+        let readDataBuffer;
+        
         let key: string = "";
 
         // セーブデータ新規作成
         if(newFileName !== "" && option === 'new'){
             // ファイル名重複確認.
-            readData(newFileName).then(readDataBuffer => {
-                if(readDataBuffer !== null){
-                    console.log("失敗. 使われているファイル名です");
-                    Alert.alert("失敗. 使われているファイル名です");
-                    console.log(readDataBuffer);
-                }else{
-                    // debug: newFileName は正常な文字列でここまで到達
-                    Alert.alert("使用可能なファイル名です");
-
-                    // ファイル名とシーケンス情報を設定
-                    tmpObj.fileName = newFileName;
-                    tmpObj.initStatus.initLocation = true;  // 位置設定シーケンスを有効
-                    tmpObj.initStatus.initDivNum = true;    // 分割数設定シーケンスを有効
-                    setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
-    
-                    createData({key: newFileName, obj: tmpObj});
-
-                    // 新規ファイルのファイル名をリストに追加
-                    readData('nameList').then((nameList) => {
-                        if(nameList === null){
-                            console.log("セーブデータ名リストが無いため、新規作成します。");
-                            //createData({key: 'nameList', obj: {}})
-                        }else{
-                        }
-                    })
-
-                    initNewData();
-                    setMapEditorIsOpen(true);               // 地図編集画面起動
+            storage
+            .load({key: newFileName})
+            .then(data => {
+                console.log("loaded data is ...");
+                console.log(data);
+            }).catch(err => {
+                console.warn(err.message)
+                switch (err.name){
+                    case 'NotFoundError':
+                        console.warn("NotFoundError has been occured");
+                        return null;
+                    case 'ExpiredError':
+                        console.warn("ExpiredError has been occured");
+                        return null;
+                    default:
+                        return null;
                 }
-                
             })
+        
+            console.log(readDataBuffer);
+            if(readDataBuffer !== null){
+                console.log("失敗. 使われているファイル名です");
+                Alert.alert("失敗. 使われているファイル名です");
+                console.log(readDataBuffer);
+            }else{
+                // debug: newFileName は正常な文字列でここまで到達
+                Alert.alert("使用可能なファイル名です");
+
+                // ファイル名とシーケンス情報を設定
+                tmpObj.fileName = newFileName;
+                tmpObj.initStatus.initLocation = true;  // 位置設定シーケンスを有効
+                tmpObj.initStatus.initDivNum = true;    // 分割数設定シーケンスを有効
+                setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
+
+                createData({key: newFileName, obj: tmpObj});
+
+                // 新規ファイルのファイル名をリストに追加
+                readData('nameList').then((nameList) => {
+                    if(nameList === null){
+                        console.log("セーブデータ名リストが無いため、新規作成します。");
+                        //createData({key: 'nameList', obj: {}})
+                    }else{
+                    }
+                })
+
+                initNewData();
+                setMapEditorIsOpen(true);               // 地図編集画面起動
+            }
+                
+            
         }else{
             setMapEditorIsOpen(false);
         }

@@ -18,7 +18,7 @@
 
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storage } from '../Storage';
 import ITextInput from './ITextInput';
 
 const { width } = Dimensions.get('window');
@@ -101,29 +101,16 @@ export default StorageControl;
 // Write save data
 export const createData = async(props: any) => {
     const {key, obj} = props;
-    console.log("key = ");
-    console.log(key);
     console.log("createData(StorageControl.tsx)");
     console.log(props);
-    try {
-        const jsonValue = JSON.stringify(obj);
-        await AsyncStorage.setItem(String(key), jsonValue);
-    } catch (e) {
-        // saving error
-        console.log("新規 作成失敗");
-    }
+    storage.save({key: key, data: obj})
 }
 
 // Read save data
 export const readData = async(name: string) => {
-    try {
         // AsyncStorage.getItem()が終わるまで待機し、dataBuffer に代入
-        const dataBuffer = await AsyncStorage.getItem(String(name));
-        return dataBuffer != null ? JSON.parse(dataBuffer) : null;
-    } catch (e) {
-        // error reading value
-        console.log("error");
-    }
+        const dataBuffer = await storage
+        .load({key: name})
 }
 
 const styles = StyleSheet.create({
