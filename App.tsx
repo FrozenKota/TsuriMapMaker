@@ -86,63 +86,62 @@ const App = () => {
 
         const {newFileName, option} = e;
         let tmpObj: any = imgObj;
-        let readDataBuffer;
-        
-        let key: string = "";
+        let readDataBuffer: any;
 
-        // セーブデータ新規作成
+        // セーブデータ新規作成処理
         if(newFileName !== "" && option === 'new'){
-            // ファイル名重複確認.
+            // ファイル名重複確認. 
             storage
-            .load({key: newFileName})
-            .then(data => {
+            .load({key: newFileName})       // データを読み込み
+            .then(data => {                 // バッファにデータを一時保存
                 console.log("loaded data is ...");
                 console.log(data);
-            }).catch(err => {
+                readDataBuffer = data;
+            }).catch(err => {               // エラー処理. エラーの場合、バッファに null を代入
                 console.warn(err.message)
                 switch (err.name){
                     case 'NotFoundError':
                         console.warn("NotFoundError has been occured");
-                        return null;
+                        readDataBuffer = null;
+                        console.log(readDataBuffer);
+                        break;
                     case 'ExpiredError':
                         console.warn("ExpiredError has been occured");
-                        return null;
+                        readDataBuffer = null;
+                        console.log(readDataBuffer)
+                        break;
                     default:
-                        return null;
+                        break;
                 }
-            })
-        
-            console.log(readDataBuffer);
-            if(readDataBuffer !== null){
-                console.log("失敗. 使われているファイル名です");
-                Alert.alert("失敗. 使われているファイル名です");
-                console.log(readDataBuffer);
-            }else{
-                // debug: newFileName は正常な文字列でここまで到達
-                Alert.alert("使用可能なファイル名です");
+            }).then(()=>{                   //エラーや、ファイル名重複がなかった場合の処理
+                // 読んだデータ（バッファ）がnullではない場合、
+                if(readDataBuffer !== null){
+                    console.log("失敗. 使われているファイル名です");
+                    Alert.alert("失敗. 使われているファイル名です");
+                    console.log(readDataBuffer);
 
-                // ファイル名とシーケンス情報を設定
-                tmpObj.fileName = newFileName;
-                tmpObj.initStatus.initLocation = true;  // 位置設定シーケンスを有効
-                tmpObj.initStatus.initDivNum = true;    // 分割数設定シーケンスを有効
-                setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
+                }else{
+                    // debug: newFileName は正常な文字列でここまで到達
+                    Alert.alert("使用可能なファイル名です");
 
-                createData({key: newFileName, obj: tmpObj});
+                    // ファイル名とシーケンス情報を設定
+                    tmpObj.fileName = newFileName;
+                    tmpObj.initStatus.initLocation = true;  // 位置設定シーケンスを有効
+                    tmpObj.initStatus.initDivNum = true;    // 分割数設定シーケンスを有効
+                    setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
 
-                // 新規ファイルのファイル名をリストに追加
-                readData('nameList').then((nameList) => {
-                    if(nameList === null){
-                        console.log("セーブデータ名リストが無いため、新規作成します。");
-                        //createData({key: 'nameList', obj: {}})
-                    }else{
-                    }
-                })
+                    //createData({key: newFileName, obj: tmpObj});
 
-                initNewData();
-                setMapEditorIsOpen(true);               // 地図編集画面起動
-            }
-                
-            
+                    // 新規ファイルのファイル名をリストに追加
+                    storage.save({
+                        key: newFileName,
+                        data: tmpObj
+                    });
+
+                    initNewData();
+                    setMapEditorIsOpen(true);               // 地図編集画面起動
+                }   
+            })            
         }else{
             setMapEditorIsOpen(false);
         }
