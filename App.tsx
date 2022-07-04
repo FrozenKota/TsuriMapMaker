@@ -8,6 +8,7 @@ import { storage } from './Storage';
 
 
 const { width, height} = Dimensions.get('window');
+const KEY_LIST_NAME = 'keyList';
 
 const App = () => {
     console.log("App.tsx");
@@ -87,61 +88,109 @@ const App = () => {
         const {newFileName, option} = e;
         let tmpObj: any = imgObj;
         let readDataBuffer: any;
+        let keyListBuffer: any;
 
         // セーブデータ新規作成処理
         if(newFileName !== "" && option === 'new'){
             // ファイル名重複確認. 
+            console.log("ファイル名の重複確認を実施");
             storage
-            .load({key: newFileName})       // データを読み込み
-            .then(data => {                 // バッファにデータを一時保存
+            .load({key: newFileName})           //  データ読み込み
+            .then(data => {                     //  バッファにデータを一時保存
                 console.log("loaded data is ...");
                 console.log(data);
                 readDataBuffer = data;
-            }).catch(err => {               // エラー処理. エラーの場合、バッファに null を代入
-                console.warn(err.message)
+            }).catch(err => {                   //  エラー処理. エラーの場合、バッファに null を代入
+                console.log(err.message)
                 switch (err.name){
                     case 'NotFoundError':
-                        console.warn("NotFoundError has been occured");
+                        console.log("NotFoundError has been occured");
                         readDataBuffer = null;
                         console.log(readDataBuffer);
                         break;
                     case 'ExpiredError':
-                        console.warn("ExpiredError has been occured");
+                        console.log("ExpiredError has been occured");
                         readDataBuffer = null;
                         console.log(readDataBuffer)
                         break;
                     default:
                         break;
                 }
-            }).then(()=>{                   //エラーや、ファイル名重複がなかった場合の処理
-                // 読んだデータ（バッファ）がnullではない場合、
-                if(readDataBuffer !== null){
-                    console.log("失敗. 使われているファイル名です");
-                    Alert.alert("失敗. 使われているファイル名です");
-                    console.log(readDataBuffer);
-
-                }else{
+            }).then(()=>{                       //  エラーや、ファイル名重複がなかった場合の処理
+                if(readDataBuffer === null){    //  入力したファイル名が未使用(key未使用)なら作成
                     // debug: newFileName は正常な文字列でここまで到達
-                    Alert.alert("使用可能なファイル名です");
-
+                    console.log("使用可能なファイル名です。セーブデータを新規作成。");
+                    
                     // ファイル名とシーケンス情報を設定
                     tmpObj.fileName = newFileName;
                     tmpObj.initStatus.initLocation = true;  // 位置設定シーケンスを有効
                     tmpObj.initStatus.initDivNum = true;    // 分割数設定シーケンスを有効
                     setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
 
-                    //createData({key: newFileName, obj: tmpObj});
-
-                    // 新規ファイルのファイル名をリストに追加
+                    // データ(tmpObj or imgObj)をストレージに保存
                     storage.save({
                         key: newFileName,
                         data: tmpObj
                     });
-
                     initNewData();
                     setMapEditorIsOpen(true);               // 地図編集画面起動
+                }else{                          //  入力したファイル名が使用済み(keyが存在)なら失敗
+                    console.log("失敗. 使われているファイル名です");
+                    Alert.alert("失敗. 使われているファイル名です");
+                    console.log(readDataBuffer);
                 }   
-            })            
+            }).then(()=>{
+
+            //  ファイル名(key名)リストに追加
+            if(readDataBuffer === null){
+                console.log("keyList への key追加処理を実施");
+                storage
+                .load({key: KEY_LIST_NAME})
+                .then(data => {
+                    console.log("keyList の有無を確認");
+                    console.log("loaded keyList is ...");
+                    console.log(data);
+                    keyListBuffer = data;
+                }).catch(err => {                   //  エラー処理. エラーの場合、バッファに null を代入
+                    switch (err.name){
+                        case 'NotFoundError':
+                            console.log("NotFoundError has been occured");
+                            keyListBuffer = null;
+                            console.log(keyListBuffer);
+                            break;
+                        case 'ExpiredError':
+                            console.log("ExpiredError has been occured");
+                            keyListBuffer = null;
+                            console.log(keyListBuffer);
+                            break;
+                    }
+                }).then(() => {
+                    if(keyListBuffer === null){
+                        console.log("keyListがありません。新規に作成します。");
+                        storage.save({
+                            key: KEY_LIST_NAME,
+                            data: {newFileName},
+                        })
+                    }else{
+                        console.log("keyListが存在します。keyを追加し保存します");
+                        storage
+                        .load({key: KEY_LIST_NAME})
+                        .then(data=> {
+                            console.log("loaded keyList is ...");
+                            console.log(data);
+                            storage.save({
+                                key: KEY_LIST_NAME,
+                                data: {...data, newFileName}
+                            })
+                            console.log("added key is ....");
+                            console.log({...data, newFileName});
+                        })
+                    }
+                })
+            }else{
+                // ファイルの新規作成は発生しませんでした。
+            }
+            })
         }else{
             setMapEditorIsOpen(false);
         }
