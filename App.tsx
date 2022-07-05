@@ -90,6 +90,9 @@ const App = () => {
         let readDataBuffer: any;
         let keyListBuffer: any;
 
+        console.log("新規ファイル作成シーケンス開始. ファイル名＝");
+        console.log(newFileName);
+
         // セーブデータ新規作成処理
         if(newFileName !== "" && option === 'new'){
             // ファイル名重複確認. 
@@ -133,7 +136,7 @@ const App = () => {
                         data: tmpObj
                     });
                     initNewData();
-                    setMapEditorIsOpen(true);               // 地図編集画面起動
+                    setMapEditorIsOpen(true);   // 地図編集画面起動
                 }else{                          //  入力したファイル名が使用済み(keyが存在)なら失敗
                     console.log("失敗. 使われているファイル名です");
                     Alert.alert("失敗. 使われているファイル名です");
@@ -167,9 +170,11 @@ const App = () => {
                 }).then(() => {
                     if(keyListBuffer === null){
                         console.log("keyListがありません。新規に作成します。");
+                        console.log(newFileName);
+                        keyListBuffer[KEY_LIST_NAME] = [newFileName];
                         storage.save({
                             key: KEY_LIST_NAME,
-                            data: {newFileName},
+                            data: keyListBuffer,
                         })
                     }else{
                         console.log("keyListが存在します。keyを追加し保存します");
@@ -178,12 +183,17 @@ const App = () => {
                         .then(data=> {
                             console.log("loaded keyList is ...");
                             console.log(data);
+                            keyListBuffer = data;
+                            keyListBuffer[KEY_LIST_NAME]= [...keyListBuffer.test, 'name2'];
+                            console.log("########keyList")
+                            console.log(keyListBuffer);
+
                             storage.save({
                                 key: KEY_LIST_NAME,
-                                data: {...data, newFileName}
+                                data: keyListBuffer
                             })
                             console.log("added key is ....");
-                            console.log({...data, newFileName});
+                            console.log(keyListBuffer);
                         })
                     }
                 })
