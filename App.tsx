@@ -8,7 +8,6 @@ import { storage } from './Storage';
 
 
 const { width, height} = Dimensions.get('window');
-const KEY_LIST_NAME = 'keyList';
 
 const App = () => {
     console.log("App.tsx");
@@ -82,7 +81,52 @@ const App = () => {
         setMapEditorIsOpen(false);
     },[])
 
-    const storageEventHandler = useCallback((e:any) => {
+    const editDataHandler = useCallback((e: any) => {
+        /*********************************
+         * 1)セーブデータの読み込み
+         * 2)MapEditorの起動
+        *********************************/
+        console.log("editDataHandler(App.tsx)");
+
+        const {fileName, option} = e;
+
+        let tmpObj:any;
+        
+        if(fileName !== "" && option === 'edit'){
+            console.log("セーブデータ読み込みシーケンスを開始");
+            storage
+            .load({key: fileName})
+            .then(data => {
+                console.log("次のデータが読まれました");
+                console.log(data);
+                
+                tmpObj = data;
+                setImgObj(tmpObj);
+
+                setMapEditorIsOpen(true);
+            }).catch(err => {
+                switch (err.name){
+                    case 'NotFoundError':
+                        console.log("NotFoundError has occured");
+                        break;
+                    case 'ExpiredError':
+                        console.log("ExpiredError has occured");
+                        break;
+                }
+            })
+        }else{
+            setMapEditorIsOpen(false);
+        }
+
+    },[])
+
+    const createDataHandler = useCallback((e: any) => {
+        /*********************************
+         * 1)新規セーブデータの作成
+         * 2)空の imgObj をセーブデータに追加
+         * 3)ファイル名リスト にファイル名を追記
+         * 4)MapEditorの起動
+        *********************************/
         console.log("storageEventHandler(App.tsx)")
 
         const {newFileName, option} = e;
@@ -107,12 +151,12 @@ const App = () => {
                 console.log(err.message)
                 switch (err.name){
                     case 'NotFoundError':
-                        console.log("NotFoundError has been occured");
+                        console.log("NotFoundError has occured");
                         readDataBuffer = null;
                         console.log(readDataBuffer);
                         break;
                     case 'ExpiredError':
-                        console.log("ExpiredError has been occured");
+                        console.log("ExpiredError has occured");
                         readDataBuffer = null;
                         console.log(readDataBuffer)
                         break;
@@ -148,7 +192,7 @@ const App = () => {
             if(readDataBuffer === null){
                 console.log("keyList への key追加処理を実施");
                 storage
-                .load({key: KEY_LIST_NAME})
+                .load({key: 'keyList'})
                 .then(data => {
                     console.log("keyList の有無を確認");
                     console.log("loaded keyList is ...");
@@ -157,12 +201,12 @@ const App = () => {
                 }).catch(err => {                   //  エラー処理. エラーの場合、バッファに null を代入
                     switch (err.name){
                         case 'NotFoundError':
-                            console.log("NotFoundError has been occured");
+                            console.log("NotFoundError has occured");
                             keyListBuffer = null;
                             console.log(keyListBuffer);
                             break;
                         case 'ExpiredError':
-                            console.log("ExpiredError has been occured");
+                            console.log("ExpiredError has occured");
                             keyListBuffer = null;
                             console.log(keyListBuffer);
                             break;
@@ -170,26 +214,26 @@ const App = () => {
                 }).then(() => {
                     if(keyListBuffer === null){
                         console.log("keyListがありません。新規に作成します。");
-                        console.log(newFileName);
-                        keyListBuffer[KEY_LIST_NAME] = [newFileName];
+                        console.log("newFileName is "+newFileName);
+                        keyListBuffer = {'keyList': [newFileName]}; 
                         storage.save({
-                            key: KEY_LIST_NAME,
+                            key: 'keyList',
                             data: keyListBuffer,
                         })
                     }else{
                         console.log("keyListが存在します。keyを追加し保存します");
                         storage
-                        .load({key: KEY_LIST_NAME})
+                        .load({key: 'keyList'})
                         .then(data=> {
                             console.log("loaded keyList is ...");
                             console.log(data);
                             keyListBuffer = data;
-                            keyListBuffer[KEY_LIST_NAME]= [...keyListBuffer.test, 'name2'];
-                            console.log("########keyList")
+                            keyListBuffer['keyList']= [...keyListBuffer.keyList, newFileName];
+                            console.log("created keyList")
                             console.log(keyListBuffer);
 
                             storage.save({
-                                key: KEY_LIST_NAME,
+                                key: 'keyList',
                                 data: keyListBuffer
                             })
                             console.log("added key is ....");
@@ -201,6 +245,7 @@ const App = () => {
                 // ファイルの新規作成は発生しませんでした。
             }
             })
+            
         }else{
             setMapEditorIsOpen(false);
         }
@@ -239,12 +284,6 @@ const App = () => {
         tmpObj.initStatus['divNum'] = false;    // 分割数設定フラグを解除
     },[])
 
-    const setFileNameHandler = useCallback((fileName: any) => {
-        const tmpObj = imgObj;
-        tmpObj['fileName'] = fileName;
-        setImgObj(tmpObj);
-    },[])
-
     return(
         <View style={styles.mainContainer}>
             <View style={styles.titleLayout}>
@@ -265,7 +304,9 @@ const App = () => {
                     closeHandler={closeStorageControlHandler} 
                     option={storageControlOption}
                     imgObj={imgObj}
-                    storageEvent={(e: any) => {storageEventHandler(e)}}
+                    createData={(e: any) => {createDataHandler(e)}}
+                    editData={(e: any) => {editDataHandler(e)}}
+                    
                 />
             )}
 

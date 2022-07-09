@@ -1,22 +1,4 @@
-/****************************************************
- * Description:
- * - Save data control window component
- * - 
- * 
- * Function:
- * - Diplay the save data window        : <StorageControl />
- * - List the save datas from strage    : 
- * - Load the Object data.              :
- *   (select a data -> editor mode)
- * - Save the Object data.              :
- *   (input a name of data -> create data -> editor mode)
- * - Delete the Object data.            :
- *   (select a data -> confirm )
- * 
- * Input
-*****************************************************/
-
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import { storage } from '../Storage';
 import ITextInput from './ITextInput';
@@ -24,19 +6,38 @@ import ITextInput from './ITextInput';
 const { width } = Dimensions.get('window');
 
 const StorageControl = (props: any) => {
-    const {closeHandler, option, storageEvent } = props;
-    let title = "";
-    const dummydata = [];
+    const {closeHandler, option, createData, editData } = props;
 
+    const [ keyListIsLoaded , setKeyListIsLoaded ] = useState(false);
+    const [ keyList, setKeyList ] = useState([]);
+
+    let title = "";         // トップに表示するタイトルを格納する
+    let tmpData:any = [];   // 時期にいらなくなる
+
+    // 新規ファイル名を受け取り、データの作成をする
     const setFileNameHandler = (name: string) => {
-        console.log("setFileNameHandler(StorageControl.tsx)");
+        console.log("setFileNameHandler (StorageControl.tsx)");
         // <StorageControl> の状態を返す
-        storageEvent({newFileName: name, option: 'new'});
-
+        createData({newFileName: name, option: 'new'});
         //ITextInput をクローズ
         closeHandler();
     }
 
+    const loadKeyList = useCallback(async() => {
+        try{
+            //setKeyListIsLoaded(false);
+            const res = await storage.load({key: 'keyList'});
+            setKeyList(res.keyList);
+            console.log("loaded res is ...");
+            console.log(res);
+        }catch(e){
+            console.log(e);
+        }finally{
+            setKeyListIsLoaded(true);
+        }
+    },[])
+
+    // タイトルメッセージの代入
     if(option == "new"){
         title = "ファイル名を入力"
     }else if(option == "edit"){
@@ -45,36 +46,36 @@ const StorageControl = (props: any) => {
         title = "閲覧したいファイルを選択"
     }
 
-    // デモ用　ダミー空データ
-    for (let i = 0; i < 20; i ++){
-        dummydata.push(
-            <TouchableOpacity key={i} onPress={() => {closeHandler}}>
-                <DataBlock fileName={"セーブデータ"+String(i)} fileSize={'1129710 kbyte'} modDate={'2022/2/22'} />
-            </TouchableOpacity>
-        )
-    }
-    
     if(option === "new"){
         return(
             <ITextInput closeHandler={(name: string) => setFileNameHandler(name)}/>
         )
-    } else {
+    }else{
+        loadKeyList();
+        keyList.map((value: any, index: number) => {
+            tmpData.push(
+                <TouchableOpacity key={index} onPress={() => {closeHandler}}>
+                    <DataBlock fileName={keyList[index]} fileSize={'1129710 kbyte'} modDate={'2022/2/22'} />
+                </TouchableOpacity>
+            )
+            tmpData = [...tmpData].reverse();
+        })
         return(
             <View style={styles.mainContainer}>
                 <View style={styles.titleAreaLayout}>
         
                     <View style={styles.titleStyle}>
-                      <Text style={styles.h1}>{title}</Text>
+                        <Text style={styles.h1}>{title}</Text>
                     </View>
         
                     <TouchableOpacity onPress={closeHandler} style={styles.closeButton}>
                         <Text style={{color: 'white'}}>Close</Text>
                     </TouchableOpacity>
-        
+    
                 </View>
                 <View style={styles.dataAreaLayout}>
                     <ScrollView>
-                        {dummydata}
+                        {tmpData}
                     </ScrollView>
                 </View>
             </View>
