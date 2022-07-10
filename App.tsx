@@ -1,8 +1,8 @@
 import React, {useState, useCallback} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions, Alert} from  'react-native';
 
-import StorageControl, {createData, readData} from './components/StorageControl';
 import MapEditor from './components/MapEditor/MapEditor';
+import StorageControl from './components/StorageControl';
 import Images from './Asset/asset';
 import { storage } from './Storage';
 
@@ -81,7 +81,7 @@ const App = () => {
         setMapEditorIsOpen(false);
     },[])
 
-    const editDataHandler = useCallback((e: any) => {
+    const editDataHandler = async(e: any) => {
         /*********************************
          * 1)セーブデータの読み込み
          * 2)MapEditorの起動
@@ -89,36 +89,20 @@ const App = () => {
         console.log("editDataHandler(App.tsx)");
 
         const {fileName, option} = e;
-
-        let tmpObj:any;
         
-        if(fileName !== "" && option === 'edit'){
-            console.log("セーブデータ読み込みシーケンスを開始");
-            storage
-            .load({key: fileName})
-            .then(data => {
-                console.log("次のデータが読まれました");
-                console.log(data);
-                
-                tmpObj = data;
-                setImgObj(tmpObj);
-
-                setMapEditorIsOpen(true);
-            }).catch(err => {
-                switch (err.name){
-                    case 'NotFoundError':
-                        console.log("NotFoundError has occured");
-                        break;
-                    case 'ExpiredError':
-                        console.log("ExpiredError has occured");
-                        break;
-                }
-            })
-        }else{
-            setMapEditorIsOpen(false);
+        console.log("セーブデータ読み込みシーケンスを開始");
+        console.log("fileName is %s", fileName);
+        initNewData();
+        try{
+            const res = await storage.load({key: fileName});
+            console.log(res);
+            setImgObj(res);
+        }catch(e){
+            console.log(e);
+        }finally{
+            setMapEditorIsOpen(true);
         }
-
-    },[])
+    }
 
     const createDataHandler = useCallback((e: any) => {
         /*********************************
@@ -170,9 +154,9 @@ const App = () => {
                     
                     // ファイル名とシーケンス情報を設定
                     tmpObj.fileName = newFileName;
-                    tmpObj.initStatus.initLocation = true;  // 位置設定シーケンスを有効
-                    tmpObj.initStatus.initDivNum = true;    // 分割数設定シーケンスを有効
-                    setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
+                    tmpObj.initStatus['location'] = true;  // 位置設定シーケンスを有効
+                    tmpObj.initStatus['divNum'] = true;    // 分割数設定シーケンスを有効
+                    setImgObj(tmpObj);                  // ワークオブジェクト(imgObj)に設定
 
                     // データ(tmpObj or imgObj)をストレージに保存
                     storage.save({
@@ -187,63 +171,62 @@ const App = () => {
                     console.log(readDataBuffer);
                 }   
             }).then(()=>{
-
-            //  ファイル名(key名)リストに追加
-            if(readDataBuffer === null){
-                console.log("keyList への key追加処理を実施");
-                storage
-                .load({key: 'keyList'})
-                .then(data => {
-                    console.log("keyList の有無を確認");
-                    console.log("loaded keyList is ...");
-                    console.log(data);
-                    keyListBuffer = data;
-                }).catch(err => {                   //  エラー処理. エラーの場合、バッファに null を代入
-                    switch (err.name){
-                        case 'NotFoundError':
-                            console.log("NotFoundError has occured");
-                            keyListBuffer = null;
-                            console.log(keyListBuffer);
-                            break;
-                        case 'ExpiredError':
-                            console.log("ExpiredError has occured");
-                            keyListBuffer = null;
-                            console.log(keyListBuffer);
-                            break;
-                    }
-                }).then(() => {
-                    if(keyListBuffer === null){
-                        console.log("keyListがありません。新規に作成します。");
-                        console.log("newFileName is "+newFileName);
-                        keyListBuffer = {'keyList': [newFileName]}; 
-                        storage.save({
-                            key: 'keyList',
-                            data: keyListBuffer,
-                        })
-                    }else{
-                        console.log("keyListが存在します。keyを追加し保存します");
-                        storage
-                        .load({key: 'keyList'})
-                        .then(data=> {
-                            console.log("loaded keyList is ...");
-                            console.log(data);
-                            keyListBuffer = data;
-                            keyListBuffer['keyList']= [...keyListBuffer.keyList, newFileName];
-                            console.log("created keyList")
-                            console.log(keyListBuffer);
-
+                //  ファイル名(key名)リストに追加
+                if(readDataBuffer === null){
+                    console.log("keyList への key追加処理を実施");
+                    storage
+                    .load({key: 'keyList'})
+                    .then(data => {
+                        console.log("keyList の有無を確認");
+                        console.log("loaded keyList is ...");
+                        console.log(data);
+                        keyListBuffer = data;
+                    }).catch(err => {                   //  エラー処理. エラーの場合、バッファに null を代入
+                        switch (err.name){
+                            case 'NotFoundError':
+                                console.log("NotFoundError has occured");
+                                keyListBuffer = null;
+                                console.log(keyListBuffer);
+                                break;
+                            case 'ExpiredError':
+                                console.log("ExpiredError has occured");
+                                keyListBuffer = null;
+                                console.log(keyListBuffer);
+                                break;
+                        }
+                    }).then(() => {
+                        if(keyListBuffer === null){
+                            console.log("keyListがありません。新規に作成します。");
+                            console.log("newFileName is "+newFileName);
+                            keyListBuffer = {'keyList': [newFileName]}; 
                             storage.save({
                                 key: 'keyList',
-                                data: keyListBuffer
+                                data: keyListBuffer,
                             })
-                            console.log("added key is ....");
-                            console.log(keyListBuffer);
-                        })
-                    }
-                })
-            }else{
-                // ファイルの新規作成は発生しませんでした。
-            }
+                        }else{
+                            console.log("keyListが存在します。keyを追加し保存します");
+                            storage
+                            .load({key: 'keyList'})
+                            .then(data=> {
+                                console.log("loaded keyList is ...");
+                                console.log(data);
+                                keyListBuffer = data;
+                                keyListBuffer['keyList']= [...keyListBuffer.keyList, newFileName];
+                                console.log("created keyList")
+                                console.log(keyListBuffer);
+
+                                storage.save({
+                                    key: 'keyList',
+                                    data: keyListBuffer
+                                })
+                                console.log("added key is ....");
+                                console.log(keyListBuffer);
+                            })
+                        }
+                    })
+                }else{
+                    // ファイルの新規作成は発生しませんでした。
+                }
             })
             
         }else{
@@ -306,7 +289,6 @@ const App = () => {
                     imgObj={imgObj}
                     createData={(e: any) => {createDataHandler(e)}}
                     editData={(e: any) => {editDataHandler(e)}}
-                    
                 />
             )}
 

@@ -1,11 +1,11 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, memo, useCallback} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import { storage } from '../Storage';
 import ITextInput from './ITextInput';
 
 const { width } = Dimensions.get('window');
 
-const StorageControl = (props: any) => {
+const StorageControl = memo((props: any) => {
     const {closeHandler, option, createData, editData } = props;
 
     const [ keyListIsLoaded , setKeyListIsLoaded ] = useState(false);
@@ -28,12 +28,10 @@ const StorageControl = (props: any) => {
             //setKeyListIsLoaded(false);
             const res = await storage.load({key: 'keyList'});
             setKeyList(res.keyList);
-            console.log("loaded res is ...");
-            console.log(res);
         }catch(e){
             console.log(e);
         }finally{
-            setKeyListIsLoaded(true);
+            //setKeyListIsLoaded(true);
         }
     },[])
 
@@ -54,7 +52,7 @@ const StorageControl = (props: any) => {
         loadKeyList();
         keyList.map((value: any, index: number) => {
             tmpData.push(
-                <TouchableOpacity key={index} onPress={() => {closeHandler}}>
+                <TouchableOpacity key={index} onPress={() => {editData({fileName: keyList[index], option: "edit"})}}>
                     <DataBlock fileName={keyList[index]} fileSize={'1129710 kbyte'} modDate={'2022/2/22'} />
                 </TouchableOpacity>
             )
@@ -81,7 +79,7 @@ const StorageControl = (props: any) => {
             </View>
         )
     }
-}
+})
 
 // DataBlock will display file information
 const DataBlock = (props: any) => {
@@ -99,20 +97,6 @@ const DataBlock = (props: any) => {
 
 export default StorageControl;
 
-// Write save data
-export const createData = async(props: any) => {
-    const {key, obj} = props;
-    console.log("createData(StorageControl.tsx)");
-    console.log(props);
-    storage.save({key: key, data: obj})
-}
-
-// Read save data
-export const readData = async(name: string) => {
-        // AsyncStorage.getItem()が終わるまで待機し、dataBuffer に代入
-        const dataBuffer = await storage
-        .load({key: name})
-}
 
 const styles = StyleSheet.create({
     h1: {
