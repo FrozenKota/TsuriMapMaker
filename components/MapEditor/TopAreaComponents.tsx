@@ -6,7 +6,7 @@ const { width } = Dimensions.get('window');
 
 
 const TopAreaComponents = (props:any) => {
-  const {fileName, closeHandler} = props;
+  const {fileName, closeHandler, saveData} = props;
   console.log("TopAreaComponents");
 
   const InitLocationMenu = () => {
@@ -56,7 +56,7 @@ const TopAreaComponents = (props:any) => {
           <Text style={{color: 'white', textAlign: 'center', fontSize: 20}}>地図を編集しよう</Text>
           <Text style={{color: 'gray', textAlign: 'center', fontSize: 15}}>{fileName}</Text>
         </View>
-        <TouchableOpacity style={styles.saveButton} onPress={()=>{console.log("SAVE")}}>
+        <TouchableOpacity style={styles.saveButton} onPress={saveData}>
           <Text style={{color:'white', fontSize:(width*0.25)/5}}>SAVE</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.closeButton} onPress={closeHandler}>

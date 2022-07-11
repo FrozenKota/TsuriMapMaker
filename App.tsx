@@ -52,7 +52,7 @@ const App = () => {
 
     const [ eventManager, setEventManager ] = useState({fileName:"", option:""});
 
-    const initNewData = () => {
+    const initNewData = useCallback(() => {
         let tmpObj = imgObj;
         tmpObj.initStatus['location'] = true;
         tmpObj.initStatus['divNum'] = true;
@@ -64,7 +64,7 @@ const App = () => {
             longitudeDelta: 0.05 * (width / height),
         };
         setImgObj(tmpObj);
-    }
+    },[])
 
     // S1, S2, S3
     const storageControlHandler = useCallback((props: any) => {
@@ -234,6 +234,22 @@ const App = () => {
         }
     },[])
 
+    const saveDataHandler = useCallback(async() => {
+
+        // fileName を key にファイルを保存
+        console.log("セーブデータ書き込みシーケンスを開始");
+        console.log("fileName is %s", imgObj.fileName);
+        console.log("セーブするimgObj = ");
+        console.log(imgObj);
+        try{
+            const res = await storage.save({key: imgObj.fileName, data: imgObj});
+        }catch(e){
+            console.log(e);
+        }finally{
+            setMapEditorIsOpen(false);
+        }
+    },[])
+
     const addNewImgData = useCallback((imgData: any) => {
         const {PosX, PosY, source} = imgData;
 
@@ -297,6 +313,7 @@ const App = () => {
                     imgObj={imgObj} 
                     addData={(imgData: any) => addNewImgData(imgData)} 
                     deleteData={(imgData: any) => deleteImgData(imgData)}
+                    saveData = {(e: any) => saveDataHandler(e)}
                     setRegionHandler={(region: any) => setRegionHandler(region)}
                     setDivNumHandler={(divNum: any) => setDivNumHandler(divNum)}
                     closeMapEditorHandler={closeMapEditorHandler}

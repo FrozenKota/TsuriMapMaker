@@ -16,10 +16,11 @@ const { width, height } = Dimensions.get('window');
 const MapEditor = memo((props: any) => {
   console.log("MapEditor.tsx")
   // props
-  const {closeMapEditorHandler, imgObj, addData, deleteData, setRegionHandler, setDivNumHandler} = props;
+  const {closeMapEditorHandler, 
+      imgObj, addData, saveData, deleteData, setRegionHandler, setDivNumHandler} = props;
 
   // useState
-  const [ glidNumber, setGlidNumber ] = useState(10);
+  const [ glidNumber, setGlidNumber ] = useState(imgObj.divNumX);
   const [ vertical, setVertical] = useState(1);
   const [ horizontal, setHorizontal] = useState(1);
   const [ currentImageTag, setCurrentImageTag] = useState(-1);
@@ -106,7 +107,7 @@ const MapEditor = memo((props: any) => {
 
   return (
     <View style={styles.mainContainer} >
-      <TopAreaComponents fileName={imgObj.fileName} initStatus={imgObj.initStatus} countup={upDivNum} countdown={downDivNum} closeHandler={closeMapEditorHandler1} />
+      <TopAreaComponents fileName={imgObj.fileName} initStatus={imgObj.initStatus} countup={upDivNum} countdown={downDivNum} closeHandler={closeMapEditorHandler1} saveData={saveData} />
       <MapAreaComponents initStatus={imgObj.initStatus} initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)} />
       <SelectButton assetSelectHandler={assetSelectHandler} initStatus={imgObj.initStatus} enableEditMode={enableEditMode} onRegionSelect={onRegionSelect} onDivNumSelect={onDivNumSelect} />
       <BottomAreaComponents addData={addData} deleteData={deleteData} moveLeft={moveLeft} moveDown={moveDown} moveUp={moveUp} moveRight={moveRight} horizontal={horizontal} vertical={vertical} currentImageTag={currentImageTag}/>
@@ -115,7 +116,8 @@ const MapEditor = memo((props: any) => {
         <ImageDataView imgObj={imgObj}/>
       )}
         
-      { ((!imgObj.initStatus.location && imgObj.initStatus.divNum) || gridLineIsOpen) && (
+      { ((!imgObj.initStatus.location && imgObj.initStatus.divNum) || 
+         (!imgObj.initStatus.location && !imgObj.initStatus.divNum) || gridLineIsOpen) && (
         <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
       )}
 
