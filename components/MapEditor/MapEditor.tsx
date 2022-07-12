@@ -115,10 +115,10 @@ const MapEditor = memo((props: any) => {
       { ((!imgObj.initStatus.location && imgObj.initStatus.divNum) || dataViewIsOpen) && (
         <ImageDataView imgObj={imgObj}/>
       )}
-        
+      
       { ((!imgObj.initStatus.location && imgObj.initStatus.divNum) || 
          (!imgObj.initStatus.location && !imgObj.initStatus.divNum) || gridLineIsOpen) && (
-        <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} divNumY={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
+        <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
       )}
 
       { assetIsOpen && (

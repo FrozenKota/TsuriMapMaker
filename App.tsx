@@ -53,6 +53,7 @@ const App = () => {
     const [ eventManager, setEventManager ] = useState({fileName:"", option:""});
 
     const initNewData = useCallback(() => {
+        console.log("initNewData();");
         let tmpObj = imgObj;
         tmpObj.initStatus['location'] = true;
         tmpObj.initStatus['divNum'] = true;
@@ -64,7 +65,7 @@ const App = () => {
             longitudeDelta: 0.05 * (width / height),
         };
         setImgObj(tmpObj);
-    },[])
+    },[imgObj])
 
     // S1, S2, S3
     const storageControlHandler = useCallback((props: any) => {
@@ -90,9 +91,13 @@ const App = () => {
 
         const {fileName, option} = e;
         
+        //debug
+        console.log("imgObj before load func");
+        console.log(imgObj);
+
         console.log("セーブデータ読み込みシーケンスを開始");
         console.log("fileName is %s", fileName);
-        initNewData();
+        //initNewData();
         try{
             const res = await storage.load({key: fileName});
             console.log(res);
@@ -279,8 +284,8 @@ const App = () => {
         const tmpObj = imgObj;
         tmpObj['divNumX'] = divNumX;
         tmpObj['divNumY'] = divNumX;
-        setImgObj(tmpObj);
         tmpObj.initStatus['divNum'] = false;    // 分割数設定フラグを解除
+        setImgObj(tmpObj);
     },[])
 
     return(
@@ -313,7 +318,7 @@ const App = () => {
                     imgObj={imgObj} 
                     addData={(imgData: any) => addNewImgData(imgData)} 
                     deleteData={(imgData: any) => deleteImgData(imgData)}
-                    saveData = {(e: any) => saveDataHandler(e)}
+                    saveData = {saveDataHandler}
                     setRegionHandler={(region: any) => setRegionHandler(region)}
                     setDivNumHandler={(divNum: any) => setDivNumHandler(divNum)}
                     closeMapEditorHandler={closeMapEditorHandler}
