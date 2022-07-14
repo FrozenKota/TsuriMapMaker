@@ -52,7 +52,7 @@ const App = () => {
 
     const [ eventManager, setEventManager ] = useState({fileName:"", option:""});
 
-    const initNewData = useCallback(() => {
+    const initNewData = () => {
         console.log("initNewData();");
         let tmpObj = imgObj;
         tmpObj.initStatus['location'] = true;
@@ -65,22 +65,22 @@ const App = () => {
             longitudeDelta: 0.05 * (width / height),
         };
         setImgObj(tmpObj);
-    },[imgObj])
+    }
 
     // S1, S2, S3
-    const storageControlHandler = useCallback((props: any) => {
+    const storageControlHandler = (props: any) => {
         const {option} = props;
         setStorageControlOption(option)
         setStorageControlIsOpen(true);
-    },[])
+    }
 
-    const closeStorageControlHandler = useCallback(() => {
+    const closeStorageControlHandler = () => {
         setStorageControlIsOpen(false);
-    },[])
+    }
 
-    const closeMapEditorHandler = useCallback(() => {
+    const closeMapEditorHandler = () => {
         setMapEditorIsOpen(false);
-    },[])
+    }
 
     const editDataHandler = async(e: any) => {
         /*********************************
@@ -109,7 +109,7 @@ const App = () => {
         }
     };
 
-    const createDataHandler = useCallback((e: any) => {
+    const createDataHandler = (e: any) => {
         /*********************************
          * 1)新規セーブデータの作成
          * 2)空の imgObj をセーブデータに追加
@@ -237,9 +237,9 @@ const App = () => {
         }else{
             setMapEditorIsOpen(false);
         }
-    },[])
+    }
 
-    const saveDataHandler = useCallback(async() => {
+    const saveDataHandler = async() => {
 
         // fileName を key にファイルを保存
         console.log("セーブデータ書き込みシーケンスを開始");
@@ -253,40 +253,40 @@ const App = () => {
         }finally{
             setMapEditorIsOpen(false);
         }
-    },[])
+    }
 
-    const addNewImgData = useCallback((imgData: any) => {
+    const addNewImgData = (imgData: any) => {
         const {PosX, PosY, source} = imgData;
 
         const tmpObj: any = imgObj;
         tmpObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, source: source}
         setImgObj(tmpObj);
-    },[])
+    }
 
-    const deleteImgData = useCallback((imgData: any) => {
+    const deleteImgData = (imgData: any) => {
         const {PosX, PosY} = imgData;
 
         const tmpImgObj: any = imgObj;
         delete tmpImgObj.imgData['xy'+String(PosX)+String(PosY)];
         setImgObj(tmpImgObj);
-    },[])
+    }
 
-    const setRegionHandler = useCallback((region:any) => {
+    const setRegionHandler = (region:any) => {
         console.log("setRegionHandler(App.tsx)");
         const tmpObj = imgObj;
         tmpObj['region'] = region;
         tmpObj.initStatus['location'] = false;  // 地図位置設定フラグを解除
         setImgObj(tmpObj);
-    },[])
+    }
 
-    const setDivNumHandler = useCallback((divNumX: any) => {
+    const setDivNumHandler = (divNumX: any) => {
         console.log("setDivNumHandler(App.tsx)")
         const tmpObj = imgObj;
         tmpObj['divNumX'] = divNumX;
         tmpObj['divNumY'] = divNumX;
         tmpObj.initStatus['divNum'] = false;    // 分割数設定フラグを解除
         setImgObj(tmpObj);
-    },[])
+    }
 
     console.log(imgObj);
 
