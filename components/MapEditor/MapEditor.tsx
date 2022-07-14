@@ -81,7 +81,7 @@ const MapEditor = memo((props: any) => {
     let tmp = regionTemp;
     tmp['region'] = {...region};
     setRegionTemp(tmp);
-    console.log(regionTemp);
+    //console.log(regionTemp);
   },[])
 
   const onRegionSelect = useCallback(() => {
@@ -112,12 +112,13 @@ const MapEditor = memo((props: any) => {
       <SelectButton assetSelectHandler={assetSelectHandler} initStatus={imgObj.initStatus} enableEditMode={enableEditMode} onRegionSelect={onRegionSelect} onDivNumSelect={onDivNumSelect} />
       <BottomAreaComponents addData={addData} deleteData={deleteData} moveLeft={moveLeft} moveDown={moveDown} moveUp={moveUp} moveRight={moveRight} horizontal={horizontal} vertical={vertical} currentImageTag={currentImageTag}/>
 
-      { ((!imgObj.initStatus.location && imgObj.initStatus.divNum) || dataViewIsOpen) && (
+      { ((!imgObj.initStatus.location && imgObj.initStatus.divNum) ||
+        (!imgObj.initStatus.location && !imgObj.initStatus.divNum) || dataViewIsOpen) && (
         <ImageDataView imgObj={imgObj}/>
       )}
       
       { ((!imgObj.initStatus.location && imgObj.initStatus.divNum) || 
-         (!imgObj.initStatus.location && !imgObj.initStatus.divNum) || gridLineIsOpen) && (
+        (!imgObj.initStatus.location && !imgObj.initStatus.divNum) || gridLineIsOpen) && (
         <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
       )}
 

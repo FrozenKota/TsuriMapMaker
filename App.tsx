@@ -97,7 +97,7 @@ const App = () => {
 
         console.log("セーブデータ読み込みシーケンスを開始");
         console.log("fileName is %s", fileName);
-        //initNewData();
+    
         try{
             const res = await storage.load({key: fileName});
             console.log(res);
@@ -107,7 +107,7 @@ const App = () => {
         }finally{
             setMapEditorIsOpen(true);
         }
-    }
+    };
 
     const createDataHandler = useCallback((e: any) => {
         /*********************************
@@ -258,9 +258,9 @@ const App = () => {
     const addNewImgData = useCallback((imgData: any) => {
         const {PosX, PosY, source} = imgData;
 
-        const tmpImgObj: any = imgObj;
-        tmpImgObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, source: source}
-        setImgObj(tmpImgObj);
+        const tmpObj: any = imgObj;
+        tmpObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, source: source}
+        setImgObj(tmpObj);
     },[])
 
     const deleteImgData = useCallback((imgData: any) => {
@@ -287,6 +287,8 @@ const App = () => {
         tmpObj.initStatus['divNum'] = false;    // 分割数設定フラグを解除
         setImgObj(tmpObj);
     },[])
+
+    console.log(imgObj);
 
     return(
         <View style={styles.mainContainer}>

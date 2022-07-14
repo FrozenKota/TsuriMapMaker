@@ -28,13 +28,15 @@ import Svg, {
 //  const { width, height } = Dimensions.get('window');
 
 const GridLine = (props: any) => {
-    
-    const X1 = props.x1;
-    const X2 = props.x2;
-    const Y1 = props.y1;
-    const Y2 = props.y2;
 
-    const DIV_NUM_X = props.divNumX;
+    const {x1, x2, y1, y2, divNumX, horizontal, vertical, imageTag} = props;
+    
+    const X1 = x1;
+    const X2 = x2;
+    const Y1 = y1;
+    const Y2 = y2;
+
+    const DIV_NUM_X = divNumX;
 
     const WIDTH = X2 - X1;
     const HEIGHT = Y2 - Y1;
@@ -56,16 +58,16 @@ const GridLine = (props: any) => {
     
     items.push(
         <Image key={"img"}
-        x={X1+props.horizontal*DIV_X}
-        y={Y1+props.vertical*DIV_Y}
+        x={X1+horizontal*DIV_X}
+        y={Y1+vertical*DIV_Y}
         width = {DIV_X}
         height= {DIV_Y}
-        href={Images[props.imageTag]}
+        href={Images[imageTag]}
         />
     )
 
     items.push(
-        <Rect key={"rect"} x={X1+props.horizontal*DIV_X} y={Y1+props.vertical*DIV_Y} width={DIV_X} height={DIV_Y} stroke="yellow" strokeWidth="2" />
+        <Rect key={"rect"} x={X1+horizontal*DIV_X} y={Y1+vertical*DIV_Y} width={DIV_X} height={DIV_Y} stroke="yellow" strokeWidth="2" />
     )
 
     return (

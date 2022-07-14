@@ -21,6 +21,7 @@ const ImgDataView = (props: any) => {
   const {imgObj} = props;
 
   console.log("ImgDataView.tsx");
+  console.log(imgObj);
 
   const divX = width / imgObj.divNumX;
   const divY = divX;
