@@ -1,18 +1,24 @@
 import React, {useState, memo, useCallback} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, Touchable, TouchableHighlight} from 'react-native';
 import { storage } from '../Storage';
 import ITextInput from './ITextInput';
+import ConfirmModal from './ConfirmModal'
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const StorageControl = memo((props: any) => {
-    const {closeHandler, option, createData, editData } = props;
+    const {closeHandler, option, createData, editData, deleteData } = props;
 
-    const [ keyListIsLoaded , setKeyListIsLoaded ] = useState(false);
     const [ keyList, setKeyList ] = useState([]);
+    const [ confirmModalIsOpen, setConfirmModalIsOpen ] = useState(false);
+    const [ deleteFileName, setDeleteFileName ] = useState("");
 
     let title = "";         // トップに表示するタイトルを格納する
     let tmpData:any = [];   // 時期にいらなくなる
+
+    const closeConfirmHandler = () => {
+        setConfirmModalIsOpen(false);
+    }
 
     // 新規ファイル名を受け取り、データの作成をする
     const setFileNameHandler = (name: string) => {
@@ -21,6 +27,22 @@ const StorageControl = memo((props: any) => {
         createData({newFileName: name, option: 'new'});
         //ITextInput をクローズ
         closeHandler();
+    }
+    const deleteDataHandler = (e: any) => {
+        setDeleteFileName(e);
+        setConfirmModalIsOpen(true);
+    }
+      const getAllDataForKey = async(key: any) => {
+        let keys:any = {};
+        try{
+            keys = await storage.getAllDataForKey(key);
+            console.log(key + "=");
+            console.log(keys);
+        }catch(e){
+            console.log(e);
+        }finally{
+
+        }
     }
 
     const loadKeyList = useCallback(async() => {
@@ -34,6 +56,25 @@ const StorageControl = memo((props: any) => {
             //setKeyListIsLoaded(true);
         }
     },[])
+    
+    // DataBlock will display file information
+    const DataBlock = (props: any) => {
+        const {fileName, fileSize, modDate} = props;
+
+        return (
+            <View style={styles.dataBlockContainer}>
+                <View style={styles.fileNameLayout} >
+                    <Text style={styles.fileNameText}>  {fileName}</Text>
+                    <TouchableOpacity style={styles.deleteDataButton} onPress={() => deleteDataHandler(fileName)}>
+                        <Text style={styles.deleteButtonText}>X</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.dataDetailsBlock}>
+                    <Text style={styles.fileMoreInfo}> file size:  {fileSize} / modified date:  {modDate}</Text>
+                </View>
+            </View>
+        )
+    }
 
     // タイトルメッセージの代入
     if(option == "new"){
@@ -50,6 +91,7 @@ const StorageControl = memo((props: any) => {
         )
     }else{
         loadKeyList();
+        getAllDataForKey('keyList');
         keyList.map((value: any, index: number) => {
             tmpData.push(
                 <TouchableOpacity key={index} onPress={() => {editData({fileName: keyList[index], option: "edit"})}}>
@@ -76,24 +118,18 @@ const StorageControl = memo((props: any) => {
                         {tmpData}
                     </ScrollView>
                 </View>
+
+                {confirmModalIsOpen && (
+                    <ConfirmModal 
+                        msg="削除すると復元できません。本当に削除しますか？"
+                        okHandler = {() => deleteData(deleteFileName)}
+                        closeHandler = {closeConfirmHandler}
+                    />
+                )}
             </View>
         )
     }
 })
-
-// DataBlock will display file information
-const DataBlock = (props: any) => {
-    const {fileName, fileSize, modDate} = props;
-
-    return (
-        <View style={styles.dataBlockLayout}>
-            <Text style={styles.fileName}>  {fileName}</Text>
-            <View style={styles.dataDetailsBlock}>
-                <Text style={styles.fileMoreInfo}> file size:  {fileSize} / modified date:  {modDate}</Text>
-            </View>
-        </View>
-    )
-}
 
 export default StorageControl;
 
@@ -126,20 +162,38 @@ const styles = StyleSheet.create({
     dataAreaLayout: {
         flex: 0.9,
     },
-    fileName: {
+    fileNameText: {
+        width: '90%',
+        backgroundColor: 'white',
         fontSize: width / 15,
         color: 'black',
+    },
+    fileNameLayout: {
+        flexDirection: 'row',
+        flex: 1,
+        backgroundColor: 'white', 
+    },
+    deleteButtonText: {
+        fontSize: height / 25,
+        color: 'white',
+    },
+    deleteDataButton: {
+        backgroundColor: 'darkred',
+        width: '10%',
+        alignItems: 'center',
     },
     fileMoreInfo: {
         fontSize: width / 30,
         color: 'white',
     },
     dataDetailsBlock: {
+        flex: 0.2,
+        flexDirection: 'row',
         width: width,
         backgroundColor: 'black',
         marginTop: 5,
     },
-    dataBlockLayout:{
+    dataBlockContainer:{
         flex: 1,
         flexDirection: 'column',
         width: width,

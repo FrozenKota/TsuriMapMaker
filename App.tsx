@@ -75,39 +75,13 @@ const App = () => {
     }
 
     const closeStorageControlHandler = () => {
+        console.log("closeStorageControlHandler (App.tsx)");
         setStorageControlIsOpen(false);
     }
 
     const closeMapEditorHandler = () => {
         setMapEditorIsOpen(false);
     }
-
-    const editDataHandler = async(e: any) => {
-        /*********************************
-         * 1)セーブデータの読み込み
-         * 2)MapEditorの起動
-        *********************************/
-        console.log("editDataHandler(App.tsx)");
-
-        const {fileName, option} = e;
-        
-        //debug
-        console.log("imgObj before load func");
-        console.log(imgObj);
-
-        console.log("セーブデータ読み込みシーケンスを開始");
-        console.log("fileName is %s", fileName);
-    
-        try{
-            const res = await storage.load({key: fileName});
-            console.log(res);
-            setImgObj(res);
-        }catch(e){
-            console.log(e);
-        }finally{
-            setMapEditorIsOpen(true);
-        }
-    };
 
     const createDataHandler = (e: any) => {
         /*********************************
@@ -237,6 +211,43 @@ const App = () => {
         }else{
             setMapEditorIsOpen(false);
         }
+
+        const tmp = storage.getAllDataForKey('keyList');
+        console.log(tmp);
+    }
+
+    const editDataHandler = async(e: any) => {
+        /*********************************
+         * 1)セーブデータの読み込み
+         * 2)MapEditorの起動
+        *********************************/
+        console.log("editDataHandler(App.tsx)");
+
+        const {fileName} = e;
+        
+        //debug
+        //console.log("imgObj before load func");
+        //console.log(imgObj);
+
+        console.log("セーブデータ読み込みシーケンスを開始");
+        console.log("fileName is %s", fileName);
+    
+        try{
+            const res = await storage.load({key: fileName});
+        }catch(e){
+            console.log(e);
+            return;
+        }finally{
+            setMapEditorIsOpen(true);
+        }
+    };
+
+    const deleteDataHandler = (e: any) => {
+        console.log("deleteDataHandler(App.tsx)");
+
+        console.log("this will be deleted ... file name : " + e);
+        storage.remove({key: e});
+        storage.remove({key: 'keyList', id: e})
     }
 
     const saveDataHandler = async() => {
@@ -288,8 +299,6 @@ const App = () => {
         setImgObj(tmpObj);
     }
 
-    console.log(imgObj);
-
     return(
         <View style={styles.mainContainer}>
             <View style={styles.titleLayout}>
@@ -312,6 +321,7 @@ const App = () => {
                     imgObj={imgObj}
                     createData={(e: any) => {createDataHandler(e)}}
                     editData={(e: any) => {editDataHandler(e)}}
+                    deleteData={(e: any) => {deleteDataHandler(e)}}
                 />
             )}
 
