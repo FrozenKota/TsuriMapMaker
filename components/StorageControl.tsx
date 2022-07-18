@@ -9,7 +9,7 @@ const { width, height } = Dimensions.get('window');
 const StorageControl = memo((props: any) => {
     const {closeHandler, option, createData, editData, deleteData } = props;
 
-    const [ keyList, setKeyList ] = useState([]);
+    const [ keyList, setKeyList ] = useState({});
     const [ confirmModalIsOpen, setConfirmModalIsOpen ] = useState(false);
     const [ deleteFileName, setDeleteFileName ] = useState("");
 
@@ -32,29 +32,41 @@ const StorageControl = memo((props: any) => {
         setDeleteFileName(e);
         setConfirmModalIsOpen(true);
     }
-      const getAllDataForKey = async(key: any) => {
-        let keys:any = {};
-        try{
-            keys = await storage.getAllDataForKey(key);
-            console.log(key + "=");
-            console.log(keys);
-        }catch(e){
-            console.log(e);
-        }finally{
-
-        }
-    }
 
     const loadKeyList = useCallback(async() => {
+        let tmpKeyList: any ;
         try{
-            //setKeyListIsLoaded(false);
             const res = await storage.load({key: 'keyList'});
-            setKeyList(res.keyList);
+
+            console.log(tmpKeyList);
+            tmpKeyList = res;
+        }catch(e){
+            console.log(e);
+            // keyList がない場合は、空のkeyListをセット
+            tmpKeyList = {};
+        }
+        setKeyList(tmpKeyList);
+    },[])
+
+    const deleteKey = useCallback(async(key: any) => {
+        console.log("deleteKey() (StorageControl.tsx)");
+        loadKeyList();
+
+        const tmpKeyList: any = keyList;
+        console.log("tmpKeyList is ");
+        console.log(tmpKeyList);
+        delete tmpKeyList[key];
+        
+        try{
+            await storage.save({key: 'keyList', data: tmpKeyList})
         }catch(e){
             console.log(e);
         }finally{
-            //setKeyListIsLoaded(true);
+            loadKeyList();
+            console.log("new keyList is ...");
+            console.log(keyList);
         }
+
     },[])
     
     // DataBlock will display file information
@@ -91,11 +103,16 @@ const StorageControl = memo((props: any) => {
         )
     }else{
         loadKeyList();
-        getAllDataForKey('keyList');
-        keyList.map((value: any, index: number) => {
+
+        console.log("keyList = ");
+        console.log(keyList);
+        const keys = Object.keys(keyList);
+        //let keys = Object.keys({neko:10, inu:12, tako:33});
+
+        keys.map((value: any, index: number) => {
             tmpData.push(
-                <TouchableOpacity key={index} onPress={() => {editData({fileName: keyList[index], option: "edit"})}}>
-                    <DataBlock fileName={keyList[index]} fileSize={'1129710 kbyte'} modDate={'2022/2/22'} />
+                <TouchableOpacity key={index} onPress={() => {editData({fileName: keys[index], option: "edit"})}}>
+                    <DataBlock fileName={keys[index]} fileSize={114514} modDate={'2022/2/22'} />
                 </TouchableOpacity>
             )
             tmpData = [...tmpData].reverse();
@@ -122,7 +139,12 @@ const StorageControl = memo((props: any) => {
                 {confirmModalIsOpen && (
                     <ConfirmModal 
                         msg="削除すると復元できません。本当に削除しますか？"
-                        okHandler = {() => deleteData(deleteFileName)}
+                        okHandler = {
+                            () => {
+                                deleteData(deleteFileName);
+                                deleteKey(deleteFileName);
+                            }
+                        }
                         closeHandler = {closeConfirmHandler}
                     />
                 )}

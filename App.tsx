@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions, Alert} from  'react-native';
 
 import MapEditor from './components/MapEditor/MapEditor';
@@ -54,7 +54,7 @@ const App = () => {
 
     const initNewData = () => {
         console.log("initNewData();");
-        let tmpObj = imgObj;
+        const tmpObj = imgObj;
         tmpObj.initStatus['location'] = true;
         tmpObj.initStatus['divNum'] = true;
         tmpObj.imgData = {};
@@ -93,7 +93,7 @@ const App = () => {
         console.log("storageEventHandler(App.tsx)")
 
         const {newFileName, option} = e;
-        let tmpObj: any = imgObj;
+        const tmpObj: any = imgObj;
         let readDataBuffer: any;
         let keyListBuffer: any;
 
@@ -126,7 +126,7 @@ const App = () => {
                     default:
                         break;
                 }
-            }).then(()=>{                       //  エラーや、ファイル名重複がなかった場合の処理
+            }).then(()=>{                      
                 if(readDataBuffer === null){    //  入力したファイル名が未使用(key未使用)なら作成
                     // debug: newFileName は正常な文字列でここまで到達
                     console.log("使用可能なファイル名です。セーブデータを新規作成。");
@@ -177,7 +177,7 @@ const App = () => {
                         if(keyListBuffer === null){
                             console.log("keyListがありません。新規に作成します。");
                             console.log("newFileName is "+newFileName);
-                            keyListBuffer = {'keyList': [newFileName]}; 
+                            keyListBuffer = { 'keyList':{[newFileName]:{'size': 1129, 'modDate': "2022/7/18"}}}; 
                             storage.save({
                                 key: 'keyList',
                                 data: keyListBuffer,
@@ -190,16 +190,17 @@ const App = () => {
                                 console.log("loaded keyList is ...");
                                 console.log(data);
                                 keyListBuffer = data;
-                                keyListBuffer['keyList']= [...keyListBuffer.keyList, newFileName];
+                                keyListBuffer.keyList[newFileName]= {'fileSize': 123456, 'modDate':'2022/7/18'};
                                 console.log("created keyList")
                                 console.log(keyListBuffer);
 
                                 storage.save({
                                     key: 'keyList',
                                     data: keyListBuffer
+                                }).catch(e=>{
+                                    console.log(e);
                                 })
-                                console.log("added key is ....");
-                                console.log(keyListBuffer);
+
                             })
                         }
                     })
@@ -234,9 +235,9 @@ const App = () => {
     
         try{
             const res = await storage.load({key: fileName});
+            setImgObj(res);
         }catch(e){
             console.log(e);
-            return;
         }finally{
             setMapEditorIsOpen(true);
         }

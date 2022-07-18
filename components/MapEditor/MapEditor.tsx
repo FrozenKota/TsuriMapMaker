@@ -1,7 +1,6 @@
 import React, { useState, memo, useCallback} from 'react';
 import { StyleSheet, View, Text, Dimensions} from 'react-native';
 
-import Images from '../../Asset/asset';
 import GridLine from '../GridLine';
 import AssetWindow from '../Asset';
 import ImageDataView from '../DataView';
@@ -78,7 +77,7 @@ const MapEditor = memo((props: any) => {
 
   const onRegionChange = useCallback((region: any) => {
     console.log("onRegionChange");
-    let tmp = regionTemp;
+    const tmp = regionTemp;
     tmp['region'] = {...region};
     setRegionTemp(tmp);
     //console.log(regionTemp);
