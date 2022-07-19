@@ -19,6 +19,7 @@ const { width, height } = Dimensions.get('window');
 
 const ImgDataView = (props: any) => {
   const {imgObj} = props;
+  const items: any = [];
 
   console.log("ImgDataView.tsx");
   console.log(imgObj);
@@ -27,25 +28,27 @@ const ImgDataView = (props: any) => {
   const divY = divX;
   const keys = Object.keys(imgObj.imgData);
 
-  const items = keys.map((value: any, index: number)=>
-    <View key={"view"+index} style={{
-      position: 'absolute',
-      top: imgObj.imgData[keys[index]].PosY * divX,
-      left: imgObj.imgData[keys[index]].PosX * divY,
-      width: width / imgObj.divNumX, 
-      height: (height*0.7) / imgObj.divNumX,
-      opacity: 1.0,
-    }}>
-    <Image key={"img"+index}
-      style={{
-        resizeMode: 'stretch',
-        width: divX,
-        height: divY,
-      }}
-      source={imgObj.imgData[keys[index]].source}
-    />
-    </View>
-  );
+  keys.map((value: any, index: number)=>{
+    items.push(
+      <View key={"view"+index} style={{
+        position: 'absolute',
+        top: imgObj.imgData[keys[index]].PosY * divX,
+        left: imgObj.imgData[keys[index]].PosX * divY,
+        width: width / imgObj.divNumX, 
+        height: (height*0.7) / imgObj.divNumX,
+        opacity: 1.0,
+      }}>
+      <Image key={"img"+index}
+        style={{
+          resizeMode: 'stretch',
+          width: divX,
+          height: divY,
+        }}
+        source={imgObj.imgData[keys[index]].source}
+      />
+      </View>
+    )
+  })
 
   return (
     <View style={styles.iOverlay}>
