@@ -6,7 +6,7 @@ const { width } = Dimensions.get('window');
 
 const AssetWindow = (props :any) => {
     const data = [];
-    const num = 123;
+    const num = 145;
 
     const {closeAssetHandler, rowNum} = props;
 
