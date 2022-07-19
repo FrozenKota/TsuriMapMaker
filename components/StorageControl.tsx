@@ -50,9 +50,9 @@ const StorageControl = memo((props: any) => {
         }
     },[])
 
-    const deleteKey = useCallback(async() => {
+    const deleteKey = async() => {
         console.log("deleteKey() (StorageControl.tsx)");
-        console.log("deleteFileName(state) is %s", deleteFileName);
+        console.log("deleteFileName(state) is " + deleteFileName);
 
         const tmpKeyList: any = keyList;        
         try{
@@ -67,7 +67,7 @@ const StorageControl = memo((props: any) => {
         }finally{
         }
 
-    },[])
+    }
     
     // DataBlock will display file information
     const DataBlock = (props: any) => {
@@ -137,11 +137,11 @@ const StorageControl = memo((props: any) => {
 
                 {confirmModalIsOpen && (
                     <ConfirmModal 
-                        msg="削除すると復元できません。本当に削除しますか？"
+                        fileName = {deleteFileName}
                         okHandler = {
                             () => {
                                 deleteData(deleteFileName);
-                                //deleteKey;
+                                deleteKey();
                             }
                         }
                         closeHandler = {closeConfirmHandler}

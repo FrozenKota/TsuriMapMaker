@@ -80,7 +80,7 @@ const MapEditor = memo((props: any) => {
     const tmp = regionTemp;
     tmp['region'] = {...region};
     setRegionTemp(tmp);
-    //console.log(regionTemp);
+    console.log(regionTemp);
   },[])
 
   const onRegionSelect = useCallback(() => {

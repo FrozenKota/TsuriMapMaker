@@ -4,8 +4,7 @@ import {StyleSheet, View, Text, TouchableOpacity, Dimensions} from  'react-nativ
 const { width, height } = Dimensions.get('window');
 
 const ConfirmModal = memo((props: any) => {
-    const {closeHandler, okHandler, msg} = props;
-    let message = msg;
+    const {closeHandler, okHandler, fileName} = props;
 
     const _okHandler = () => {
         console.log("_okHandler() (ConfirmModal.tsx)");
@@ -18,8 +17,6 @@ const ConfirmModal = memo((props: any) => {
         closeHandler();
     }
 
-    if(msg === "") message = "undefined message";
-
     return(
         <View style={styles.mainContainer} >
             <View style={styles.inputContainer} >
@@ -30,7 +27,8 @@ const ConfirmModal = memo((props: any) => {
                 </View>
                 <View style={styles.inputLayout}>
                     <View style={styles.message}>
-                        <Text style={{color: '#222222', fontSize: 15}}>{msg}</Text>
+                        <Text style={{color: '#222222', fontSize: 15}}>{fileName} は削除されます.</Text>
+                        <Text style={{color: '#222222', fontSize: 15}}>本当によろしいですか？</Text>
                     </View>
                     <View style={styles.buttonLayout}>
                         <TouchableOpacity onPress={_cancelHandler} style={styles.Button}>
@@ -62,7 +60,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         height: '30%',
         width: width,
-        marginTop: '30%',
+        marginTop: '50%',
     },
     titleLayout: {
         flex: 0.2,
@@ -77,7 +75,7 @@ const styles = StyleSheet.create({
         flex: 0.8,
         flexDirection: 'column',
         backgroundColor: 'white',
-        opacity: 0.9,
+        opacity: 1,
         width: width,
         justifyContent: 'space-around',
 
@@ -91,29 +89,23 @@ const styles = StyleSheet.create({
         fontSize: width/20,
     },
     buttonLayout: {
-        flex: 1,
+        flex: 0.5,
         flexDirection: 'row',
         height: '30%',
         width: width,
         background: 'yellow',
-
     },
     Button: {
         flex: 1,
         backgroundColor: 'gray',
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: 20,
-        marginBottom: 12,
-        width: '100%',
+        marginHorizontal: 10,
+        marginVertical: 10,
     },
-    input: {
-        height: '30%',
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-      },
     message: {
+        flex: 0.5,
+        marginTop: 12,
         marginLeft: 12,
         marginBottom: 12,
         color: 'blue'

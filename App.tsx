@@ -40,8 +40,8 @@ const App = () => {
         divNumX: 10,
         divNumY: 10,
         region: {
-            latitude: 34.6963315, 
-            longitude: 139.3749429,
+            latitude: 38.165510778804716, 
+            longitude: 0.05000013082483434,
             latitudeDelta: 0.05,
             longitudeDelta: 0.05 * (width / height),
         },
@@ -59,9 +59,9 @@ const App = () => {
         tmpObj.initStatus['divNum'] = true;
         tmpObj.imgData = {};
         tmpObj['region'] = {
-            latitude: 34.6963315, 
-            longitude: 139.3749429,
-            latitudeDelta: 0.05,
+            latitude: 38.165510778804716, 
+            longitude: 137.6747134141624,
+            latitudeDelta: 19.31312361327316,
             longitudeDelta: 0.05 * (width / height),
         };
         setImgObj(tmpObj);
@@ -261,7 +261,7 @@ const App = () => {
         console.log("fileName is %s", imgObj.fileName);
         console.log("セーブするimgObj = ");
         console.log(imgObj);
-        
+
         try{
             const res = await storage.save({key: imgObj.fileName, data: imgObj});
         }catch(e){
