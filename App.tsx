@@ -243,12 +243,15 @@ const App = () => {
         }
     };
 
-    const deleteDataHandler = (e: any) => {
+    const deleteDataHandler = async(e: any) => {
         console.log("deleteDataHandler(App.tsx)");
-
         console.log("this will be deleted ... file name : " + e);
-        storage.remove({key: e});
-        storage.remove({key: 'keyList', id: e})
+        
+        try{
+            await storage.remove({key: e});
+        }catch(e){
+            console.log(e);
+        }
     }
 
     const saveDataHandler = async() => {
@@ -258,6 +261,7 @@ const App = () => {
         console.log("fileName is %s", imgObj.fileName);
         console.log("セーブするimgObj = ");
         console.log(imgObj);
+        
         try{
             const res = await storage.save({key: imgObj.fileName, data: imgObj});
         }catch(e){

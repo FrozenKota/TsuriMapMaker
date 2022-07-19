@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions} from  'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const ConfirmModal = (props: any) => {
+const ConfirmModal = memo((props: any) => {
     const {closeHandler, okHandler, msg} = props;
     let message = msg;
 
@@ -45,7 +45,7 @@ const ConfirmModal = (props: any) => {
             </View>
         </View>
     )
-}
+})
 
 export default ConfirmModal;
 

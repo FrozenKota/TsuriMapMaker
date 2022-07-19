@@ -1,4 +1,4 @@
-import React, {useState, memo, useCallback} from 'react';
+import React, {useState, memo, useCallback, useEffect} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, Dimensions, ScrollView, Touchable, TouchableHighlight} from 'react-native';
 import { storage } from '../Storage';
 import ITextInput from './ITextInput';
@@ -9,12 +9,12 @@ const { width, height } = Dimensions.get('window');
 const StorageControl = memo((props: any) => {
     const {closeHandler, option, createData, editData, deleteData } = props;
 
-    const [ keyList, setKeyList ] = useState({});
+    const [ keyList, setKeyList ] = useState({keyList:{}});
     const [ confirmModalIsOpen, setConfirmModalIsOpen ] = useState(false);
     const [ deleteFileName, setDeleteFileName ] = useState("");
 
     let title = "";         // トップに表示するタイトルを格納する
-    let tmpData:any = [];   // 時期にいらなくなる
+    let tmpData:any = [];  
 
     const closeConfirmHandler = () => {
         setConfirmModalIsOpen(false);
@@ -28,43 +28,43 @@ const StorageControl = memo((props: any) => {
         //ITextInput をクローズ
         closeHandler();
     }
-    const deleteDataHandler = (e: any) => {
+
+    const deleteDataHandler = useCallback((e: any) => {
+        console.log("deleteDataHandler(), (StorageControl.tsx)");
+        console.log("file name is "+ e);
+
         setDeleteFileName(e);
+        
         setConfirmModalIsOpen(true);
-    }
-
-    const loadKeyList = useCallback(async() => {
-        let tmpKeyList: any ;
-        try{
-            const res = await storage.load({key: 'keyList'});
-
-            console.log(tmpKeyList);
-            tmpKeyList = res;
-        }catch(e){
-            console.log(e);
-            // keyList がない場合は、空のkeyListをセット
-            tmpKeyList = {};
-        }
-        setKeyList(tmpKeyList);
     },[])
 
-    const deleteKey = useCallback(async(key: any) => {
-        console.log("deleteKey() (StorageControl.tsx)");
-        loadKeyList();
-
-        const tmpKeyList: any = keyList;
-        console.log("tmpKeyList is ");
-        console.log(tmpKeyList);
-        delete tmpKeyList[key];
-        
+    const loadKeyList = useCallback(async() => {
+        console.log("loadKeyList() ... (StorageControl.tsx)");
         try{
+            const res = await storage.load({key: 'keyList'});
+            console.log("loadedKey is ....");
+            console.log(res);
+            setKeyList(res);
+        }catch(e){
+            console.log(e);
+        }
+    },[])
+
+    const deleteKey = useCallback(async() => {
+        console.log("deleteKey() (StorageControl.tsx)");
+        console.log("deleteFileName(state) is %s", deleteFileName);
+
+        const tmpKeyList: any = keyList;        
+        try{
+            console.log("tmpKeyList is ");
+            console.log(keyList);
+
+            delete tmpKeyList.keyList[deleteFileName];
+
             await storage.save({key: 'keyList', data: tmpKeyList})
         }catch(e){
             console.log(e);
         }finally{
-            loadKeyList();
-            console.log("new keyList is ...");
-            console.log(keyList);
         }
 
     },[])
@@ -104,9 +104,7 @@ const StorageControl = memo((props: any) => {
     }else{
         loadKeyList();
 
-        console.log("keyList = ");
-        console.log(keyList);
-        const keys = Object.keys(keyList);
+        const keys = Object.keys(keyList.keyList);
         //let keys = Object.keys({neko:10, inu:12, tako:33});
 
         keys.map((value: any, index: number) => {
@@ -115,8 +113,9 @@ const StorageControl = memo((props: any) => {
                     <DataBlock fileName={keys[index]} fileSize={114514} modDate={'2022/2/22'} />
                 </TouchableOpacity>
             )
-            tmpData = [...tmpData].reverse();
         })
+        tmpData = [...tmpData].reverse();
+
         return(
             <View style={styles.mainContainer}>
                 <View style={styles.titleAreaLayout}>
@@ -142,7 +141,7 @@ const StorageControl = memo((props: any) => {
                         okHandler = {
                             () => {
                                 deleteData(deleteFileName);
-                                deleteKey(deleteFileName);
+                                //deleteKey;
                             }
                         }
                         closeHandler = {closeConfirmHandler}
