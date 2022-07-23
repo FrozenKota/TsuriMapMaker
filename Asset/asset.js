@@ -143,5 +143,17 @@ const images = [
 	require('./Asset1/Asset1_18.png'),
 	require('./Asset1/Asset1_19.png'),
 	require('./Asset1/Asset1_20.png'),
+	require('./Asset1/Asset1_21.png'),
+	require('./Asset1/Asset1_22.png'),
+	require('./Asset1/Asset1_23.png'),
+	require('./Asset1/Asset1_24.png'),
+	require('./Asset1/Asset1_25.png'),
+	require('./Asset1/Asset1_26.png'),
+	require('./Asset1/Asset1_27.png'),
+	require('./Asset1/Asset1_28.png'),
+	require('./Asset1/Asset1_29.png'),
+	require('./Asset1/Asset1_30.png'),
+	require('./Asset1/Asset1_31.png'),
+	require('./Asset1/Asset1_32.png'),
 ];	
 export default images;	
