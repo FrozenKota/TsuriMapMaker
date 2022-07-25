@@ -4,7 +4,7 @@ import {StyleSheet, View, Text, TouchableOpacity, Dimensions, Alert} from  'reac
 import MapEditor from './components/MapEditor/MapEditor';
 import StorageControl from './components/StorageControl';
 import Images from './Asset/asset';
-import { storage } from './Storage';
+import {storage} from './Storage';
 
 
 const { width, height} = Dimensions.get('window');
@@ -49,14 +49,41 @@ const App = () => {
             xy00:{PosX: 0, PosY: 0, source:Images[3]}
         },
     })
-
     const [ eventManager, setEventManager ] = useState({fileName:"", option:""});
 
-    const initNewData = () => {
+    const initRegion = {
+        latitude: 38.165510778804716, 
+        longitude: 137.6747134141624,
+        latitudeDelta: 19.31312361327316,
+        longitudeDelta: 0.05 * (width / height),
+    };
+
+    // react-native-storage を async/await記述で同期処理にする
+    const asyncCreateData = async(props: {'key': string, 'data':object}) => {
+        const {key, data} = props;
+        try{
+            await storage.save({key: props.key, data: props.data})
+        }catch(e){
+            console.log(e);
+        }
+    }
+    
+    const asyncLoadData = async(props: {'key': string}) => {
+        const {key} = props;
+        let data: any = {};
+        try{
+            data = await storage.load({key: key});
+        }catch(e){
+            console.log(e);
+        }
+        return "test";
+    }
+
+    const initLocation = () => {
         console.log("initNewData();");
+
         const tmpObj = imgObj;
-        tmpObj.initStatus['location'] = true;
-        tmpObj.initStatus['divNum'] = true;
+
         tmpObj.imgData = {};
         tmpObj['region'] = {
             latitude: 38.165510778804716, 
@@ -64,6 +91,8 @@ const App = () => {
             latitudeDelta: 19.31312361327316,
             longitudeDelta: 0.05 * (width / height),
         };
+
+        console.log("setImgObj.");
         setImgObj(tmpObj);
     }
 
@@ -132,17 +161,18 @@ const App = () => {
                     console.log("使用可能なファイル名です。セーブデータを新規作成。");
                     
                     // ファイル名とシーケンス情報を設定
-                    tmpObj.fileName = newFileName;
-                    tmpObj.initStatus['location'] = true;  // 位置設定シーケンスを有効
-                    tmpObj.initStatus['divNum'] = true;    // 分割数設定シーケンスを有効
-                    setImgObj(tmpObj);                  // ワークオブジェクト(imgObj)に設定
+                    tmpObj['fileName'] = newFileName;
+                    tmpObj.initStatus['location'] = true;   // 位置設定シーケンスを有効
+                    tmpObj.initStatus['divNum'] = true;     // 分割数設定シーケンスを有効
+                    tmpObj['imgData'] = {};
+                    tmpObj['region'] = initRegion;
+
+                    console.log("setImgObj.");
+                    setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
 
                     // データ(tmpObj or imgObj)をストレージに保存
-                    storage.save({
-                        key: newFileName,
-                        data: tmpObj
-                    });
-                    initNewData();
+                    asyncCreateData({key: newFileName, data:tmpObj});
+                    
                     setMapEditorIsOpen(true);   // 地図編集画面起動
                 }else{                          //  入力したファイル名が使用済み(keyが存在)なら失敗
                     console.log("失敗. 使われているファイル名です");
@@ -178,6 +208,7 @@ const App = () => {
                             console.log("keyListがありません。新規に作成します。");
                             console.log("newFileName is "+newFileName);
                             keyListBuffer = { 'keyList':{[newFileName]:{'size': 1129, 'modDate': "2022/7/18"}}}; 
+                            
                             storage.save({
                                 key: 'keyList',
                                 data: keyListBuffer,
@@ -194,6 +225,7 @@ const App = () => {
                                 console.log("created keyList")
                                 console.log(keyListBuffer);
 
+                                
                                 storage.save({
                                     key: 'keyList',
                                     data: keyListBuffer
@@ -225,22 +257,14 @@ const App = () => {
         console.log("editDataHandler(App.tsx)");
 
         const {fileName} = e;
-        
-        //debug
-        //console.log("imgObj before load func");
-        //console.log(imgObj);
 
         console.log("セーブデータ読み込みシーケンスを開始");
         console.log("fileName is %s", fileName);
-    
-        try{
-            const res = await storage.load({key: fileName});
-            setImgObj(res);
-        }catch(e){
-            console.log(e);
-        }finally{
-            setMapEditorIsOpen(true);
-        }
+
+        const tmpObj = await storage.load({key: fileName});
+        setImgObj(tmpObj);
+        setMapEditorIsOpen(true);
+        console.log(tmpObj);
     };
 
     const deleteDataHandler = async(e: any) => {
@@ -276,6 +300,7 @@ const App = () => {
 
         const tmpObj: any = imgObj;
         tmpObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, source: source}
+        console.log("setImgObj.");
         setImgObj(tmpObj);
     }
 
@@ -284,6 +309,7 @@ const App = () => {
 
         const tmpImgObj: any = imgObj;
         delete tmpImgObj.imgData['xy'+String(PosX)+String(PosY)];
+        console.log("setImgObj.");
         setImgObj(tmpImgObj);
     }
 
@@ -292,6 +318,7 @@ const App = () => {
         const tmpObj = imgObj;
         tmpObj['region'] = region;
         tmpObj.initStatus['location'] = false;  // 地図位置設定フラグを解除
+        console.log("setImgObj.");
         setImgObj(tmpObj);
     }
 
@@ -301,8 +328,11 @@ const App = () => {
         tmpObj['divNumX'] = divNumX;
         tmpObj['divNumY'] = divNumX;
         tmpObj.initStatus['divNum'] = false;    // 分割数設定フラグを解除
+        console.log("setImgObj.");
         setImgObj(tmpObj);
     }
+
+    console.log(imgObj);
 
     return(
         <View style={styles.mainContainer}>

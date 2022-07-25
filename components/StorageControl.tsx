@@ -16,6 +16,15 @@ const StorageControl = memo((props: any) => {
     let title = "";         // トップに表示するタイトルを格納する
     let tmpData:any = [];  
 
+    // react-native-storage を async/await記述で同期処理にする
+    const asyncCreateData = async(props: {'key': string, 'data': object}) => {
+        try{
+            await storage.save({key: props.key, data: props.data})
+        }catch(e){
+            console.log(e);
+        }
+    }
+
     const closeConfirmHandler = () => {
         setConfirmModalIsOpen(false);
     }
@@ -50,23 +59,18 @@ const StorageControl = memo((props: any) => {
         }
     },[])
 
-    const deleteKey = async() => {
+    const deleteKey = () => {
         console.log("deleteKey() (StorageControl.tsx)");
         console.log("deleteFileName(state) is " + deleteFileName);
 
-        const tmpKeyList: any = keyList;        
-        try{
-            console.log("tmpKeyList is ");
-            console.log(keyList);
+        const tmpKeyList: any = keyList;
+    
+        console.log("tmpKeyList is ");
+        console.log(keyList);
 
-            delete tmpKeyList.keyList[deleteFileName];
+        delete tmpKeyList.keyList[deleteFileName];
 
-            await storage.save({key: 'keyList', data: tmpKeyList})
-        }catch(e){
-            console.log(e);
-        }finally{
-        }
-
+        asyncCreateData({key: 'keyList', data: tmpKeyList});
     }
     
     // DataBlock will display file information
@@ -104,7 +108,8 @@ const StorageControl = memo((props: any) => {
     }else{
         loadKeyList();
 
-        const keys = Object.keys(keyList.keyList);
+        let keys = Object.keys(keyList.keyList);
+        keys = [...keys].reverse();
         //let keys = Object.keys({neko:10, inu:12, tako:33});
 
         keys.map((value: any, index: number) => {
@@ -114,7 +119,6 @@ const StorageControl = memo((props: any) => {
                 </TouchableOpacity>
             )
         })
-        tmpData = [...tmpData].reverse();
 
         return(
             <View style={styles.mainContainer}>
