@@ -16,15 +16,6 @@ const StorageControl = memo((props: any) => {
     let title = "";         // トップに表示するタイトルを格納する
     let tmpData:any = [];  
 
-    // react-native-storage を async/await記述で同期処理にする
-    const asyncCreateData = async(props: {'key': string, 'data': object}) => {
-        try{
-            await storage.save({key: props.key, data: props.data})
-        }catch(e){
-            console.log(e);
-        }
-    }
-
     const closeConfirmHandler = () => {
         setConfirmModalIsOpen(false);
     }
@@ -38,28 +29,29 @@ const StorageControl = memo((props: any) => {
         closeHandler();
     }
 
-    const deleteDataHandler = useCallback((e: any) => {
+    const deleteDataHandler = (e: any) => {
         console.log("deleteDataHandler(), (StorageControl.tsx)");
         console.log("file name is "+ e);
 
         setDeleteFileName(e);
         
         setConfirmModalIsOpen(true);
-    },[])
+    }
 
-    const loadKeyList = useCallback(async() => {
+    const loadKeyList = async() => {
         console.log("loadKeyList() ... (StorageControl.tsx)");
-        try{
-            const res = await storage.load({key: 'keyList'});
-            console.log("loadedKey is ....");
-            console.log(res);
-            setKeyList(res);
-        }catch(e){
-            console.log(e);
-        }
-    },[])
 
-    const deleteKey = () => {
+        await storage.load({key: 'keyList'})
+            .then(data => {
+                console.log("loaded keyList is ");
+                console.log(data);
+                setKeyList(data);
+            }).catch((e)=>{
+                console.log(e);
+            })
+    }
+
+    const deleteKey = async() => {
         console.log("deleteKey() (StorageControl.tsx)");
         console.log("deleteFileName(state) is " + deleteFileName);
 
@@ -70,7 +62,7 @@ const StorageControl = memo((props: any) => {
 
         delete tmpKeyList.keyList[deleteFileName];
 
-        asyncCreateData({key: 'keyList', data: tmpKeyList});
+        await storage.save({key: 'keyList', data: tmpKeyList})
     }
     
     // DataBlock will display file information

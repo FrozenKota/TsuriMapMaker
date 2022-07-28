@@ -61,10 +61,10 @@ const MapEditor = memo((props: any) => {
     setAssetIsOpen(true);
   },[])
   
-  const closeAssetHandler = useCallback((imageTag: number) => {
+  const closeAssetHandler = (imageTag: number) => {
         setAssetIsOpen(false);
         setCurrentImageTag(imageTag);
-  },[])
+  }
 
   const closeMapEditorHandler1 = useCallback(() => {
     setMapIsOpen(false);
@@ -81,7 +81,7 @@ const MapEditor = memo((props: any) => {
     tmp['region'] = {...region};
     setRegionTemp(tmp);
     console.log(regionTemp);
-  },[])
+  },[regionTemp])
 
   const onRegionSelect = useCallback(() => {
     console.log("onRegionSelect")

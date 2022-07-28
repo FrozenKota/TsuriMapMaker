@@ -5,6 +5,8 @@ import MapEditor from './components/MapEditor/MapEditor';
 import StorageControl from './components/StorageControl';
 import Images from './Asset/asset';
 import {storage} from './Storage';
+import { loadOptions } from '@babel/core';
+import { exit, exitCode } from 'process';
 
 
 const { width, height} = Dimensions.get('window');
@@ -58,27 +60,6 @@ const App = () => {
         longitudeDelta: 0.05 * (width / height),
     };
 
-    // react-native-storage を async/await記述で同期処理にする
-    const asyncCreateData = async(props: {'key': string, 'data':object}) => {
-        const {key, data} = props;
-        try{
-            await storage.save({key: props.key, data: props.data})
-        }catch(e){
-            console.log(e);
-        }
-    }
-    
-    const asyncLoadData = async(props: {'key': string}) => {
-        const {key} = props;
-        let data: any = {};
-        try{
-            data = await storage.load({key: key});
-        }catch(e){
-            console.log(e);
-        }
-        return "test";
-    }
-
     const initLocation = () => {
         console.log("initNewData();");
 
@@ -112,141 +93,86 @@ const App = () => {
         setMapEditorIsOpen(false);
     }
 
-    const createDataHandler = (e: any) => {
-        /*********************************
-         * 1)新規セーブデータの作成
-         * 2)空の imgObj をセーブデータに追加
-         * 3)ファイル名リスト にファイル名を追記
-         * 4)MapEditorの起動
-        *********************************/
-        console.log("storageEventHandler(App.tsx)")
+    const createDataHandler = async(e: {newFileName: string, option: string}) => {
+        console.log("createDataHandler(App.tsx)")
 
         const {newFileName, option} = e;
         const tmpObj: any = imgObj;
+        let exit_flag = false;
         let readDataBuffer: any;
         let keyListBuffer: any;
 
         console.log("新規ファイル作成シーケンス開始. ファイル名＝");
         console.log(newFileName);
 
-        // セーブデータ新規作成処理
-        if(newFileName !== "" && option === 'new'){
-            // ファイル名重複確認. 
-            console.log("ファイル名の重複確認を実施");
-            storage
-            .load({key: newFileName})           //  データ読み込み
-            .then(data => {                     //  バッファにデータを一時保存
-                console.log("loaded data is ...");
-                console.log(data);
-                readDataBuffer = data;
-            }).catch(err => {                   //  エラー処理. エラーの場合、バッファに null を代入
-                console.log(err.message)
-                switch (err.name){
-                    case 'NotFoundError':
-                        console.log("NotFoundError has occured");
-                        readDataBuffer = null;
-                        console.log(readDataBuffer);
-                        break;
-                    case 'ExpiredError':
-                        console.log("ExpiredError has occured");
-                        readDataBuffer = null;
-                        console.log(readDataBuffer)
-                        break;
-                    default:
-                        break;
-                }
-            }).then(()=>{                      
-                if(readDataBuffer === null){    //  入力したファイル名が未使用(key未使用)なら作成
-                    // debug: newFileName は正常な文字列でここまで到達
-                    console.log("使用可能なファイル名です。セーブデータを新規作成。");
-                    
-                    // ファイル名とシーケンス情報を設定
-                    tmpObj['fileName'] = newFileName;
-                    tmpObj.initStatus['location'] = true;   // 位置設定シーケンスを有効
-                    tmpObj.initStatus['divNum'] = true;     // 分割数設定シーケンスを有効
-                    tmpObj['imgData'] = {};
-                    tmpObj['region'] = initRegion;
-
-                    console.log("setImgObj.");
-                    setImgObj(tmpObj);                      // ワークオブジェクト(imgObj)に設定
-
-                    // データ(tmpObj or imgObj)をストレージに保存
-                    asyncCreateData({key: newFileName, data:tmpObj});
-                    
-                    setMapEditorIsOpen(true);   // 地図編集画面起動
-                }else{                          //  入力したファイル名が使用済み(keyが存在)なら失敗
-                    console.log("失敗. 使われているファイル名です");
-                    Alert.alert("失敗. 使われているファイル名です");
-                    console.log(readDataBuffer);
-                }   
-            }).then(()=>{
-                //  ファイル名(key名)リストに追加
-                if(readDataBuffer === null){
-                    console.log("keyList への key追加処理を実施");
-                    storage
-                    .load({key: 'keyList'})
-                    .then(data => {
-                        console.log("keyList の有無を確認");
-                        console.log("loaded keyList is ...");
-                        console.log(data);
-                        keyListBuffer = data;
-                    }).catch(err => {                   //  エラー処理. エラーの場合、バッファに null を代入
-                        switch (err.name){
-                            case 'NotFoundError':
-                                console.log("NotFoundError has occured");
-                                keyListBuffer = null;
-                                console.log(keyListBuffer);
-                                break;
-                            case 'ExpiredError':
-                                console.log("ExpiredError has occured");
-                                keyListBuffer = null;
-                                console.log(keyListBuffer);
-                                break;
-                        }
-                    }).then(() => {
-                        if(keyListBuffer === null){
-                            console.log("keyListがありません。新規に作成します。");
-                            console.log("newFileName is "+newFileName);
-                            keyListBuffer = { 'keyList':{[newFileName]:{'size': 1129, 'modDate': "2022/7/18"}}}; 
-                            
-                            storage.save({
-                                key: 'keyList',
-                                data: keyListBuffer,
-                            })
-                        }else{
-                            console.log("keyListが存在します。keyを追加し保存します");
-                            storage
-                            .load({key: 'keyList'})
-                            .then(data=> {
-                                console.log("loaded keyList is ...");
-                                console.log(data);
-                                keyListBuffer = data;
-                                keyListBuffer.keyList[newFileName]= {'fileSize': 123456, 'modDate':'2022/7/18'};
-                                console.log("created keyList")
-                                console.log(keyListBuffer);
-
-                                
-                                storage.save({
-                                    key: 'keyList',
-                                    data: keyListBuffer
-                                }).catch(e=>{
-                                    console.log(e);
-                                })
-
-                            })
-                        }
-                    })
-                }else{
-                    // ファイルの新規作成は発生しませんでした。
-                }
-            })
-            
-        }else{
+        // セーブデータが未入力の場合、拒否
+        if(newFileName === "" || option !== 'new'){ // ファイル名空欄の場合は処理なし。
+            Alert.alert("ファイル名を入力してください");
+            console.log("ファイル名を入力してください")
             setMapEditorIsOpen(false);
+            return;
         }
 
-        const tmp = storage.getAllDataForKey('keyList');
-        console.log(tmp);
+        // 既存データとの重複確認 - - - - - - - - - - - - - - - - - - - - - 
+        console.log("既存ファイルとのファイル名重複なきこと確認");
+        await storage
+            .load({key: newFileName})
+            .then(data => {
+                Alert.alert("既に使われているファイル名です");
+                console.log("既に使われているファイル名です");
+                exit_flag = true;
+            })
+            .catch((e)=>{
+                console.log(e);
+                console.log("使用可能なファイル名です");
+            })
+
+        if(exit_flag) return;
+
+        // 作成するセーブデータを初期化 - - - - - - - - - - - - - - - - - - - 
+        console.log("使用可能なファイル名です。新規作成処理を継続。");
+        // ファイル名とシーケンス情報を設定
+        tmpObj.fileName = newFileName;
+        tmpObj.initStatus.location = true;  // 位置設定シーケンスを有効
+        tmpObj.initStatus.divNum = true;    // 分割数設定シーケンスを有効
+        tmpObj.imgData = {};
+        tmpObj.region = initRegion;
+
+        console.log("setImgObj.");
+        setImgObj(tmpObj);                  // ワークオブジェクト(imgObj)に設定
+
+        // セーブデータを作成 - - - - - - - - - - - - - - - - - - - - - - - - -
+        await storage.save({key: newFileName, data: tmpObj});
+        
+        // 編集モードを立ち上げ - - - - - - - - - - - - - - - - - - - - - - - - 
+        setMapEditorIsOpen(true);   // 地図編集画面起動
+
+        // keyList にファイル名を追加（keyList ない場合は作成） - - - - - - - - - -
+        console.log("keyList への key追加処理を実施");
+
+        await storage.load({key: 'keyList'})
+            .then(data => {
+                keyListBuffer = data;
+            })
+            .catch((e)=>{
+                console.log(e);
+                keyListBuffer = undefined;
+            })
+        
+        if(keyListBuffer === undefined){
+            console.log("keyListがありません。新規に作成します。");
+            console.log("newFileName is "+newFileName);
+            keyListBuffer = { 'keyList':{[newFileName]:{'size': 1129, 'modDate': "2022/7/18"}}}; 
+        }else{
+            console.log("keyListが存在します。keyを追加し保存します");
+
+            console.log("loaded keyList is ...");
+            console.log(keyListBuffer);
+            keyListBuffer.keyList[newFileName]= {'fileSize': 123456, 'modDate':'2022/7/18'};
+            console.log("created keyList")
+            console.log(keyListBuffer);
+        }
+        await storage.save({key: 'keyList',data: keyListBuffer})
     }
 
     const editDataHandler = async(e: any) => {
@@ -257,14 +183,20 @@ const App = () => {
         console.log("editDataHandler(App.tsx)");
 
         const {fileName} = e;
+        let tmpObj: any;
 
         console.log("セーブデータ読み込みシーケンスを開始");
         console.log("fileName is %s", fileName);
 
-        const tmpObj = await storage.load({key: fileName});
-        setImgObj(tmpObj);
-        setMapEditorIsOpen(true);
-        console.log(tmpObj);
+        await storage.load({key: fileName})
+            .then(data => {
+                tmpObj = data;
+            }).then(()=>{
+                setImgObj(tmpObj);
+            }).finally(()=>{
+                setMapEditorIsOpen(true);
+                console.log(tmpObj);
+            })
     };
 
     const deleteDataHandler = async(e: any) => {
