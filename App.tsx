@@ -223,7 +223,7 @@ const App = () => {
         }catch(e){
             console.log(e);
         }finally{
-            setMapEditorIsOpen(false);
+            //setMapEditorIsOpen(false);
         }
     }
 

@@ -66,14 +66,10 @@ const MapEditor = memo((props: any) => {
         setCurrentImageTag(imageTag);
   }
 
-  const closeMapEditorHandler1 = useCallback(() => {
-    setMapIsOpen(false);
-    setGridLineIsOpen(false);
-    setDataViewIsOpen(false);
-    setAssetIsOpen(false);
-
+  const closeMapEditorHandler1 = () => {
+    saveData();
     closeMapEditorHandler();  // 親コンポーネント App.tsx でMapEditor.tsx を非表示. 
-  },[])
+  }
 
   const onRegionChange = useCallback((region: any) => {
     console.log("onRegionChange");
