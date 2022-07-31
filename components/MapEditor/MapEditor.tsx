@@ -1,5 +1,5 @@
-import React, { useState, memo, useCallback} from 'react';
-import { StyleSheet, View, Text, Dimensions} from 'react-native';
+import React, { useState, memo, useCallback, useEffect} from 'react';
+import { StyleSheet, View, Text, Dimensions, BackHandler, Alert} from 'react-native';
 
 import GridLine from '../GridLine';
 import AssetWindow from '../Asset';
@@ -60,6 +60,32 @@ const MapEditor = memo((props: any) => {
   const assetSelectHandler = useCallback(() => {
     setAssetIsOpen(true);
   },[])
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert("確認", "セーブしてアプリを終了しますか？", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "YES", 
+          onPress: () => {
+            saveData()
+            BackHandler.exitApp()
+          }
+        }
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
   
   const closeAssetHandler = (imageTag: number) => {
         setAssetIsOpen(false);

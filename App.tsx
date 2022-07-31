@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Dimensions, Alert} from  'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, Text, TouchableOpacity, Dimensions, BackHandler ,Alert} from  'react-native';
 
 import MapEditor from './components/MapEditor/MapEditor';
 import StorageControl from './components/StorageControl';
@@ -263,6 +263,27 @@ const App = () => {
         console.log("setImgObj.");
         setImgObj(tmpObj);
     }
+    
+    useEffect(() => {
+        const backAction = () => {
+          Alert.alert("確認", "アプリを終了しても良いですか？", [
+            {
+              text: "Cancel",
+              onPress: () => null,
+              style: "cancel"
+            },
+            { text: "YES", onPress: () => BackHandler.exitApp() }
+          ]);
+          return true;
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          backAction
+        );
+    
+        return () => backHandler.remove();
+      }, []);
 
     console.log(imgObj);
 
