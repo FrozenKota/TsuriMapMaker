@@ -30,7 +30,7 @@ const MapEditor = memo((props: any) => {
 
   // Components display statment
   const [ mapIsOpen, setMapIsOpen ] = useState(true);
-  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(false);
+  const [ gridLineIsOpen, setGridLineIsOpen ] = useState(true);
   const [ dataViewIsOpen, setDataViewIsOpen ] = useState(false);
   const [ assetIsOpen, setAssetIsOpen ] = useState(false);
   const [ sideBarIsOpen, setSideBarIsOpen ] = useState(false);
@@ -98,6 +98,9 @@ const MapEditor = memo((props: any) => {
   const closeSideBarHandler = () => {
     setSideBarIsOpen(!sideBarIsOpen)
   }
+  const toggleGridLineIsOpen = () => {
+    setGridLineIsOpen(previous => !previous)
+  }
 
   const onRegionChange = useCallback((region: any) => {
     console.log("onRegionChange");
@@ -140,8 +143,8 @@ const MapEditor = memo((props: any) => {
         <ImageDataView imgObj={imgObj}/>
       )}
       
-      { ((!imgObj.initStatus.location && imgObj.initStatus.divNum) || 
-        (!imgObj.initStatus.location && !imgObj.initStatus.divNum) || gridLineIsOpen) && (
+      { (((!imgObj.initStatus.location && imgObj.initStatus.divNum) || 
+        (!imgObj.initStatus.location && !imgObj.initStatus.divNum)) && gridLineIsOpen) && (
         <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
       )}
 
@@ -150,7 +153,11 @@ const MapEditor = memo((props: any) => {
       )}
 
       {sideBarIsOpen && (
-        <SideBar />
+        <SideBar 
+          closeMapEditorHandler = {closeMapEditorHandler} 
+          toggleGridLineIsOpen={toggleGridLineIsOpen}
+          gridLineIsOpen={gridLineIsOpen}
+        />
       )}
 
       { false && (
