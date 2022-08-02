@@ -264,6 +264,7 @@ const App = () => {
         setImgObj(tmpObj);
     }
     
+    // BackHandler
     useEffect(() => {
         const backAction = () => {
           Alert.alert("確認", "アプリを終了しても良いですか？", [

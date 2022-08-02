@@ -8,6 +8,7 @@ import MapAreaComponents from './MapAreaComponents'
 import TopAreaComponents from './TopAreaComponents';
 import SelectButton from './SelectButton';
 import BottomAreaComponents from './BottomAreaComponents';
+import SideBar from './SideBar';
 
 const { width, height } = Dimensions.get('window');
 //const MAP_STYLE =  require('./mapstyle.json');
@@ -32,6 +33,7 @@ const MapEditor = memo((props: any) => {
   const [ gridLineIsOpen, setGridLineIsOpen ] = useState(false);
   const [ dataViewIsOpen, setDataViewIsOpen ] = useState(false);
   const [ assetIsOpen, setAssetIsOpen ] = useState(false);
+  const [ sideBarIsOpen, setSideBarIsOpen ] = useState(false);
 
   // Functions(Not component)
   const upDivNum = useCallback(() => {
@@ -60,7 +62,6 @@ const MapEditor = memo((props: any) => {
   const assetSelectHandler = useCallback(() => {
     setAssetIsOpen(true);
   },[])
-
   useEffect(() => {
     const backAction = () => {
       Alert.alert("確認", "セーブしてアプリを終了しますか？", [
@@ -86,15 +87,16 @@ const MapEditor = memo((props: any) => {
 
     return () => backHandler.remove();
   }, []);
-  
   const closeAssetHandler = (imageTag: number) => {
         setAssetIsOpen(false);
         setCurrentImageTag(imageTag);
   }
-
   const closeMapEditorHandler1 = () => {
     saveData();
     closeMapEditorHandler();  // 親コンポーネント App.tsx でMapEditor.tsx を非表示. 
+  }
+  const closeSideBarHandler = () => {
+    setSideBarIsOpen(!sideBarIsOpen)
   }
 
   const onRegionChange = useCallback((region: any) => {
@@ -128,7 +130,7 @@ const MapEditor = memo((props: any) => {
 
   return (
     <View style={styles.mainContainer} >
-      <TopAreaComponents fileName={imgObj.fileName} initStatus={imgObj.initStatus} countup={upDivNum} countdown={downDivNum} closeHandler={closeMapEditorHandler1} saveData={saveData} />
+      <TopAreaComponents fileName={imgObj.fileName} initStatus={imgObj.initStatus} countup={upDivNum} countdown={downDivNum} closeHandler={closeMapEditorHandler1} closeSideBar = {closeSideBarHandler} saveData={saveData} />
       <MapAreaComponents initStatus={imgObj.initStatus} initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)} />
       <SelectButton assetSelectHandler={assetSelectHandler} initStatus={imgObj.initStatus} enableEditMode={enableEditMode} onRegionSelect={onRegionSelect} onDivNumSelect={onDivNumSelect} />
       <BottomAreaComponents addData={addData} deleteData={deleteData} moveLeft={moveLeft} moveDown={moveDown} moveUp={moveUp} moveRight={moveRight} horizontal={horizontal} vertical={vertical} currentImageTag={currentImageTag}/>
@@ -145,6 +147,10 @@ const MapEditor = memo((props: any) => {
 
       { assetIsOpen && (
         <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
+      )}
+
+      {sideBarIsOpen && (
+        <SideBar />
       )}
 
       { false && (

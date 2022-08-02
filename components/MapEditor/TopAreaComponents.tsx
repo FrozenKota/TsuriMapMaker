@@ -1,12 +1,12 @@
-import React, {memo} from 'react';
+import React, {memo, useState} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Touchable} from 'react-native';
 import { isArgumentsObject } from 'util/types';
 
-const { width } = Dimensions.get('window');
+const { width, height} = Dimensions.get('window');
 
 
 const TopAreaComponents = (props:any) => {
-  const {fileName, closeHandler, saveData} = props;
+  const {fileName, closeHandler, saveData, closeSideBar} = props;
   console.log("TopAreaComponents");
 
   const InitLocationMenu = () => {
@@ -59,8 +59,8 @@ const TopAreaComponents = (props:any) => {
         <TouchableOpacity style={styles.saveButton} onPress={saveData}>
           <Text style={{color:'white', fontSize:(width*0.25)/5}}>SAVE</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.closeButton} onPress={closeHandler}>
-          <Text style={{color:'white', fontSize:(width*0.25)/5}}>CLOSE</Text>
+        <TouchableOpacity style={styles.closeButton} onPress={closeSideBar}>
+          <Text style={{color:'white', fontSize:(width*0.25)/5}}>MENU</Text>
         </TouchableOpacity>
       </View>
     )
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
       flex: 1,
       height: '100%',
       color: 'white',
-      borderColor: 'white',
+      borderColor: 'gray',
       borderWidth: 3,
       backgroundColor: 'darkblue',
       alignItems: 'center',
@@ -131,9 +131,9 @@ const styles = StyleSheet.create({
       flex: 1,
       height: '100%',
       color: 'white',
-      borderColor: 'white',
+      borderColor: 'gray',
       borderWidth: 2,
-      backgroundColor: 'darkred',
+      backgroundColor: 'black',
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: 1,
@@ -171,5 +171,5 @@ const styles = StyleSheet.create({
       backgroundColor: 'gray',
       justifyContent: 'center',
       alignItems: 'center',
-    },
+    }
   });
