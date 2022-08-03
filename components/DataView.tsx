@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
       left: 0,
       height: '70%',
       width: '100%',
-    }
+  },
 })
 
 export default ImgDataView;

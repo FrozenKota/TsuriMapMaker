@@ -34,6 +34,8 @@ const MapEditor = memo((props: any) => {
   const [ dataViewIsOpen, setDataViewIsOpen ] = useState(false);
   const [ assetIsOpen, setAssetIsOpen ] = useState(false);
   const [ sideBarIsOpen, setSideBarIsOpen ] = useState(false);
+  const [ zoomIsEnabled, setZoomIsEnabled ] = useState(true);
+  const [ scrollIsEnabled, setScrollIsEnabled ] = useState(true);
 
   // Functions(Not component)
   const upDivNum = useCallback(() => {
@@ -96,10 +98,12 @@ const MapEditor = memo((props: any) => {
     closeMapEditorHandler();  // 親コンポーネント App.tsx でMapEditor.tsx を非表示. 
   }
   const closeSideBarHandler = () => {
-    setSideBarIsOpen(!sideBarIsOpen)
+    setSideBarIsOpen(previous => !previous);
   }
   const toggleGridLineIsOpen = () => {
-    setGridLineIsOpen(previous => !previous)
+    setGridLineIsOpen(previous => !previous);
+    setScrollIsEnabled(previous => !previous);
+    setZoomIsEnabled(previous => !previous);
   }
 
   const onRegionChange = useCallback((region: any) => {
@@ -134,7 +138,7 @@ const MapEditor = memo((props: any) => {
   return (
     <View style={styles.mainContainer} >
       <TopAreaComponents fileName={imgObj.fileName} initStatus={imgObj.initStatus} countup={upDivNum} countdown={downDivNum} closeHandler={closeMapEditorHandler1} closeSideBar = {closeSideBarHandler} saveData={saveData} />
-      <MapAreaComponents initStatus={imgObj.initStatus} initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)} />
+      <MapAreaComponents initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)} scrollIsEnabled={scrollIsEnabled} zoomIsEnabled={zoomIsEnabled} />
       <SelectButton assetSelectHandler={assetSelectHandler} initStatus={imgObj.initStatus} enableEditMode={enableEditMode} onRegionSelect={onRegionSelect} onDivNumSelect={onDivNumSelect} />
       <BottomAreaComponents addData={addData} deleteData={deleteData} moveLeft={moveLeft} moveDown={moveDown} moveUp={moveUp} moveRight={moveRight} horizontal={horizontal} vertical={vertical} currentImageTag={currentImageTag}/>
 
@@ -154,27 +158,10 @@ const MapEditor = memo((props: any) => {
 
       {sideBarIsOpen && (
         <SideBar 
-          closeMapEditorHandler = {closeMapEditorHandler} 
+          closeMapEditorHandler = {closeMapEditorHandler1} 
           toggleGridLineIsOpen={toggleGridLineIsOpen}
           gridLineIsOpen={gridLineIsOpen}
         />
-      )}
-
-      { false && (
-        <View style={{position: 'absolute', width: '100%', height: 100, top: 120, backgroundColor: 'black', opacity: 0.6,}}>
-          <Text style={{color: 'white',fontSize: width/20,}}>
-            latitude = {imgObj.region.latitude}     
-          </Text>
-          <Text style={{color: 'white',fontSize: width/20,}}>
-            longitude = {imgObj.region.longitude}     
-          </Text>
-          <Text style={{color: 'white',fontSize: width/20,}}>
-            latitudeDelta = {imgObj.region.latitudeDelta}     
-          </Text>
-          <Text style={{color: 'white',fontSize: width/20,}}>
-            longitudeDelta = {imgObj.region.longitudeDelta}     
-          </Text>
-        </View>
       )}
     </View> // Container
   )
