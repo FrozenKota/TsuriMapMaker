@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { Dimensions, StatusBar, View, StyleSheet } from 'react-native';
 import Images from '../Asset/asset';
 import Svg, {
     // Circle,
@@ -24,8 +24,6 @@ import Svg, {
     // Pattern,
     // Mask,
   } from 'react-native-svg';
-
-//  const { width, height } = Dimensions.get('window');
 
 const GridLine = (props: any) => {
 

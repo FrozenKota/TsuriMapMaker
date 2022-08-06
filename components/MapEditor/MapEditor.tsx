@@ -1,5 +1,5 @@
 import React, { useState, memo, useCallback, useEffect} from 'react';
-import { StyleSheet, View, Text, Dimensions, BackHandler, Alert} from 'react-native';
+import { StyleSheet, Dimensions, StatusBar, View, Text, BackHandler, Alert} from 'react-native';
 
 import GridLine from '../GridLine';
 import AssetWindow from '../Asset';
@@ -11,7 +11,8 @@ import BottomAreaComponents from './BottomAreaComponents';
 import SideBar from './SideBar';
 
 const { width, height } = Dimensions.get('window');
-//const MAP_STYLE =  require('./mapstyle.json');
+const STATUSBAR_HEIGHT = (StatusBar.currentHeight? StatusBar.currentHeight : 0);
+const HEIGHT = height - STATUSBAR_HEIGHT;
 
 const MapEditor = memo((props: any) => {
   console.log("MapEditor.tsx")
@@ -43,21 +44,19 @@ const MapEditor = memo((props: any) => {
   },[glidNumber,imgObj.initStatus])
   const downDivNum = useCallback(() => {
     if(glidNumber > 1) setGlidNumber(glidNumber - 1)
-    else setGlidNumber(1)
   },[glidNumber])
   const moveLeft = useCallback(() => {
     if(horizontal >= 1) setHorizontal( horizontal - 1 )
-    else setHorizontal(0)
   },[horizontal])
   const moveRight = useCallback(() => {
-    setHorizontal(horizontal + 1)
+    if(horizontal < glidNumber-1) setHorizontal(horizontal + 1)
   },[horizontal])
   const moveUp = useCallback(() => {
     if(vertical > 1) setVertical( vertical - 1)
     else setVertical(0)
   },[vertical])
   const moveDown = useCallback(() => {
-    setVertical( vertical + 1 )
+    if(vertical < glidNumber) setVertical( vertical + 1 )
   },[vertical])
 
   // Handlers
@@ -149,7 +148,7 @@ const MapEditor = memo((props: any) => {
       
       { (((!imgObj.initStatus.location && imgObj.initStatus.divNum) || 
         (!imgObj.initStatus.location && !imgObj.initStatus.divNum)) && gridLineIsOpen) && (
-        <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
+        <GridLine x1="0" y1="0" x2={width} y2={HEIGHT*0.7} divNumX={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
       )}
 
       { assetIsOpen && (
@@ -171,65 +170,10 @@ const styles = StyleSheet.create({
   // 親コンテナ
   mainContainer: {
     position: 'absolute',
-    height: '100%',
+    height: HEIGHT,
     width: '100%',
     backgroundColor: 'black',
-  },
-  // メニュー（戻る、保存など）
-  menuLayout: {
-    width: '100%',
-    height: '15%',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  menuButtons: {
-    flex: 1,
-    height: '100%',
-    borderRadius: 10,
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  initMenu: {
-    flex: 1,
-    flexDirection: 'column',
-    height: '100%',
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  // GoogleMap表示エリア設定
-  mapLayout: {
-    width: '100%',
-    height: '70%',
-  },
-  // コントロールボタン配置エリア
-  controllerLayout: {
-    width: '100%',
-    height: '10%',
-    flexDirection: 'row',
-  },
-  assetButtonLayout: {
-    width: '100%',
-    height: '5%',
-    flexDirection: 'row',
-    alignContent: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'green',
-  },
-  okButtonForInitLocation: {
-    width: '100%',
-    height: '5%',
-    flexDirection: 'row',
-    alignContent: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'lightblue',
-  },
-  controlButtons: {
-    flex:1,
-    width: '100%',
-    backgroundColor: 'gray',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  }
 });
 
 export default MapEditor;

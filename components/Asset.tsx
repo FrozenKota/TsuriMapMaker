@@ -1,8 +1,11 @@
 import React from 'react';
 import Images from '../Asset/asset';
-import { StyleSheet, View, TouchableOpacity, Dimensions, ScrollView, Image} from 'react-native';
+import { Dimensions, StatusBar, StyleSheet, View, TouchableOpacity, ScrollView, Image} from 'react-native';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+const STATUSBAR_HEIGHT = (StatusBar.currentHeight? StatusBar.currentHeight : 0);
+const HEIGHT = height - STATUSBAR_HEIGHT;
+
 
 const AssetWindow = (props :any) => {
     const data = [];
@@ -72,10 +75,10 @@ const AssetWindow = (props :any) => {
 const styles = StyleSheet.create({
     assetView: {
         position: 'absolute',
-        bottom: 98,
-        height: 400,
+        top: HEIGHT*0.15,
+        height: HEIGHT*0.7,
         width: width,
-        opacity: 1,
+        opacity: 0.9,
         backgroundColor: 'black',  
     }
 })

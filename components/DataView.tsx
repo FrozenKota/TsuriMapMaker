@@ -13,9 +13,11 @@
 *****************************************************/
 
 import React from 'react';
-import {View, Dimensions, StyleSheet, Image } from 'react-native';
+import {View, Dimensions, StatusBar, StyleSheet, Image } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
+const STATUSBAR_HEIGHT = (StatusBar.currentHeight? StatusBar.currentHeight : 0);
+const HEIGHT = height - STATUSBAR_HEIGHT;
 
 const ImgDataView = (props: any) => {
   const {imgObj} = props;
@@ -35,7 +37,7 @@ const ImgDataView = (props: any) => {
         top: imgObj.imgData[keys[index]].PosY * divX,
         left: imgObj.imgData[keys[index]].PosX * divY,
         width: width / imgObj.divNumX, 
-        height: (height*0.7) / imgObj.divNumX,
+        height: (HEIGHT*0.7) / imgObj.divNumX,
         opacity: 1.0,
       }}>
       <Image key={"img"+index}
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       top: '15%',
       left: 0,
-      height: '70%',
+      height: HEIGHT*0.7,
       width: '100%',
   },
 })

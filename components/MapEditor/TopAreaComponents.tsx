@@ -1,8 +1,10 @@
 import React, {memo, useState} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions, Touchable} from 'react-native';
+import { StyleSheet, Dimensions, StatusBar, View, Text, TouchableOpacity, Touchable} from 'react-native';
 import { isArgumentsObject } from 'util/types';
 
 const { width, height} = Dimensions.get('window');
+const STATUSBAR_HEIGHT = (StatusBar.currentHeight? StatusBar.currentHeight : 0);
+const HEIGHT = height - STATUSBAR_HEIGHT;
 
 
 const TopAreaComponents = (props:any) => {
@@ -87,17 +89,10 @@ const TopAreaComponents = (props:any) => {
 export default TopAreaComponents;
 
 const styles = StyleSheet.create({
-    // 親コンテナ
-    mainContainer: {
-      position: 'absolute',
-      height: '100%',
-      width: '100%',
-      backgroundColor: 'black',
-    },
     // メニュー（戻る、保存など）
     menuLayout: {
       width: '100%',
-      height: '15%',
+      height: HEIGHT*0.15,
       justifyContent: 'center',
       alignContent: 'center',
       flexDirection: 'row',
@@ -138,38 +133,4 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       marginHorizontal: 1,
     },
-    // GoogleMap表示エリア設定
-    mapLayout: {
-      width: '100%',
-      height: '70%',
-    },
-    // コントロールボタン配置エリア
-    controllerLayout: {
-      width: '100%',
-      height: '10%',
-      flexDirection: 'row',
-    },
-    assetButtonLayout: {
-      width: '100%',
-      height: '5%',
-      flexDirection: 'row',
-      alignContent: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'green',
-    },
-    okButtonForInitLocation: {
-      width: '100%',
-      height: '5%',
-      flexDirection: 'row',
-      alignContent: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'lightblue',
-    },
-    controlButtons: {
-      flex:1,
-      width: '100%',
-      backgroundColor: 'gray',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }
   });

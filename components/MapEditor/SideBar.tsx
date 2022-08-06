@@ -1,7 +1,10 @@
 import React, {useState, memo} from 'react';
-import {Dimensions, StyleSheet, View, Text, ScrollView, TouchableOpacity, Switch} from 'react-native';
+import {Dimensions, StatusBar, StyleSheet, View, Text, ScrollView, TouchableOpacity, Switch} from 'react-native';
 
 const { width, height } = Dimensions.get('window');
+const STATUSBAR_HEIGHT = (StatusBar.currentHeight? StatusBar.currentHeight : 0);
+const HEIGHT = height - STATUSBAR_HEIGHT;
+
 
 const SideBar = memo((props:any) => {
     const {closeMapEditorHandler, toggleGridLineIsOpen, gridLineIsOpen} = props;
@@ -57,9 +60,9 @@ const styles = StyleSheet.create({
         //justifyContent: 'center',
         flex: 1,
         flexDirection: 'column',
-        height: '85%',
+        height: HEIGHT * 0.85,
         width: '60%',
-        top: '15%',
+        top: HEIGHT * 0.15,
         backgroundColor: 'black',
         opacity: 0.8
     },

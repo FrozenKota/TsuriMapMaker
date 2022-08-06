@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Dimensions, BackHandler ,Alert} from  'react-native';
+import {StyleSheet, Dimensions, StatusBar, View, Text, TouchableOpacity, BackHandler ,Alert} from  'react-native';
 
 import MapEditor from './components/MapEditor/MapEditor';
 import StorageControl from './components/StorageControl';
@@ -10,6 +10,8 @@ import { exit, exitCode } from 'process';
 
 
 const { width, height} = Dimensions.get('window');
+const STATUSBAR_HEIGHT = (StatusBar.currentHeight? StatusBar.currentHeight : 0);
+const HEIGHT = height - STATUSBAR_HEIGHT;
 
 const App = () => {
     console.log("App.tsx");
