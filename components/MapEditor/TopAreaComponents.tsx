@@ -33,7 +33,7 @@ const TopAreaComponents = (props:any) => {
             }}
             onPress={props.countup}
           >
-            <Text style={{color: "white"}}> Up</Text>
+            <Text style={{color: "white"}}>細かく</Text>
           </TouchableOpacity>
           <TouchableOpacity
           style={{
@@ -44,7 +44,7 @@ const TopAreaComponents = (props:any) => {
           }}
               onPress={props.countdown}
           >
-            <Text style={{color: "white"}}> Down</Text>
+            <Text style={{color: "white"}}>粗く</Text>
           </TouchableOpacity>
         </View>
         <View style={{...styles.menuButtons, backgroundColor: 'darkblue'}}><Text style={{color: 'white', textAlign: 'center', fontSize: 20}}>分割数を設定！</Text></View>

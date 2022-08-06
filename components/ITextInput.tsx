@@ -4,15 +4,15 @@ import {StyleSheet, View, Text, TextInput, TouchableOpacity, Dimensions } from '
 const { width, height } = Dimensions.get('window');
 
 const ITextInput = (props: any) => {
-    const {closeHandler} = props;
+    const {setFileNameHandler, closeStorageControlHandler} = props;
     const [text, onChangeText] = useState('');
 
     const okHandler = () => {
-        closeHandler(text);
+        setFileNameHandler(text);
     }
 
     const cancelHandler = () => {
-        closeHandler("");
+        closeStorageControlHandler();
     }
 
     return(

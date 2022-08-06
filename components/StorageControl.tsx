@@ -7,7 +7,7 @@ import ConfirmModal from './ConfirmModal'
 const { width, height } = Dimensions.get('window');
 
 const StorageControl = memo((props: any) => {
-    const {closeHandler, option, createData, editData, deleteData } = props;
+    const {closeStorageControlHandler, option, createData, editData, deleteData } = props;
 
     const [ keyList, setKeyList ] = useState({keyList:{}});
     const [ confirmModalIsOpen, setConfirmModalIsOpen ] = useState(false);
@@ -26,7 +26,7 @@ const StorageControl = memo((props: any) => {
         // <StorageControl> の状態を返す
         createData({newFileName: name, option: 'new'});
         //ITextInput をクローズ
-        closeHandler();
+        closeStorageControlHandler();
     }
 
     const deleteDataHandler = (e: any) => {
@@ -78,7 +78,7 @@ const StorageControl = memo((props: any) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.dataDetailsBlock}>
-                    <Text style={styles.fileMoreInfo}> file size:  {fileSize} / modified date:  {modDate}</Text>
+                    {true && (<Text style={styles.fileMoreInfo}></Text>)}
                 </View>
             </View>
         )
@@ -95,7 +95,7 @@ const StorageControl = memo((props: any) => {
 
     if(option === "new"){
         return(
-            <ITextInput closeHandler={(name: string) => setFileNameHandler(name)}/>
+            <ITextInput closeStorageControlHandler={closeStorageControlHandler} setFileNameHandler={(name: string) => setFileNameHandler(name)}/>
         )
     }else{
         loadKeyList();
@@ -120,7 +120,7 @@ const StorageControl = memo((props: any) => {
                         <Text style={styles.h1}>{title}</Text>
                     </View>
         
-                    <TouchableOpacity onPress={closeHandler} style={styles.closeButton}>
+                    <TouchableOpacity onPress={closeStorageControlHandler} style={styles.closeButton}>
                         <Text style={{color: 'white'}}>Close</Text>
                     </TouchableOpacity>
     
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         width: width,
         backgroundColor: 'white',
-        opacity: 0.8,
+        opacity: 0.9,
         marginTop: 20,
         borderRadius: 10,
     },

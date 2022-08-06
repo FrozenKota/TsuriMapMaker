@@ -61,7 +61,7 @@ const MapEditor = memo((props: any) => {
 
   // Handlers
   const assetSelectHandler = useCallback(() => {
-    setAssetIsOpen(true);
+    setAssetIsOpen(previous => !previous);
   },[])
   useEffect(() => {
     const backAction = () => {

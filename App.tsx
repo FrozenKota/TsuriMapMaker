@@ -307,7 +307,7 @@ const App = () => {
 
             {storageControlIsOpen && (
                 <StorageControl 
-                    closeHandler={closeStorageControlHandler} 
+                    closeStorageControlHandler={closeStorageControlHandler} 
                     option={storageControlOption}
                     imgObj={imgObj}
                     createData={(e: any) => {createDataHandler(e)}}
