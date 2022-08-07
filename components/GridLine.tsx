@@ -25,6 +25,8 @@ import Svg, {
     // Mask,
   } from 'react-native-svg';
 
+  const {width, height } = Dimensions.get('window');
+
 const GridLine = (props: any) => {
 
     const {x1, x2, y1, y2, divNumX, horizontal, vertical, imageTag} = props;
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: '15%',
         left: 0,
-        height: '70%',
+        height: height*0.7,
         width: '100%',
       }
 })

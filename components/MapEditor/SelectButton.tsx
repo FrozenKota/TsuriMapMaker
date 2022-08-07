@@ -2,8 +2,8 @@ import React, {memo} from 'react';
 import { Dimensions, StatusBar, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 const { width, height } = Dimensions.get('window');
-const STATUSBAR_HEIGHT = (StatusBar.currentHeight? StatusBar.currentHeight : 0);
-const HEIGHT = height - STATUSBAR_HEIGHT;
+//const STATUSBAR_HEIGHT = (StatusBar.currentHeight? StatusBar.currentHeight : 0);
+//const HEIGHT = height - STATUSBAR_HEIGHT;
 
 
 const SelectButton = memo((props:any) => {
@@ -60,7 +60,7 @@ export default SelectButton;
 const styles = StyleSheet.create({
     okButtonForInitLocation: {
       width: '100%',
-      height: HEIGHT*0.05,
+      height: height*0.05,
       flexDirection: 'row',
       alignContent: 'center',
       justifyContent: 'center',

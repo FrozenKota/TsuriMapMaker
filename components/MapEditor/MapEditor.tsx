@@ -11,8 +11,8 @@ import BottomAreaComponents from './BottomAreaComponents';
 import SideBar from './SideBar';
 
 const { width, height } = Dimensions.get('window');
-const STATUSBAR_HEIGHT = (StatusBar.currentHeight? StatusBar.currentHeight : 0);
-const HEIGHT = height - STATUSBAR_HEIGHT;
+const STATUSBAR_HEIGHT = StatusBar.currentHeight;
+const HEIGHT = height - (STATUSBAR_HEIGHT? STATUSBAR_HEIGHT : 0);
 
 const MapEditor = memo((props: any) => {
   console.log("MapEditor.tsx")
@@ -46,17 +46,20 @@ const MapEditor = memo((props: any) => {
     if(glidNumber > 1) setGlidNumber(glidNumber - 1)
   },[glidNumber])
   const moveLeft = useCallback(() => {
-    if(horizontal >= 1) setHorizontal( horizontal - 1 )
+    if(horizontal > 1) setHorizontal( horizontal - 1 )
+    console.log("#######horizontal = "+ horizontal);
   },[horizontal])
   const moveRight = useCallback(() => {
     if(horizontal < glidNumber-1) setHorizontal(horizontal + 1)
+    console.log("#######horizontal = "+ horizontal);
   },[horizontal])
   const moveUp = useCallback(() => {
     if(vertical > 1) setVertical( vertical - 1)
-    else setVertical(0)
+    console.log("#######vertical = "+ vertical);
   },[vertical])
   const moveDown = useCallback(() => {
-    if(vertical < glidNumber) setVertical( vertical + 1 )
+    if(vertical <= imgObj.divNumY) setVertical( vertical + 1 )
+    console.log("#######vertical = "+ vertical);
   },[vertical])
 
   // Handlers
@@ -135,7 +138,7 @@ const MapEditor = memo((props: any) => {
   }
 
   return (
-    <View style={styles.mainContainer} >
+    <View style={{...styles.mainContainer, height: height} } >
       <TopAreaComponents fileName={imgObj.fileName} initStatus={imgObj.initStatus} countup={upDivNum} countdown={downDivNum} closeHandler={closeMapEditorHandler1} closeSideBar = {closeSideBarHandler} saveData={saveData} />
       <MapAreaComponents initialRegion={imgObj.region} mapType={"satellite"} mapIsOpen={mapIsOpen} onRegionChange={(e:any) => onRegionChange(e)} scrollIsEnabled={scrollIsEnabled} zoomIsEnabled={zoomIsEnabled} />
       <SelectButton assetSelectHandler={assetSelectHandler} initStatus={imgObj.initStatus} enableEditMode={enableEditMode} onRegionSelect={onRegionSelect} onDivNumSelect={onDivNumSelect} />
@@ -148,7 +151,7 @@ const MapEditor = memo((props: any) => {
       
       { (((!imgObj.initStatus.location && imgObj.initStatus.divNum) || 
         (!imgObj.initStatus.location && !imgObj.initStatus.divNum)) && gridLineIsOpen) && (
-        <GridLine x1="0" y1="0" x2={width} y2={HEIGHT*0.7} divNumX={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
+        <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
       )}
 
       { assetIsOpen && (
@@ -162,6 +165,12 @@ const MapEditor = memo((props: any) => {
           gridLineIsOpen={gridLineIsOpen}
         />
       )}
+
+      {true && (
+        <View style={{position: 'absolute', width: width, backgroundColor: 'yellow'}}>
+
+        </View>
+      )}
     </View> // Container
   )
 })
@@ -170,8 +179,8 @@ const styles = StyleSheet.create({
   // 親コンテナ
   mainContainer: {
     position: 'absolute',
-    height: HEIGHT,
-    width: '100%',
+    width: width,
+    height: height,
     backgroundColor: 'black',
   }
 });

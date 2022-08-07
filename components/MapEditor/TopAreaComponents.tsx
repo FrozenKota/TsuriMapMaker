@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     // メニュー（戻る、保存など）
     menuLayout: {
       width: '100%',
-      height: HEIGHT*0.15,
+      height: height*0.15,
       justifyContent: 'center',
       alignContent: 'center',
       flexDirection: 'row',

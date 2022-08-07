@@ -139,6 +139,8 @@ const App = () => {
         tmpObj.initStatus.divNum = true;    // 分割数設定シーケンスを有効
         tmpObj.imgData = {};
         tmpObj.region = initRegion;
+        tmpObj.divNumX = 10,
+        tmpObj.divNumY = 10,
 
         console.log("setImgObj.");
         setImgObj(tmpObj);                  // ワークオブジェクト(imgObj)に設定
@@ -260,7 +262,7 @@ const App = () => {
         console.log("setDivNumHandler(App.tsx)")
         const tmpObj = imgObj;
         tmpObj['divNumX'] = divNumX;
-        tmpObj['divNumY'] = divNumX;
+        tmpObj['divNumY'] = Math.floor(HEIGHT / divNumX);
         tmpObj.initStatus['divNum'] = false;    // 分割数設定フラグを解除
         console.log("setImgObj.");
         setImgObj(tmpObj);
@@ -293,16 +295,19 @@ const App = () => {
     return(
         <View style={styles.mainContainer}>
             <View style={styles.titleLayout}>
-                <Text style={styles.titleName}>タイトル表示エリア</Text>
+                <Text style={styles.titleName}>8bit Map Editor</Text>
             </View>
 
             <View style={styles.selectButtonLayout}>
                 <MenuButton title={' N E W '} handler={() => {storageControlHandler({option: "new"})}}/>
                 <MenuButton title={' E D I T '} handler={() => {storageControlHandler({option: "edit"})}} />
-                <MenuButton title={' G A L L E R Y '} handler={() => {storageControlHandler({option: "gallery"})}} />
+                {false && (<MenuButton title={' G A L L E R Y '} handler={() => {storageControlHandler({option: "gallery"})}} /> /*実装中*/ )}  
             </View>
 
             <View style={styles.footerLayout}>
+                <Text>Twitter: @kota_ly</Text>
+                <Text>ReleaseData: 2022/8/20</Text>
+                <Text>Rev.1.0.0</Text>
             </View>
 
             {storageControlIsOpen && (
@@ -352,10 +357,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'yellow',
     },
     titleLayout:{
-        flex: 1,
-        height: '10%',
+        height: HEIGHT*0.20,
         width: width,
-        backgroundColor: "#87cefa",
+        backgroundColor: "#4477FF",
         opacity: 1,
         justifyContent: 'center',
     },
@@ -366,11 +370,11 @@ const styles = StyleSheet.create({
         alignContent: 'center',
     },
     selectButtonLayout:{
-        height: '60%',
+        height: HEIGHT*0.60,
         width: width,
         flexDirection: 'column',
         backgroundColor: '#000099',
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
     },
     selectButton:{
         height: (height*0.7)/8,
@@ -394,10 +398,10 @@ const styles = StyleSheet.create({
     },
     footerLayout: {
         flex: 1,
-        height: '30%',
+        height: HEIGHT*0.20,
         width: width,
         backgroundColor: '#000055',
         opacity: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
     }
 })

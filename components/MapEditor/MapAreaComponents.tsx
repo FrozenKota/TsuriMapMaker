@@ -33,6 +33,6 @@ export default MapAreaComponents;
 const styles = StyleSheet.create({
     mapLayout: {
       width: '100%',
-      height: HEIGHT*0.7,
+      height: height*0.7,
     }
 })
