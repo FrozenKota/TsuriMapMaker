@@ -15,7 +15,7 @@ const TopAreaComponents = (props:any) => {
     return(
       <View style={styles.menuLayout}>
         <View style={{...styles.initMenu, backgroundColor: 'black'}}>
-          <Text style={{color: 'white', textAlign: 'center', fontSize: width/15}}>地図を動かして、エリアを選択🐟</Text>
+          <Text style={{color: 'white', textAlign: 'center', fontSize: width/15}}>すきな場所を選択🐟</Text>
         </View>
       </View> 
     )

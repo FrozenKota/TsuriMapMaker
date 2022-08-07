@@ -262,7 +262,7 @@ const App = () => {
         console.log("setDivNumHandler(App.tsx)")
         const tmpObj = imgObj;
         tmpObj['divNumX'] = divNumX;
-        tmpObj['divNumY'] = Math.floor(HEIGHT / divNumX);
+        tmpObj['divNumY'] = Math.floor(height*0.7 / (width/divNumX));
         tmpObj.initStatus['divNum'] = false;    // 分割数設定フラグを解除
         console.log("setImgObj.");
         setImgObj(tmpObj);
@@ -295,19 +295,20 @@ const App = () => {
     return(
         <View style={styles.mainContainer}>
             <View style={styles.titleLayout}>
-                <Text style={styles.titleName}>8bit Map Editor</Text>
+                <Text style={styles.titleName}>ココドコマップメーカー(β)</Text>
             </View>
 
             <View style={styles.selectButtonLayout}>
-                <MenuButton title={' N E W '} handler={() => {storageControlHandler({option: "new"})}}/>
-                <MenuButton title={' E D I T '} handler={() => {storageControlHandler({option: "edit"})}} />
+                <MenuButton title={' はじめる '} handler={() => {storageControlHandler({option: "new"})}}/>
+                <MenuButton title={' つづける '} handler={() => {storageControlHandler({option: "edit"})}} />
                 {false && (<MenuButton title={' G A L L E R Y '} handler={() => {storageControlHandler({option: "gallery"})}} /> /*実装中*/ )}  
             </View>
 
             <View style={styles.footerLayout}>
-                <Text>Twitter: @kota_ly</Text>
-                <Text>ReleaseData: 2022/8/20</Text>
-                <Text>Rev.1.0.0</Text>
+                <Text> Twitter: @kota_ly</Text>
+                <Text> ReleaseDate: 2022/8/20</Text>
+                <Text> Rev.1.0.0</Text>
+                <Text></Text>
             </View>
 
             {storageControlIsOpen && (
@@ -366,11 +367,13 @@ const styles = StyleSheet.create({
     titleName:{
         textAlign: 'center',
         color: 'white',
-        fontSize: width / 12,
+        fontSize: width / 14,
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
         alignContent: 'center',
     },
     selectButtonLayout:{
-        height: HEIGHT*0.60,
+        height: HEIGHT*0.70,
         width: width,
         flexDirection: 'column',
         backgroundColor: '#000099',
@@ -398,7 +401,7 @@ const styles = StyleSheet.create({
     },
     footerLayout: {
         flex: 1,
-        height: HEIGHT*0.20,
+        height: HEIGHT*0.10,
         width: width,
         backgroundColor: '#000055',
         opacity: 1,

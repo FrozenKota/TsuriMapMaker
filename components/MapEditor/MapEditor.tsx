@@ -22,8 +22,8 @@ const MapEditor = memo((props: any) => {
 
   // useState
   const [ glidNumber, setGlidNumber ] = useState(imgObj.divNumX);
-  const [ vertical, setVertical] = useState(1);
-  const [ horizontal, setHorizontal] = useState(1);
+  const [ vertical, setVertical] = useState(0);
+  const [ horizontal, setHorizontal] = useState(0);
   const [ currentImageTag, setCurrentImageTag] = useState(-1);
   const [ regionTemp, setRegionTemp] = useState({region:{}});
   const [ locationIsSelected, setLocationIsSelected ] = useState(imgObj.initStatus.location);
@@ -43,23 +43,20 @@ const MapEditor = memo((props: any) => {
     setGlidNumber(glidNumber + 1);
   },[glidNumber,imgObj.initStatus])
   const downDivNum = useCallback(() => {
-    if(glidNumber > 1) setGlidNumber(glidNumber - 1)
+    if(glidNumber > 2) setGlidNumber(glidNumber - 1)
   },[glidNumber])
+
   const moveLeft = useCallback(() => {
-    if(horizontal > 1) setHorizontal( horizontal - 1 )
-    console.log("#######horizontal = "+ horizontal);
+    if(horizontal > 0) setHorizontal( horizontal - 1 )
   },[horizontal])
   const moveRight = useCallback(() => {
-    if(horizontal < glidNumber-1) setHorizontal(horizontal + 1)
-    console.log("#######horizontal = "+ horizontal);
+    if(horizontal < imgObj.divNumX - 1) setHorizontal(horizontal + 1)
   },[horizontal])
   const moveUp = useCallback(() => {
-    if(vertical > 1) setVertical( vertical - 1)
-    console.log("#######vertical = "+ vertical);
+    if(vertical > 0) setVertical( vertical - 1)
   },[vertical])
   const moveDown = useCallback(() => {
-    if(vertical <= imgObj.divNumY) setVertical( vertical + 1 )
-    console.log("#######vertical = "+ vertical);
+    if(vertical < imgObj.divNumY - 1) setVertical( vertical + 1 )
   },[vertical])
 
   // Handlers
