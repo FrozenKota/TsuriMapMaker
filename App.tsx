@@ -305,10 +305,10 @@ const App = () => {
             </View>
 
             <View style={styles.footerLayout}>
-                <Text> Twitter: @kota_ly</Text>
-                <Text> ReleaseDate: 2022/8/20</Text>
-                <Text> Rev.1.0.0</Text>
-                <Text></Text>
+                <Text style={{fontSize: width/30, color: 'white'}}> Twitter: @kota_ly</Text>
+                <Text style={{fontSize: width/30, color: 'white'}}> ReleaseDate: 2022/8/20</Text>
+                <Text style={{fontSize: width/30, color: 'white'}}> Rev.1.0.0</Text>
+                <Text style={{fontSize: width/30, color: 'white'}}></Text>
             </View>
 
             {storageControlIsOpen && (
