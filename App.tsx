@@ -50,7 +50,7 @@ const App = () => {
             longitudeDelta: 0.05 * (width / height),
         },
         imgData: {
-            xy00:{PosX: 0, PosY: 0, source:Images[3]}
+            xy00:{PosX: 0, PosY: 0, source:Images.Asset0_1}
         },
     })
     const [ eventManager, setEventManager ] = useState({fileName:"", option:""});
