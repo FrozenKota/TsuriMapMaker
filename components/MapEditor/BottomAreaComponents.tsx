@@ -10,10 +10,10 @@ const BottomAreaComponents = memo((props:any) => {
     console.log("BottomAreaComponents");
     return (
       <View style={styles.controllerLayout}>
-        <TouchableOpacity style={styles.controlButtons} onPress={() => props.addData({PosX: props.horizontal, PosY: props.vertical, source: Images[props.currentImageTag]})} >
+        <TouchableOpacity style={styles.controlButtons} onPress={() => props.addData({PosX: props.horizontal, PosY: props.vertical, imgName: Object.keys(Images[props.currentImageTag]) })} >
           <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/plus.png')} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} onPress={() => props.deleteData({PosX: props.horizontal, PosY: props.vertical, source: Images[props.currentImageTag]})}>
+        <TouchableOpacity style={styles.controlButtons} onPress={() => props.deleteData({PosX: props.horizontal, PosY: props.vertical, imgName: Images[props.currentImageTag]})}>
           <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/minus.png')} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.controlButtons} onPress={props.moveLeft}>

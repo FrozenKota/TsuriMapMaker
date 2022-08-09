@@ -50,7 +50,8 @@ const App = () => {
             longitudeDelta: 0.05 * (width / height),
         },
         imgData: {
-            xy00:{PosX: 0, PosY: 0, source:Images.Asset0_1}
+            xy00:{PosX: 0, PosY: 0, imgName: 'Asset0_1'},
+            xy01:{PosX: 0, PosY: 0, imgName: 'Asset0_2'}
         },
     })
     const [ eventManager, setEventManager ] = useState({fileName:"", option:""});
@@ -232,10 +233,10 @@ const App = () => {
     }
 
     const addNewImgData = (imgData: any) => {
-        const {PosX, PosY, source} = imgData;
+        const {PosX, PosY, imgName} = imgData;
 
         const tmpObj: any = imgObj;
-        tmpObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, source: source}
+        tmpObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, imgName: imgName}
         console.log("setImgObj.");
         setImgObj(tmpObj);
     }

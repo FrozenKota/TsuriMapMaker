@@ -1,6 +1,6 @@
 /****************************************************
   Description:
-   This component displays images based on object data which contains image meta datas.
+   This component displays images based on object data contains image meta datas.
     
   Input:
     - Bias position of origin from top-left : biasX, biaxY
@@ -15,6 +15,9 @@
 import React from 'react';
 import {View, Dimensions, StatusBar, StyleSheet, Image } from 'react-native';
 
+import Images from '../Asset/asset';
+
+
 const { width, height } = Dimensions.get('window');
 const STATUSBAR_HEIGHT = (StatusBar.currentHeight? StatusBar.currentHeight : 0);
 const HEIGHT = height - STATUSBAR_HEIGHT;
@@ -24,7 +27,6 @@ const ImgDataView = (props: any) => {
   const items: any = [];
 
   console.log("ImgDataView.tsx");
-  //console.log(imgObj);
 
   const divX = width / imgObj.divNumX;
   const divY = divX;
@@ -46,7 +48,7 @@ const ImgDataView = (props: any) => {
           width: divX,
           height: divY,
         }}
-        source={imgObj.imgData[keys[index]].source}
+        source={imgObj.imgData[keys[index]].imgName}
       />
       </View>
     )
