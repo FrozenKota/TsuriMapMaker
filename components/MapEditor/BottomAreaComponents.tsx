@@ -7,30 +7,32 @@ const STATUSBAR_HEIGHT = (StatusBar.currentHeight? StatusBar.currentHeight : 0);
 const HEIGHT = height - STATUSBAR_HEIGHT;
 
 const BottomAreaComponents = memo((props:any) => {
-    console.log("BottomAreaComponents");
-    return (
-      <View style={styles.controllerLayout}>
-        <TouchableOpacity style={styles.controlButtons} onPress={() => props.addData({PosX: props.horizontal, PosY: props.vertical, imgName: Images[props.currentImageTag]})} >
-          <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/plus.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} onPress={() => props.deleteData({PosX: props.horizontal, PosY: props.vertical, imgName: Images[props.currentImageTag]})}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/minus.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} onPress={props.moveLeft}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/left.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} onPress={props.moveDown}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/down.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} onPress={props.moveUp}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/up.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.controlButtons} onPress={props.moveRight}>
-          <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/right.png')} />
-        </TouchableOpacity>
+
+  const { addData, deleteData, moveLeft, moveDown, moveUp, moveRight, horizontal, vertical, currentImageTag } = props;
+
+  console.log("BottomAreaComponents");
+  return (
+    <View style={styles.controllerLayout}>
+      <TouchableOpacity style={styles.controlButtons} onPress={() => addData({PosX: horizontal, PosY: vertical, imgName: currentImageTag})} >
+        <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/plus.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.controlButtons} onPress={() => deleteData({PosX: horizontal, PosY: vertical, imgName: currentImageTag})}>
+        <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/minus.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.controlButtons} onPress={moveLeft}>
+        <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/left.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.controlButtons} onPress={moveDown}>
+        <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/down.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.controlButtons} onPress={moveUp}>
+        <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/up.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.controlButtons} onPress={moveRight}>
+        <Image style={{resizeMode: 'stretch', width: width/6, height: '100%'}} source={require('../../Asset/Buttons/right.png')} />
+      </TouchableOpacity>
     </View>
-    )
-  }
+  )}
 )
 
 

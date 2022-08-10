@@ -236,7 +236,7 @@ const App = () => {
         const {PosX, PosY, imgName} = imgData;
 
         const tmpObj: any = imgObj;
-        tmpObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, imgName: imgData}
+        tmpObj.imgData['xy'+String(PosX)+String(PosY)] = {PosX: PosX, PosY: PosY, imgName: imgName}
         console.log("setImgObj.");
         setImgObj(tmpObj);
     }
