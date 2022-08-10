@@ -29,7 +29,7 @@ import Svg, {
 
 const GridLine = (props: any) => {
 
-    const {x1, x2, y1, y2, divNumX, horizontal, vertical, imageTag} = props;
+    const {x1, x2, y1, y2, divNumX, horizontal, vertical, imgTag} = props;
     
     const X1 = x1;
     const X2 = x2;
@@ -62,7 +62,7 @@ const GridLine = (props: any) => {
         y={Y1+vertical*DIV_Y}
         width = {DIV_X}
         height= {DIV_Y}
-        href={Images[imageTag]}
+        href={Images[imgTag]}
         />
     )
 

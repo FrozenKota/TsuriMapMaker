@@ -24,7 +24,7 @@ const MapEditor = memo((props: any) => {
   const [ glidNumber, setGlidNumber ] = useState(imgObj.divNumX);
   const [ vertical, setVertical] = useState(0);
   const [ horizontal, setHorizontal] = useState(0);
-  const [ currentImageTag, setCurrentImageTag] = useState(-1);
+  const [ currentImageTag, setCurrentImageTag] = useState("");
   const [ regionTemp, setRegionTemp] = useState({region:{}});
   const [ locationIsSelected, setLocationIsSelected ] = useState(imgObj.initStatus.location);
   const [ divNumIsSelected, setDivNumIsSelected ] = useState(imgObj.initStatus.divNum);
@@ -88,9 +88,9 @@ const MapEditor = memo((props: any) => {
 
     return () => backHandler.remove();
   }, []);
-  const closeAssetHandler = (imageTag: number) => {
+  const closeAssetHandler = (imgName: string) => {
         setAssetIsOpen(false);
-        setCurrentImageTag(imageTag);
+        setCurrentImageTag(imgName);
   }
   const closeMapEditorHandler1 = () => {
     saveData();
@@ -148,11 +148,11 @@ const MapEditor = memo((props: any) => {
       
       { (((!imgObj.initStatus.location && imgObj.initStatus.divNum) || 
         (!imgObj.initStatus.location && !imgObj.initStatus.divNum)) && gridLineIsOpen) && (
-        <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} vertical={vertical} horizontal={horizontal} imageTag={currentImageTag}/>
+        <GridLine x1="0" y1="0" x2={width} y2={height*0.7} divNumX={glidNumber} vertical={vertical} horizontal={horizontal} imgTag={currentImageTag}/>
       )}
 
       { assetIsOpen && (
-        <AssetWindow rowNum={6} closeAssetHandler={(imageTag:number) => closeAssetHandler(imageTag)}/>
+        <AssetWindow rowNum={6} closeAssetHandler={(imgName:any) => closeAssetHandler(imgName)}/>
       )}
 
       {sideBarIsOpen && (

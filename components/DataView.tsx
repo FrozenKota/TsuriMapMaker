@@ -39,7 +39,7 @@ const ImgDataView = (props: any) => {
         top: imgObj.imgData[keys[index]].PosY * divX,
         left: imgObj.imgData[keys[index]].PosX * divY,
         width: width / imgObj.divNumX, 
-        height: (HEIGHT*0.7) / imgObj.divNumX,
+        height: (height*0.7) / imgObj.divNumX,
         opacity: 1.0,
       }}>
       <Image key={"img"+index}
@@ -48,7 +48,7 @@ const ImgDataView = (props: any) => {
           width: divX,
           height: divY,
         }}
-        source={imgObj.imgData[keys[index]].imgName}
+        source={Images[imgObj.imgData[keys[index]].imgName]}
       />
       </View>
     )
